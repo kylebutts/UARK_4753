@@ -1,0 +1,67 @@
+Week,Dates,name,value
+
+1,08/19 - 08/21,Monday,Syllabus + Intro
+1,08/19 - 08/21,Wednesday,Stats Review
+1,08/19 - 08/21,Assignments,"R assignment 0, Sunday"
+
+2,08/26 - 08/28,Monday,Stats Review
+2,08/26 - 08/28,Wednesday,Introduction to Forecasting
+2,08/26 - 08/28,Assignments,
+
+3,09/02 - 09/04,Monday,"No Class"
+3,09/02 - 09/04,Wednesday,Introduction to Forecasting
+3,09/02 - 09/04,Assignments,
+
+4,09/09 - 09/11,Monday,Simple Linear Regression
+4,09/09 - 09/11,Wednesday,Simple Linear Regression
+4,09/09 - 09/11,Assignments,
+
+5,09/16 - 09/18,Monday,Simple Linear Regression
+5,09/16 - 09/18,Wednesday,Multiple Regression Analysis
+5,09/16 - 09/18,Assignments,
+
+6,09/23 - 09/25,Monday,Multiple Regression Analysis
+6,09/23 - 09/25,Wednesday,Multiple Regression Analysis
+6,09/23 - 09/25,Assignments,
+
+7,09/30 - 10/02,Monday,Multiple Regression Analysis
+7,09/30 - 10/02,Wednesday,Review
+7,09/30 - 10/02,Assignments,
+
+8,10/07 - 10/09,Monday,Midterm
+8,10/07 - 10/09,Wednesday,Moving Averages and Smoothing Methods
+8,10/07 - 10/09,Assignments,
+
+9,10/14 - 10/16,Monday,"No Class"
+9,10/14 - 10/16,Wednesday,Moving Averages and Smoothing Methods
+9,10/14 - 10/16,Assignments,
+
+10,10/21 - 10/23,Monday,Moving Averages and Smoothing Methods
+10,10/21 - 10/23,Wednesday,Regression with Time Series Data
+10,10/21 - 10/23,Assignments,
+
+11,10/28 - 10/30,Monday,Regression with Time Series Data
+11,10/28 - 10/30,Wednesday,Regression with Time Series Data
+11,10/28 - 10/30,Assignments,
+
+12,11/04 - 11/06,Monday,Review
+12,11/04 - 11/06,Wednesday,Midterm
+12,11/04 - 11/06,Assignments,
+
+13,11/11 - 11/13,Monday,ARIMA Methodology
+13,11/11 - 11/13,Wednesday,ARIMA Methodology
+13,11/11 - 11/13,Assignments,
+
+14,11/18 - 11/20,Monday,ARIMA Methodology
+14,11/18 - 11/20,Wednesday,Time Series and Their Components
+14,11/18 - 11/20,Assignments,
+
+15,11/25 - 11/27,Monday,Time Series and Their Components
+15,11/25 - 11/27,Wednesday,"No Class"
+15,11/25 - 11/27,Assignments,
+
+16,12/02 - 12/04,Monday,Time Series and Their Components
+16,12/02 - 12/04,Wednesday,Review
+16,12/02 - 12/04,Assignments,
+
+Final,12/11 - 3 — 5pm,Assignments,Final Exam

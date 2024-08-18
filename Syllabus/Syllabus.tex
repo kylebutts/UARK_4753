@@ -1,0 +1,153 @@
+\documentclass[12pt]{article}
+\usepackage{../paper,../math}
+\usepackage{../uark_colors}
+% \addbibresource{references.bib}
+\hypersetup{
+  pdftitle = {UARK ECON 4753 Syllabus},
+  pdfauthor = {Kyle Butts},
+}
+
+\hypersetup{
+  colorlinks = true,
+  allcolors = ozark_mountains,
+  linkbordercolor = ozark_mountains,
+  breaklinks = true,
+  bookmarksopen = true
+}
+
+\usepackage{tcolorbox} 
+\newtcolorbox{callout}[2][]{
+  colback = apple_blossom,    % Background color
+  coltext = ozark_mountains,  % Text color
+  boxrule = 1pt,              % Border
+  colframe = black!17,        % Border color 
+  left = 1em,                 % Left padding
+  right = 1em,                % Right padding
+  top = 1em,                  % Top padding
+  bottom = 0.75em,            % Bottom padding
+  arc = 2mm                   % Rounded corners
+  title = #2,                 % #2: title
+  #1,                         % #1: tcolorbox options
+}
+
+
+\usepackage{setspace, titling}
+\title{
+  \vspace{-2em}
+	{\huge \ttfamily \textbf{Forecasting}} \\[-0.5em]
+  {\Large \ttfamily [ECON 4753]} \\
+	{\large Fall 2024 Syllabus} \\[-1em]
+  {\normalsize \ttfamily \href{https://github.com/kylebutts/UARK_4753_F2024/}{https://github.com/kylebutts/UARK\_4753\_F2024/}} \\[-0.5em]
+  {\normalsize Monday, Wednesday 3:05 PM - 4:20 PM at Kimpell Hall 206A}
+}
+\author{
+  {\large \textbf{Dr. Kyle Butts}} \\[-0.5em]
+  {\normalsize Dept. of Economics, University of Arkansas}
+}
+\date{}  % Toggle commenting to test
+
+\begin{document}
+\maketitle
+
+\begin{callout}{}{\large\textbf{Reminder:} }
+  \large
+  \href{https://www.cameo.com/recipient/5f2b392a0299b100202e624a}{Even Snoop Dogg wants you to read the syllabus}
+\end{callout}
+
+
+
+\section*{Course Summary}
+
+This course will provide an introduction to forecasting methods. The class will teach you how to take a set of input variables and produce predictions of some outcome variable. We will survey a set of forecasting methods for your toolbox including: bivariate and multivariate regression; smoothing methods; time-series regression; and ARIMA methods. The class will teach these methods theoretically and also teach you to estimate these models in the \texttt{R} programming language.
+
+Though the class will also teach you fundamental principles of forecasting: goals of forecasting, fitting of models, evaluating model fit, and limitations of the models. By doing this, the class will equip you with the foundations to expand your toolbox over time. 
+
+Last, the course will try to highlight limitations of forecasting methods; trade-offs between forecasting methods (e.g. interpretability versus predictive accuracy); and help you understand what forecasting methods can not due (e.g. establish causality). 
+
+
+\section*{Course Materials}
+
+All the course material will be made available on Blackboard Ultra. This is my first-time using Blackboard, so bear with me in the first few weeks.
+
+\subsection*{Textbooks}
+
+The class will pull materials from two textbooks that are freely available online. You may buy a print version, but it is not necessary for the course. 
+
+\begin{enumerate}
+  \item Gareth, J., Daniela, W., Trevor, H., \& Robert, T. (2013). ``\href{https://www.statlearning.com}{An introduction to statistical learning: with applications in R (2nd edition)}''. Spinger.
+  \item Hyndman, R. J., \& Athanasopoulos, G. (2018). ``\href{https://otexts.com/fpp3/}{Forecasting: principles and practice (3rd edition)}''. OTexts.
+\end{enumerate}
+
+In addition, we may have readings from different articles. These will be available in pdf form on Blackboard.
+
+
+
+\subsection*{Coding Software}
+
+You will need to download \emph{two} programs:
+\begin{enumerate}
+  \item Install R from \url{https://cloud.r-project.org/}.
+  \item Install Positron (or RStudio) from \url{https://github.com/posit-dev/positron/releases}. 
+\end{enumerate}
+
+\bigskip
+Mastering \texttt{R} will take time and dedication, but it is a powerful and adaptable tool that is highly valued by many employers. Invest the necessary effort and time, and you will see the benefits.
+
+% TODO: 
+% Your first assignment will be to download the software and compile an \texttt{.Rmd} file.
+
+
+\section*{Assignments and Exams}
+
+You will have a set of homework assignments in this course that correspond with topics. The questions will be a mix of free-response and coding problems. For full-credit, the code and the output of the code must be submitted. We will discuss how to do so in the class. 
+
+There will be two midterms and one final in this course. The final exam will be on Wednesday, December 11th from 3 to 5pm. Each will be worth 25\% of your grade with assignments filling the remaining 25\%. The breakdown is as follows:
+
+\begin{table}[h!]
+  \renewcommand{\arraystretch}{1.2} 
+  \begin{tabular}{@{}l @{\extracolsep{2em}} c@{}}
+    \textbf{Assignment} & \textbf{Percent of grade} \\ 
+    \midrule
+    Homework  & 35\% \\
+    Midterm 1 & 20\% \\
+    Midterm 2 & 20\% \\
+    Final     & 25\% 
+  \end{tabular}
+\end{table}
+
+
+\section*{Course Outline}
+
+\subsection*{Tentative Schedule}
+
+This is a tentative schedule. This is the first time I've taught this course, so take this with a heavy dose of skepticism. In particular, do not set up holidays a class before or after the midterm. 
+
+\begin{landscape}
+  \input{schedule.tex}
+\end{landscape}
+
+
+
+
+
+
+
+\section*{Policies}
+
+The student who missed exam must provide an official proven emergency which prevents you from attending class on the scheduled exam date within 24 hours after the missed exam to be allowed to take a makeup. Otherwise the student is not eligible to take a makeup exam and the missed exam equals zero points.
+
+There will be due dates on the assignments. Like you, I am a busy person. I may grade the next day or a few days later. You have until I start grading assignments to turn it in without penalty, so take your chances. 
+
+If you have any questions during the lecture, feel free to ask right away. Your questions can benefit both you and other students who might have the same questions. If you arrive late or need to leave early, please sit near the door to minimize disruption to the class.
+
+\subsection*{Access and Accommodations}
+
+Your experience in this class is important to me. University of Arkansas Academic \href{https://policies.uark.edu/academic/152010.php}{Policy Series 1520.10} requires that students with disabilities are provided reasonable accommodations to ensure their equal access to course content. If you have already established accommodations with the Center for Educational Access (CEA), please request your accommodations letter early in the semester and contact me privately, so that we have adequate time to arrange your approved academic accommodations.
+
+If you have \textbf{not} yet established services through CEA, but have a documented disability and require accommodations (conditions include but not limited to: mental health, attention-related, learning, vision, hearing, physical, health  or temporary impacts), contact CEA directly to set up an Access Plan. CEA facilitates the interactive process that establishes reasonable accommodations.  For more information on CEA registration procedures contact 479—575—3104, ada@uark.edu or visit cea.uark.edu.
+
+% ------------------------------------------------------------------------------
+% \printbibliography
+% \newpage~\appendix
+% ------------------------------------------------------------------------------
+\end{document}
