@@ -30,24 +30,43 @@
   #1,                         % #1: tcolorbox options
 }
 
-
+\usepackage{fontawesome} % For icons
 \usepackage{setspace, titling}
 \title{
   \vspace{-2em}
-	{\huge \ttfamily \textbf{Forecasting}} \\[-0.5em]
-  {\Large \ttfamily [ECON 4753]} \\
-	{\large Fall 2024 Syllabus} \\[-1em]
-  {\normalsize \ttfamily \href{https://github.com/kylebutts/UARK_4753_F2024/}{https://github.com/kylebutts/UARK\_4753\_F2024/}} \\[-0.5em]
-  {\normalsize Monday, Wednesday 3:05 PM - 4:20 PM at Kimpell Hall 206A}
+	{\huge \ttfamily \textbf{Forcasting}} \\[-0.75em]
+  {\Large \ttfamily [ECON 4753]} \\[-0.5em]
+	{\Large Fall 2024 Syllabus}
 }
-\author{
-  {\large \textbf{Dr. Kyle Butts}} \\[-0.5em]
-  {\normalsize Dept. of Economics, University of Arkansas}
-}
+\author{}
 \date{}  % Toggle commenting to test
 
 \begin{document}
 \maketitle
+
+\vspace*{-7em}
+\begin{table}[!ht]
+	\renewcommand{\arraystretch}{1.2}
+  \centering
+  \begin{tabular}{@{\extracolsep{5pt}} lll @{}}
+    \toprule
+
+    \faUser & Professor & {\bfseries\color{ozark_mountains} Kyle Butts, PhD} \\
+    \faPaperPlaneO & Email & \href{mailto:kbutts@uark.edu?subject=ECON4753}{kbutts@uark.edu} (include ``\texttt{ECON4753}'' in subject)  \\
+    \faChevronRight & Website & \href{https://kylebutts.com/}{https://kylebutts.com/} \\
+
+    \addlinespace[0.25em]
+    \midrule
+    \addlinespace[0.25em]
+    
+    \faClockO & Lecture & Kimpell Hall 206A MW 3:05-4:20pm \\
+    \faBuildingO & Office Hours & WCOB 408 MW 11am--1pm \\
+    \faChevronRight & Course Materials & \url{https://learn.uark.edu/} \\
+    
+    \bottomrule
+  \end{tabular}
+\end{table}
+
 
 \begin{callout}{}{\large\textbf{Reminder:} }
   \large
@@ -87,14 +106,13 @@ In addition, we may have readings from different articles. These will be availab
 You will need to download \emph{two} programs:
 \begin{enumerate}
   \item Install R from \url{https://cloud.r-project.org/}.
-  \item Install Positron (or RStudio) from \url{https://github.com/posit-dev/positron/releases}. 
+  \item Install RStudio from \url{https://posit.co/download/rstudio-desktop/}. 
 \end{enumerate}
 
 \bigskip
-Mastering \texttt{R} will take time and dedication, but it is a powerful and adaptable tool that is highly valued by many employers. Invest the necessary effort and time, and you will see the benefits.
-
-% TODO: 
-% Your first assignment will be to download the software and compile an \texttt{.Rmd} file.
+Mastering \texttt{R} will take time and dedication, but it is a powerful and adaptable tool that is highly valued by many employers. 
+Invest the necessary effort and time, and you will see the benefits. 
+Your first assignment will be to download the software and compile an \texttt{.Rmd} file.
 
 
 \section*{Assignments and Exams}
@@ -104,6 +122,7 @@ You will have a set of homework assignments in this course that correspond with 
 There will be two midterms and one final in this course. The final exam will be on Wednesday, December 11th from 3 to 5pm. Each will be worth 25\% of your grade with assignments filling the remaining 25\%. The breakdown is as follows:
 
 \begin{table}[h!]
+  \centering
   \renewcommand{\arraystretch}{1.2} 
   \begin{tabular}{@{}l @{\extracolsep{2em}} c@{}}
     \textbf{Assignment} & \textbf{Percent of grade} \\ 

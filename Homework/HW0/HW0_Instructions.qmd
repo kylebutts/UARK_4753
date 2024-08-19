@@ -1,0 +1,82 @@
+---
+title: "Homework 0"
+format:
+  pdf:
+    template: ../template.tex
+    keep-tex: true
+    pdf-engine: latexmk
+  html: 
+    self-contained: true
+---
+
+# Install R and RStudio
+
+The first part of the assignment is aimed at getting your computers set up for the rest of the course. You need to download two different softwares. 
+
+1. \href{https://cloud.r-project.org/}{\texttt{R}} is the statistical software that we will use for this course.
+
+2. [RStudio Desktop](https://posit.co/download/rstudio-desktop/) is a visual code editor that makes editing and running code way easier. This is what I will use to demonstrate all the coding in the class.
+
+
+You will know that you have installed R and RStudio correctly if when you start RStudio, you see a message in the Console tab that says `R 4.4.0 started':
+
+```{r R-startup, echo = F, out.width = "50%"}
+knitr::include_graphics("R-startup.png")
+```
+
+
+Good job! Now, we have to install two packages.
+Copy the following lines into the console and hit `Enter`.
+This will take a minute or two, but once you have done this you will be ready for the semester.
+
+```{r}
+#| eval: false
+install.packages("tidyverse")
+install.packages("rmarkdown")
+install.packages("fixest")
+install.packages("fpp3")
+install.packages("tinytex")
+tinytex::install_tinytex()
+```
+
+It should look like this when you are finished:
+
+```{r R-installed, echo = F, out.width = "50%"}
+knitr::include_graphics("R-installed.png")
+```
+
+
+# R Markdown
+
+You should download the file `HW0.Rmd` from canvas. It's a good idea to put all the files for the course into a seperate folder so that they all stay together and you don't accidentally delete them. Students in the past just leave them in the messy Downloads folder which makes things hard to find. Double click `HW0.Rmd` and it should open up in RStudio automatically. 
+
+Welcome to your first RMarkdown document! You might feel very lost, so the first thing 
+we will do is have you read through some resources to familiarize yourself with 
+Markdown and RMarkdown. To begin, complete the following tasks:
+
+1. Please complete this interactive tutorial to teach you [markdown syntax](https://www.markdowntutorial.com/)
+
+2. Read this guide on [Using RMarkdown](https://evalf21.classes.andrewheiss.com/resource/rmarkdown/)
+
+## Instructions for Assignment
+
+Two things for you to do for this assignment.
+
+- Fill out the few tasks given in the `.Rmd` document. Your link should have meaningful text (e.g. the song name) and our code chunk should look like 
+  
+````r
+```{r}`r ""`
+1 + 1
+```
+````
+
+- Click the `knit` button to creat html file. This will create the file in the same location as where you saved you HW0.Rmd file.
+  
+  ```{r R-knit, echo = F, out.width = "50%"}
+  knitr::include_graphics("R-knit.png")
+  ```
+
+- Upload completed html file to Blackboard. 
+
+
+

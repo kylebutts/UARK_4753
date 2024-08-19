@@ -4,12 +4,14 @@ Fall 2024 • Instructor: Kyle Butts
 
 Monday, Wednesday 3:05 PM - 4:20 PM at Kimpell Hall 206A
 
+Office Hours: Monday, Wednesday 11am -- 1pm at WCOB 408
+
 > [!IMPORTANT]
 > 
 > [Even Snoop Dogg wants you to read the syllabus](https://www.cameo.com/recipient/5f2b392a0299b100202e624a)
 
 
-### Course Summary
+## Course Summary
 
 This course will provide an introduction to forecasting methods. The class will teach you how to take a set of input variables and produce predictions of some outcome variable. We will survey a set of forecasting methods for your toolbox including: bivariate and multivariate regression; smoothing methods; time-series regression; and ARIMA methods. The class will teach these methods theoretically and also teach you to estimate these models in the `R` programming language.
 
@@ -20,7 +22,6 @@ Last, the course will try to highlight limitations of forecasting methods; trade
 ## Course Materials
 
 ### Textbook
-
 
 The class will pull materials from two textbooks that are freely available online. You may buy a print version, but it is not necessary for the course. 
 
@@ -34,12 +35,11 @@ In addition, we may have readings from different articles. These will be availab
 
 You will need to download *two* programs:
 1. Install R from <https://cloud.r-project.org/>.
-2. Install Positron from <https://github.com/posit-dev/positron/releases>. 
-
-Positron is a new (and better) coding environment than RStudio, so I recommend it. However, you can use RStudio if Positron is giving you problems.
+2. Install RStudio Desktop from <https://posit.co/download/rstudio-desktop/>
 
 Mastering `R` will take time and dedication, but it is a powerful and adaptable tool that is highly valued by many employers. Invest the necessary effort and time, and you will see the benefits.
 
+Your first assignment will be to download the software and compile an `.Rmd` file.
 
 ## Assignments and Exams
 
