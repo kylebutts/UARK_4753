@@ -35,17 +35,25 @@ nyc_sat <- here::here("Slides/03_Bivariate_Regression/data/nyc_sat.csv") |>
   ) |>
   mutate(percent_tested = as.numeric(gsub("%", "", percent_tested)))
 
-fit <- lm(average_score_sat_reading ~ average_score_sat_math, data = nyc_sat)
+fit <- feols(average_score_sat_reading ~ average_score_sat_math, data = nyc_sat, vcov = "hc1")
+
+# aside, for codeblock
+print_out <- purrr:::capture_output(print(fit))$output
+reg_codeblock <- sprintf("\\begin{codeblock}\n%s\n\\end{codeblock}", print_out)
+cat(
+  reg_codeblock, 
+  file = here("Slides/03_Bivariate_Regression/inputs/nyc_sat_reg_console.tex")
+)
 
 nyc_sat$residuals <- residuals(fit)
 nyc_sat$predicted <- predict(fit)
 
+# %%
 nyc_sat_x_axis <- scale_x_continuous(
   name = "Average SAT Math Score",
   limits = c(300, 800),
   expand = expansion(0, 0)
 )
-
 nyc_sat_y_axis <- scale_y_continuous(
   name = "Average SAT Reading Score",
   limits = c(300, 800),
@@ -262,178 +270,3 @@ kfbmisc::tikzsave(
 )
 
 
-
-#' # Regression Inference
-# %%
-dgp <- function(n = 100, sd_eps = 1.5) {
-  df <- tibble(
-    x = rnorm(n, 1, sd = 1)
-  )
-  df$eps <- rnorm(nrow(df), 0, sd = sd_eps)
-  df$y <- df$x * 1 + df$eps
-  return(df)
-}
-gen_reg <- function(n = 100) {
-  df <- dgp(n = n)
-  coef(feols(y ~ x, data = df))
-}
-coef_to_ggplot_line <- function(coef, alpha = 0.05) {
-  geom_abline(
-    intercept = coef["(Intercept)"],
-    slope = coef["x"],
-    linewidth = 1.2, color = colors["purple"],
-    alpha = alpha
-  )
-}
-
-set.seed(20240915)
-df <- dgp(n = 100)
-fit <- coef(feols(y ~ x, data = df))
-
-reg_samples <- lapply(1:100, function(i) {
-  gen_reg(n = 100)
-})
-
-(plot_orig_reg <- ggplot() +
-  geom_point(
-    aes(x = x, y = y),
-    data = df,
-    shape = 1
-  ) +
-  geom_abline(
-    intercept = fit["(Intercept)"],
-    slope = fit["x"],
-    linewidth = 1.2, color = colors["purple"]
-  ) +
-  labs(
-    title = "Original Sample",
-    x = NULL, y = NULL
-  ) +
-  kfbmisc::theme_kyle(base_size = 14) +
-  theme(
-    plot.title = element_text(
-      face = "plain", margin = margin(b = 10)
-    )
-  ))
-
-plot_extra_samples_1 <- plot_orig_reg +
-  coef_to_ggplot_line(reg_samples[[1]], alpha = 0.25) +
-  labs(title = "Original Sample + 1 Extra Sample")
-
-plot_extra_samples_2 <- plot_orig_reg +
-  coef_to_ggplot_line(reg_samples[[1]], alpha = 0.25) +
-  coef_to_ggplot_line(reg_samples[[2]], alpha = 0.25) +
-  labs(title = "Original Sample + 2 Extra Samples")
-
-(plot_extra_samples_3 <- plot_orig_reg +
-  coef_to_ggplot_line(reg_samples[[1]], alpha = 0.25) +
-  coef_to_ggplot_line(reg_samples[[2]], alpha = 0.25) +
-  coef_to_ggplot_line(reg_samples[[3]], alpha = 0.25) +
-  labs(title = "Original Sample + 3 Extra Samples"))
-
-(plot_extra_samples_5 <- plot_orig_reg +
-  coef_to_ggplot_line(reg_samples[[1]], alpha = 0.25) +
-  coef_to_ggplot_line(reg_samples[[2]], alpha = 0.25) +
-  coef_to_ggplot_line(reg_samples[[3]], alpha = 0.25) +
-  coef_to_ggplot_line(reg_samples[[4]], alpha = 0.25) +
-  coef_to_ggplot_line(reg_samples[[5]], alpha = 0.25) +
-  labs(title = "Original Sample + 5 Extra Samples"))
-
-ggplot_reg_lines <- lapply(reg_samples, function(coef) coef_to_ggplot_line(coef, alpha = 0.05))
-
-(plot_extra_samples_100 <- plot_orig_reg +
-  ggplot_reg_lines +
-  labs(title = "Original Sample + 100 Extra Samples"))
-
-kfbmisc::tikzsave(
-  here("Slides/03_Bivariate_Regression/figures/ex_inference_orig_reg.pdf"),
-  plot_orig_reg,
-  width = 8, height = 4
-)
-kfbmisc::tikzsave(
-  here("Slides/03_Bivariate_Regression/figures/ex_inference_extra_sample_1.pdf"),
-  plot_extra_samples_1,
-  width = 8, height = 4
-)
-kfbmisc::tikzsave(
-  here("Slides/03_Bivariate_Regression/figures/ex_inference_extra_sample_2.pdf"),
-  plot_extra_samples_2,
-  width = 8, height = 4
-)
-kfbmisc::tikzsave(
-  here("Slides/03_Bivariate_Regression/figures/ex_inference_extra_sample_5.pdf"),
-  plot_extra_samples_5,
-  width = 8, height = 4
-)
-kfbmisc::tikzsave(
-  here("Slides/03_Bivariate_Regression/figures/ex_inference_extra_sample_100.pdf"),
-  plot_extra_samples_100,
-  width = 8, height = 4
-)
-
-
-
-
-#' # R^2 comparisons
-# %%
-dgp <- function(sd_eps) {
-  df <- tibble(
-    x = rnorm(100, 1, sd = 1)
-  )
-
-  df$eps <- rnorm(100, 0, sd = sd_eps)
-  df$y <- df$x * 1 + df$eps
-
-  return(df)
-}
-
-plot_reg_and_rsquared <- function(sd_eps) {
-  df <- tibble(
-    x = rnorm(100, 1, sd = 1)
-  )
-  df$eps <- rnorm(100, 0, sd = sd_eps)
-  df$y <- df$x * 1 + df$eps
-  df$y <- scale(df$y, center = TRUE, scale = TRUE)
-
-  est <- feols(y ~ x, data = df)
-  r2 <- r2(est, type = "r2")
-  r2_title <- sprintf("$R^2 = %0.3f$", r2)
-
-  ggplot() +
-    geom_point(
-      aes(x = x, y = y),
-      data = df
-    ) +
-    geom_smooth(
-      aes(x = x, y = y),
-      data = df,
-      method = "lm", formula = y ~ x, se = FALSE,
-      linewidth = 1.2, color = colors["orange"]
-    ) +
-    labs(title = r2_title, x = NULL, y = NULL) +
-    kfbmisc::theme_kyle(base_size = 10) +
-    scale_x_continuous(n.breaks = 8, labels = NULL) +
-    scale_y_continuous(n.breaks = 8, labels = NULL) +
-    theme(
-      plot.title = element_text(
-        face = "plain", margin = margin(b = 5)
-      )
-    )
-}
-
-set.seed(20240915)
-p1 <- plot_reg_and_rsquared(sd_eps = 0.25)
-p2 <- plot_reg_and_rsquared(sd_eps = 0.6)
-p3 <- plot_reg_and_rsquared(sd_eps = 2)
-p4 <- plot_reg_and_rsquared(sd_eps = 4)
-(plot_r2_comparison <-
-  (p1 + p2 + p3 + p4) +
-  plot_annotation(title = "Comparisons of $R^2$") +
-  plot_layout(byrow = TRUE)
-)
-
-kfbmisc::tikzsave(
-  here("Slides/03_Bivariate_Regression/figures/r2_comparisons.pdf"),
-  plot_r2_comparison,
-  width = 8, height = 4.5
-)

@@ -1,0 +1,16 @@
+\frametitle{Significance with indicator variables}
+\vspace*{-1.25\bigskipamount}
+  \begin{codeblock}
+#>              Estimate Std. Error  t value   Pr(>|t|)
+#> (Intercept)  26.66364   0.971801 27.43735  < 2.2e-16 ***
+#> cyl::6       -6.92078   1.558348 -4.44110 1.1947e-04 ***
+#> cyl::8      -11.56364   1.298623 -8.90453 8.5682e-10 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  \end{codeblock}
+
+  Including an intercept also helps with certaint statistical inference.
+  The estimates test that the average of $y$ for the omitted group is \emph{the same} for the other groups
+  \begin{itemize}
+    \item Rejecting this ($p$-value $< \alpha$) rejects the null that the two means are the same
+  \end{itemize}

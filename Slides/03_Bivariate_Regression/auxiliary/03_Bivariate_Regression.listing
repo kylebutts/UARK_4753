@@ -1,0 +1,45 @@
+library(fixest) feols(log(hp) ~ i(cyl), data = mtcars) ##> OLS estimation, Dep. Var.: log(hp) ##> Observations: 32 ##> Standard-errors: IID ##> Estimate Std. Error t value Pr(>|t|) ##> (Intercept) 4.383896 0.069759 62.84353 < 2.2e-16 *** ##> cyl::6 0.408183 0.111863 3.64895 1.0282e-03 ** ##> cyl::8 0.934249 0.093219 10.02206 6.2778e-11 *** ##> --- ##> Signif. codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 ##> RMSE: 0.220252 Adj. R2: 0.762984 \end {codeblock} \end {beamer@frameslide}\ifbeamer@twoscreenstext \beamer@dosecondscreennow {{Example in \texttt {R}} \begin {codeblock} library(fixest) feols(log(hp) ~ i(cyl), data = mtcars) ##> OLS estimation, Dep. Var.: log(hp) ##> Observations: 32 ##> Standard-errors: IID ##> Estimate Std. Error t value Pr(>|t|) ##> (Intercept) 4.383896 0.069759 62.84353 < 2.2e-16 *** ##> cyl::6 0.408183 0.111863 3.64895 1.0282e-03 ** ##> cyl::8 0.934249 0.093219 10.02206 6.2778e-11 *** ##> --- ##> Signif. codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 ##> RMSE: 0.220252 Adj. R2: 0.762984 \end {codeblock} }\fi \ifbeamer@anotherslide \advance \beamer@slideinframe by 1\relax \relax \expandafter \iterate \fi \let \iterate \relax \beamer@writeslidentry \beamer@reseteecodes 
+
+
+\begin{frame}{When to use $\log$ transformations}
+  You should take the $\log$ of an outcome varible when you think a 1 unit change in $X$ is related to a \% change in $Y$.
+
+  \pause
+  \bigskip
+  $\log(Y)$ \textasciitilde{} $X$ is called fitting an `exponential' relationship. These are common in:
+  \begin{enumerate}
+    \item Financial markets where compounding returns imply $Y_t = Y_0 e^{rt}$
+
+    \item Epidemiology where disease growth rate is exponential (it is not actually, but early growth rate is approximately)
+
+    \pause
+    \item Settings with skewed distributions (e.g. home prices, GDP, population)
+    \begin{itemize}
+      \item Skewness makes a `unit' change in $X$ difficult to think about
+    \end{itemize}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{$\log$-$\log$ transformations}
+  Alternatively, You may see $\log$ transformations of both variables:
+  $$
+    \log(Y_i) = \beta_0 + \beta_1 \log(X_i) + u_i
+  $$
+
+  \bigskip
+  The interpretation is now simpler: a 1\% change in $X_1$ is associated with a $\beta_1$ \% change in $Y$
+\end{frame}
+
+\begin{frame}{Example in \texttt{R}}
+  \begin{codeblock}
+library(fixest)
+feols(log(mpg) ~ log(hp), data = mtcars)
+#> OLS estimation, Dep. Var.: log(mpg)
+#> Observations: 32
+#> Standard-errors: IID
+#>              Estimate Std. Error  t value   Pr(>|t|)
+#> (Intercept)  5.545381   0.299133 18.53821  < 2.2e-16 ***
+#> log(hp)     -0.530092   0.060994 -8.69086 1.0796e-09 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> RMSE: 0.156265   Adj. R2: 0.706247

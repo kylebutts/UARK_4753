@@ -135,11 +135,12 @@
 }
 
 % Indicator
+\usepackage{dsfont}
 \NewDocumentCommand{\one}{g}{%
   \IfNoValueTF{#1}{
-    \operatorname{\mathbb{1}}
+    \operatorname{\mathds{1}}
   }{%
-  \,\mathbb{1}{\bs{#1}}}
+  \,\mathds{1}{\bs{#1}}}
 }
 
 % Trace
