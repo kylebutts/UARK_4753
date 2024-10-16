@@ -1,0 +1,292 @@
+\documentclass[12pt]{article}
+\usepackage{../../lecture_notes}
+\usepackage{../../math}
+\usepackage{../../uark_colors}
+
+\hypersetup{
+  colorlinks = true,
+  allcolors = ozark_mountains,
+  breaklinks = true,
+  bookmarksopen = true
+}
+
+\begin{document}
+\begin{center}
+  {\Huge\bf Midterm 1 Study Guide}
+  
+  \smallskip
+  {\large\it  ECON 4753 — University of Arkansas}
+
+  \medskip
+  {\large Prof. Kyle Butts}
+\end{center}
+
+\section*{Overview of Topics:}
+\begin{enumerate}
+  \item[1.] Statistics Review
+  \begin{itemize}
+    \item Understand the intuition of a sample distribution, i.e. repeated sampling ($*$)
+
+    \item Say you have some \emph{statistic} that has a normal sample distribution, e.g. $\bar{X} \sim \mathcal{N}(\mu, \sigma^2 / n)$. You should know these three inference procedures:
+    \begin{itemize}
+      \item Form a 95\% confidence interval
+      
+      \item Perform a hypothesis test that $H_0: \mu = m$ for some number $m$ (e.g. $H_0: \mu = 0$)
+      
+      \item Construct a rejection region (i.e. outside of the confidence interval centered on the null hypothesis)
+    \end{itemize} 
+  \end{itemize}
+
+  \vspace{5mm}
+  \item[2.] Introduction to Forecasting
+  \begin{itemize}
+    \item High-level understanding of forecasting, $y = f(X) + u$
+    
+    \item Two goals of forecasting: prediction and inference
+    
+    \item What model ``flexibility'' means and the risk of overfitting
+    
+    \item Mean-squared prediction error 
+    
+    \item Differences between training data and testing data
+  \end{itemize}
+  
+  \vspace{5mm}
+  \item[3.] Bivariate Regression
+  \begin{itemize}
+    \item Understand how to interpret correlation coefficient
+    
+    \item The regression coefficients: $\hat{\beta}_1 = \frac{\cov{X, y}}{\var{X}}$ and $\hat{\beta_0} = \bar{y} - \bar{X} \hat{\beta}_1$
+    
+    \item Given a regression coefficient, how do we interpret the marginal effect
+    \begin{itemize}
+      \item A one unit change in $X$ is associated with a $\hat{\beta}_1$ change in $y$
+      \item DO NOT use causal langauge here
+    \end{itemize}
+
+    \item Understand regressing $y$ on an indicator variable
+    \begin{itemize}
+      \item How do you interpret the intercept and the coefficient on the indicator variable (difference-in-means)
+    \end{itemize}
+
+    \item Regression $y$ on a set of indicator variables for each value of a discrete variable
+    \begin{itemize}
+      \item Know what the `omitted' category means and know the coefficients are difference-in-means
+    \end{itemize}
+
+    \item $\log$ transformations
+    \begin{itemize}
+      \item Percent change in $\log$-transformed variables
+    \end{itemize}
+  \end{itemize}
+  
+  \vspace{5mm}
+  \item[4.] Multiple Regression  
+  \begin{itemize}
+    \item Understand the motivations for multiple regression
+    
+    \item Understand the intuition of ``all else equal''
+    
+    \item Interpret a polynomial regression
+    
+    \item Interpret interactions of binary variables 
+    \begin{itemize}
+      \item E.g. gender, college degree, and their interaction
+    \end{itemize}
+  \end{itemize}
+\end{enumerate}
+
+
+
+\newpage
+\section*{Study Questions}
+\subsection*{Statistics Review}
+\begin{enumerate}
+  \item Say a sample mean of 64 individuals was $\bar{X} = 24$ and the sample variance is $9$. Construct a 95\% confidence interval for the sample mean.
+  
+  \item Say a sample mean of 64 individuals was $\bar{X} = 24$ and the sample variance is $9$. Can you say the sample mean is statistically significantly different from $\mu = 20$ at the $\alpha = 0.05$ level.
+  
+  \item Say a sample mean of 36 individuals was $\bar{X} = 3$ and the sample variance is $4$. Is this estimate significantlly different from $\mu = 0$?  
+  
+  \item Say I calculate a rejection region for a $\alpha = 0.05$ significance level to be $\bar{X} \leq 16$ or $\bar{X} \geq 24$. In words, what does this rejection region represent?
+\end{enumerate}
+
+\subsection*{Introduction to Forecasting}
+\begin{enumerate}
+  \item In words, how do the goals of forecasting, `prediction' and `inference', differ?
+  
+  \item Say you are using a model of $y = f(X) + u$ for a single variable $X$. Give two reasons why you might want to use a linear model for $f(X)$.
+  
+  \item The MSPE is given by $\frac{1}{n} \sum_{i=1}^n \left( y_i - f(X) \right)^2$. Why might it be a bad idea to pick a model for $f$ based on the in-sample MSPE?
+  
+  \item Calculate the mean-squared prediction error for the following sample:
+  
+  \begin{tabular}{c c}
+    $y_i$ & $\hat{y}_i$ \\
+    \midrule
+    3.7 & 4.20 \\
+    4.1 & 4.18 \\
+    5.6 & 5.48 \\
+    2.9 & 3.29 \\
+    8.8 & 8.81 \\
+    \bottomrule
+  \end{tabular}
+
+  \vspace*{2.5mm}
+  \item In words, describe the bias-variance trade-off when describing the flexiblity of $f(X)$
+\end{enumerate}
+
+\subsection*{Bivariate Regression}
+\begin{enumerate}
+  \item Say the $\cov{X, y} = 4.2$, $\var{X} = 2.1$, $\bar{X} = 10$, and $\bar{y} = 4$. What are the ordinary least squares estimate for this data?
+  
+  \item Here we have a survey of workers in 1995. We regress annual earnings on a worker's age
+  
+  % NOTE: These are fake results
+  \begin{codeblock}[{}]
+OLS estimation, Dep. Var.: annual_earnings
+Observations: 15,992
+             Estimate  Std. Error   t value   Pr(>|t|)    
+(Intercept)     31369      238.95    131.28  < 2.2e-16 ***
+age            264.75       14.82    17.858  < 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  \end{codeblock}
+
+  \begin{enumerate}
+    \item What is the predicted annual earnings for a 30 year old worker?
+
+    \item In words, what is the marginal effect of \texttt{age}? Is this relationship statistically significant?
+    
+    \item Can you reject the null that the marginal effects of age is \$240 per year at a $\alpha = 0.05$ level of significance?
+    
+    \item Why might we want to make our linear model into a more flexible model?
+  \end{enumerate}
+  
+  \item Consider the following regression using the \texttt{mtcars} dataset. This is a cross-sectional dataset set of 32 cars with info on their miles per galleon (\texttt{mpg}) and the number of cylinders in their engine (\texttt{cyl}). A car can have either 4, 6, or 8 cylinders.
+
+  \begin{codeblock}[{}]
+OLS estimation, Dep. Var.: mpg
+Observations: 32
+             Estimate  Std. Error   t value    Pr(>|t|)    
+(Intercept)  26.66364    0.971801  27.43735   < 2.2e-16 ***
+cyl::6       -6.92078    1.558348  -4.44110  1.1947e-04 ***
+cyl::8      -11.56364    1.298623  -8.90453  8.5682e-10 ***   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  \end{codeblock}
+
+  \begin{enumerate}
+    \item Interpret in words the coefficient on \texttt{cyl::6}. 
+    
+    \item What is the mean mpg for 8-cylinder cars?
+  \end{enumerate}
+\end{enumerate}
+
+\subsection*{Multiple Regression}
+\begin{enumerate}
+  \item Consider the following regression using the \texttt{mtcars} dataset. This is a cross-sectional dataset set of 32 cars with info on their miles per galleon (\texttt{mpg}), their horsepower (\texttt{hp}), their weight (\texttt{wt}), and the number of cylinders in their engine (\texttt{cyl}) 
+
+  \begin{codeblock}[{}]
+OLS estimation, Dep. Var.: mpg
+Observations: 32
+             Estimate  Std. Error   t value    Pr(>|t|)    
+(Intercept) 35.845995    2.041019  17.56279  2.6703e-16 ***
+hp          -0.023120    0.011952  -1.93436  6.3613e-02 .  
+wt          -3.181404    0.719601  -4.42107  1.4418e-04 ***
+cyl::6      -3.359025    1.401670  -2.39645  2.3747e-02 *  
+cyl::8      -3.185884    2.170475  -1.46783  1.5370e-01    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  \end{codeblock}
+
+  \begin{enumerate}
+    \item What is the estimated marginal effect of an additional horsepower on the miles per gallon?
+    
+    \item Holding fixed horse-power and the number of cylinders, do heavier cars have higher or lower mpg? Is this relationship statistically significant?
+    
+    \item Form a $95\%$ confidence around the slope coefficient on \texttt{wt}
+  \end{enumerate}
+  
+  \item Here we have a survey of workers in 1995. We regress annual earnings on an indicator for being a Black workers, an indicator for having a high-school degree, and an interaction between the two.
+  
+  % NOTE: These are fake results
+  \begin{codeblock}[{}]
+OLS estimation, Dep. Var.: annual_earnings
+Observations: 15,992 
+                 Estimate  Std. Error   t value    Pr(>|t|)    
+(Intercept)     32817.225     146.402  224.1583   < 2.2e-16 ***
+black           -2152.322     445.900  -4.82691  1.3995e-06 ***
+hs_degree        3153.177     173.126  18.21323   < 2.2e-16 ***
+black:hs_degree  -783.909     585.840  -1.33809     0.18088    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  \end{codeblock}
+
+  \begin{enumerate}
+    \item What is the ``omitted group'' in this?
+
+    \item How would you interpret the coefficient on `black $\times$ hs degree'? 
+    
+    \item Do the benefits of having a high-school degree signficiantly differ for Black and non-Black workers?
+  \end{enumerate}
+\end{enumerate}
+
+
+
+
+
+
+
+\newpage
+\section*{Example Exam}
+
+Here is an example of what an exam could look like: 
+
+\begin{enumerate}
+  \item Say you collect data on a sample of $n = 36$ films produced by A24. For each film, you record $X_i$ to be the rotten tomatoes review score. You calculate the sample average score to be $84\%$ and a sample variance of $9\%$. 
+  \begin{itemize}
+    \item What is the sample distribution of the sample mean $\bar{X}$? 
+    
+    \item Write a $95\%$ confidence for your sample mean estimate (the critical value of the middle 95\% is $\pm 1.96$). In words, describe your confidence interval.
+    
+    \item Conduct a hypothesis test that the true average review is $H_0: \mu = 85.5\%$ at the $\alpha = 0.05$ level of significance. 
+    
+    % \item What would the rejection region be for the $H_0: \mu = 85.5\%$?
+  \end{itemize}
+
+
+  \item Continuing our example, say you want to predict a model for how a film may be reviewed. You collect data on the genre of the film (say the categories are action, drama, and comedy). You regress the film's review on an intercept an indicator for action and an indicator for drama. 
+    
+    % NOTE: This is made up results
+    \begin{codeblock}[{}]
+                  Estimate Std. Error  t value   Pr(>|t|)    
+(Intercept)          76.66       4.97   15.424  < 2.2e-16 ***
+genre::"action"       6.92       3.75    1.845      0.064 .
+genre::"drama"        9.56       3.30    2.897      0.004 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    \end{codeblock}
+
+  \begin{itemize}
+    \item What is the average rating for drama movies?
+    
+    \item What is the ``omitted group'' in this regression?
+    
+    \item Is it true that drama films have statistically significantly higher reviews than comedy films? How do you know?
+  \end{itemize}
+
+  \item Say you were hired by A24 to be a data scientist. They give you data on all of their films and some extra varaibles. They want you to continue to predict what makes a movie review well
+  \begin{itemize}
+    \item They tell you they prefer you to do `inference' instead of `prediction'. Why might that be?
+    
+    \item Now say you run a model and you want it to be `flexible' in predicting reviews. Why might it be useful for you to set some movies aside to be your `test dataset'?
+    
+    \item Say you have two key variables you want to include: the budget for the film and how many award-winning actors the film features. Why might you want to run a multivariable regression for this problem?
+  \end{itemize}
+
+\end{enumerate}
+
+
+
+\end{document}
