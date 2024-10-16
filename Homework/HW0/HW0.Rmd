@@ -1,8 +1,8 @@
 ---
 title: "R Homework 0"
-author: "Put your name here"
+author: "*** STUDENT NAME HERE ***"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
-output: html_document
+output: pdf_document
 ---
 
 # Assignment

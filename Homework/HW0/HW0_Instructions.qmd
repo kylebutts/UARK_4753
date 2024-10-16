@@ -3,10 +3,8 @@ title: "Homework 0"
 format:
   pdf:
     template: ../template.tex
-    keep-tex: true
+    keep-tex: false
     pdf-engine: latexmk
-  html: 
-    self-contained: true
 ---
 
 # Install R and RStudio

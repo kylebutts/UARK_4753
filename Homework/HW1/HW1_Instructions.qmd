@@ -3,7 +3,7 @@ title: "Homework 1"
 format:
   pdf:
     template: ../template.tex
-    keep-tex: true
+    keep-tex: false
     pdf-engine: latexmk
 ---
 
@@ -48,12 +48,16 @@ To use this dataset, use the function `read.csv` with the url <https://raw.githu
 Remember that you need to include the code that loads the dataset into your R Markdown file.
 
 This data set has the following variables:
-```{r df-info}
-#| echo: false
-#| results: 'asis'
+```{r}
+#| include: false
 library(tidyverse)
 library(tinytable)
+```
 
+```{r df-info}
+#| echo: false
+#| warning: false
+#| results: 'asis'
 df_info <- tribble(
   ~Variable, ~Info,
   "MEDV",    "Median value of owner-occupied homes in $1000's", 

@@ -1,7 +1,7 @@
 ---
 title: "4753 R Homework 1"
 author: "*** STUDENT NAME HERE ***"
-date: "8/20/2020"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: pdf_document
 ---
 
@@ -41,8 +41,11 @@ housing <- read.csv("https://raw.githubusercontent.com/kylebutts/UARK_4753/main/
 ## Question 2
 
 ```{r}
+m <- mean(housing$MEDV)
 
 ```
+
+The mean of the variable `MEDV` is `r round(m, 2)`.
 
 
 
