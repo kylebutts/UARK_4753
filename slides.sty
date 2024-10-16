@@ -308,13 +308,14 @@
 % Code listings ----------------------------------------------------------------
 \usepackage{listings}
 \tcbuselibrary{listings,listingsutf8,skins}
-\tcbset{
-  codelanguage/.style={language = #1},
-  codelanguage/.default = R,
-  % basicstyle = \small\ttfamily,
-  % columns = fixed, 
-  % keepspaces = true
-}
+% \tcbset{
+%   codelanguage/.style={language = #1},
+%   codelanguage/.default = R,
+%   % basicstyle = \small\ttfamily,
+%   % columns = fixed, 
+%   % keepspaces = true
+% }
+
 \DeclareTCBListing{codeblock}{ !O{R} }{
   listing only,
   interior hidden,
@@ -335,6 +336,7 @@
     language = #1
   }
 }
+
 % \newtcblisting{codeblock}{
 %   listing only,
 %   interior hidden,

@@ -53,10 +53,12 @@ set.seed(20240915)
 df <- dgp(n = 100)
 fit <- coef(feols(y ~ x, data = df))
 
-reg_samples <- lapply(1:100, function(i) {
+reg_samples <- lapply(1:1000, function(i) {
   gen_reg(n = 100)
 })
+beta_1s <- unlist(map(reg_samples, \(x) x[["x"]]))
 
+# %% 
 (plot_orig_reg <- ggplot() +
   geom_point(
     aes(x = x, y = y),
@@ -105,9 +107,26 @@ plot_extra_samples_2 <- plot_orig_reg +
 ggplot_reg_lines <- lapply(reg_samples, function(coef) coef_to_ggplot_line(coef, alpha = 0.05))
 
 (plot_extra_samples_100 <- plot_orig_reg +
-  ggplot_reg_lines +
+  ggplot_reg_lines[1:100] +
   labs(title = "Original Sample + 100 Extra Samples"))
 
+(plot_sample_distribution <- 
+  ggplot() +
+  geom_histogram(
+    aes(x = beta_1s), bins = 60,
+    fill = kfbmisc::kyle_color("blue")
+  ) + 
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.05))
+  ) + 
+  labs(
+    x = "$\\hat{\\beta}_1$ for draw $i$",
+    y = "Count",
+    title = "Original Sample + 1000 Extra Samples") +
+  kfbmisc::theme_kyle(base_size = 14)
+)
+
+# %% 
 kfbmisc::tikzsave(
   here("Slides/03_Bivariate_Regression/figures/ex_inference_orig_reg.pdf"),
   plot_orig_reg,
@@ -131,5 +150,10 @@ kfbmisc::tikzsave(
 kfbmisc::tikzsave(
   here("Slides/03_Bivariate_Regression/figures/ex_inference_extra_sample_100.pdf"),
   plot_extra_samples_100,
+  width = 8, height = 4
+)
+kfbmisc::tikzsave(
+  here("Slides/03_Bivariate_Regression/figures/ex_inference_sample_distribution.pdf"),
+  plot_sample_distribution,
   width = 8, height = 4
 )

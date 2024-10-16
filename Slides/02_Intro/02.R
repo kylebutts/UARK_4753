@@ -144,6 +144,10 @@ predictions$y_hat_poly_4 <-
   feols(y ~ poly(x, 4), tmp_df) |>
   predict(newdata = predictions)
 
+predictions$y_hat_poly_20 <-
+  feols(y ~ poly(x, 20), tmp_df) |>
+  predict(newdata = predictions)
+
 predictions$y_hat_knn_100 <-
   knn.reg(
     train = as.matrix(tmp_df$x),
@@ -206,7 +210,6 @@ title_parts <- c(
   labs(
     title = paste0("Examples of $f$: ", paste(title_parts[1], collapse = ", "))
   )
-
 )
 
 (plot_pred_2 <- plot_pred_1 +
@@ -214,6 +217,11 @@ title_parts <- c(
     aes(x = x, y = y_hat_poly_4),
     data = predictions, linewidth = 1.5,
     color = colors["turquoise"]
+  ) +
+  geom_line(
+    aes(x = x, y = y_hat_poly_20),
+    data = predictions, linewidth = 1.5,
+    color = "orange"
   ) +
   labs(
     title = paste0("Examples of $f$: ", paste(title_parts[1:2], collapse = ", "))

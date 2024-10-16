@@ -109,24 +109,24 @@ This topic will review important concepts in algebra, probability, and statistic
 This is a tentative schedule. This is the first time I've taught this course, so take this with a heavy dose of skepticism. In particular, do not set up holidays a class before or after the midterm. 
 
 <!-- Schedule -->
-| Week  | Dates           | Monday                                | Wednesday                             | Assignments        |
-|-------|-----------------|---------------------------------------|---------------------------------------|--------------------|
-| 1     | 08/19 - 08/21   | Syllabus + Intro                      | Stats Review                          | Homework 0, Sunday |
-| 2     | 08/26 - 08/28   | Stats Review                          | R Day                                 |                    |
-| 3     | 09/02 - 09/04   | No Class                              | Introduction to Forecasting           | Homework 1, Sunday |
-| 4     | 09/09 - 09/11   | Introduction to Forecasting           | Simple Linear Regression              |                    |
-| 5     | 09/16 - 09/18   | Simple Linear Regression              | Simple Linear Regression              |                    |
-| 6     | 09/23 - 09/25   | Multiple Regression Analysis          | Multiple Regression Analysis          |                    |
-| 7     | 09/30 - 10/02   | Multiple Regression Analysis          | Review                                |                    |
-| 8     | 10/07 - 10/09   | Midterm                               | Moving Averages and Smoothing Methods |                    |
-| 9     | 10/14 - 10/16   | No Class                              | Moving Averages and Smoothing Methods |                    |
-| 10    | 10/21 - 10/23   | Moving Averages and Smoothing Methods | Regression with Time Series Data      |                    |
-| 11    | 10/28 - 10/30   | Regression with Time Series Data      | Regression with Time Series Data      |                    |
-| 12    | 11/04 - 11/06   | Review                                | Midterm                               |                    |
-| 13    | 11/11 - 11/13   | ARIMA Methodology                     | ARIMA Methodology                     |                    |
-| 14    | 11/18 - 11/20   | ARIMA Methodology                     | Time Series and Their Components      |                    |
-| 15    | 11/25 - 11/27   | Time Series and Their Components      | No Class                              |                    |
-| 16    | 12/02 - 12/04   | Time Series and Their Components      | Review                                |                    |
-| Final | 12/11 - 3 — 5pm |                                       |                                       | Final Exam         |
+| Week | Dates | Monday | Wednesday | Assignments |
+|----|----|----|----|----|
+| 1 | 08/19 - 08/21 | Syllabus + Intro | Stats Review | Homework 0, Sunday |
+| 2 | 08/26 - 08/28 | Stats Review | R Day |  |
+| 3 | 09/02 - 09/04 | No Class | R Day | Homework 1, Sunday |
+| 4 | 09/09 - 09/11 | Introduction to Forecasting | Introduction to Forecasting |  |
+| 5 | 09/16 - 09/18 | Simple Linear Regression | Simple Linear Regression |  |
+| 6 | 09/23 - 09/25 | Simple Linear Regression | Simple Linear Regression |  |
+| 7 | 09/30 - 10/02 | R Day | Multiple Regression Analysis |  |
+| 8 | 10/07 - 10/09 | Multiple Regression Analysis | Midterm |  |
+| 9 | 10/14 - 10/16 | No Class | Moving Averages and Smoothing Methods |  |
+| 10 | 10/21 - 10/23 | Business Communication Presentation | Moving Averages and Smoothing Methods |  |
+| 11 | 10/28 - 10/30 | Moving Averages and Smoothing Methods | Regression with Time Series Data |  |
+| 12 | 11/04 - 11/06 | Regression with Time Series Data | Regression with Time Series Data |  |
+| 13 | 11/11 - 11/13 | Midterm | ARIMA Methodology |  |
+| 14 | 11/18 - 11/20 | ARIMA Methodology | ARIMA Methodology |  |
+| 15 | 11/25 - 11/27 | Time Series and Their Components | No Class |  |
+| 16 | 12/02 - 12/04 | Time Series and Their Components | Time Series and Their Components |  |
+| Final | 12/11 - 3 — 5pm |  |  | Final Exam |
 <!-- Schedule -->
 

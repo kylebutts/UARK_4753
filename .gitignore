@@ -1,4 +1,5 @@
 .DS_Store
+.Rhistory
 
 # Textbooks
 Textbooks/*
@@ -25,4 +26,5 @@ Textbooks/*
 *.nav
 *.snm
 *.*-SAVE-ERROR
-
+*.listing
+*.vrb
