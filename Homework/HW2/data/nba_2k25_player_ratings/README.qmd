@@ -11,9 +11,6 @@ library(tinytable)
 
 The NBA 2k25 information about a player (team, salary, years in nba) and their ratings.
 
-The variable names should be self-explanatory :-).
-
-
 ```{r}
 #| echo: false
 #| results: 'asis'

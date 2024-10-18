@@ -10,7 +10,7 @@ library(tinytable)
 ```
 
 [Inside AirBnB](https://insideairbnb.com/get-the-data/) is an online website that scrapes airbnb data and posts datasets online. 
-It contains information about the listing as well as reviews received. I downloaded the current "snapshot" for Nashville, Tennessee
+It contains information about the listing as well as reviews received. I downloaded the current "snapshot" for Nashville, Tennessee.
 
 A full [codebook](https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit?gid=1322284596#gid=1322284596) is posted online. 
 

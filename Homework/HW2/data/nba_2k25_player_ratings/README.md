@@ -4,8 +4,6 @@
 The NBA 2k25 information about a player (team, salary, years in nba) and
 their ratings.
 
-The variable names should be self-explanatory :-).
-
 | variable                    | description                             |
 |-----------------------------|-----------------------------------------|
 | `name`                      | Player’s name                           |

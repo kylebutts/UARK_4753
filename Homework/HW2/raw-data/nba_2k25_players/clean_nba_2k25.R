@@ -2,7 +2,13 @@
 # https://www.kaggle.com/datasets/reinerjasin/nba-2k25-player-complete-dataset?resource=download
 library(tidyverse)
 library(here)
-raw <- read_csv(here("Homework/HW2/raw-data/nba_2k25_players/current_nba_players.csv"))
+raw <- here("Homework/HW2/raw-data/nba_2k25_players/current_nba_players.csv") |>
+  read_csv(show_col_types = FALSE)
+
+# https://github.com/danielfernandoo07/nbacsv/blob/main/2023_nba_player_stats.csv
+stats <- here("Homework/HW2/raw-data/nba_2k25_players/2023_nba_player_stats.csv") |> 
+  read_csv(show_col_types = FALSE) |> 
+  janitor::clean_names()
 
 players <- raw |>
   select(
@@ -41,6 +47,12 @@ players <- raw |>
   mutate(
     birthdate = mdy(birthdate)
   )
+
+players <- tidylog::left_join(
+  players, 
+  stats |> select(-team), 
+  by = join_by(name == p_name)
+)
 
 fs::dir_create(here("Homework/HW2/data/nba_2k25_player_ratings/"))
 write_csv(

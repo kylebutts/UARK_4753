@@ -24,6 +24,6 @@ cps <- CPS1985 |>
 
 fs::dir_create(here("Homework/HW2/data/community_population_survey/"))
 write_csv(
-  scorecard,
+  cps,
   file = here("Homework/HW2/data/community_population_survey/cps_1985.csv")
 )
