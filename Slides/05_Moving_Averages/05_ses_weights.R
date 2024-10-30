@@ -1,0 +1,56 @@
+library(tidyverse)
+library(tinytable)
+
+
+ses_weights <- function(alpha = 0.5, t) {
+  alpha * (1 - alpha)^t
+}
+
+t <- c(0, 1, 2, 3, 4, 5, 6, 7)
+x_labels <-
+  c("$y_t$", sprintf("$y_{t-%s}$", t[-1]))
+
+weights <- tibble(alpha = c(0.9, 0.75, 0.5, 0.25, 0.1)) |>
+  group_by(alpha) |>
+  reframe(
+    t = t,
+    w = ses_weights(alpha = alpha, t = t)
+  ) |>
+  mutate(
+    alpha = sprintf("$\\alpha = %0.2f$", alpha)
+  )
+
+(p_ses_weights <- ggplot(weights) +
+  geom_line(
+    aes(x = t, y = w, group = alpha, color = alpha),
+    linewidth = 1.25
+  ) +
+  geom_point(
+    aes(x = t, y = w, group = alpha, color = alpha)
+  ) +
+  labs(
+    x = NULL,
+    y = "Weight put on observation",
+    color = NULL
+  ) +
+  scale_x_continuous(
+    breaks = t,
+    labels = x_labels
+  ) +
+  scale_color_manual(
+    values = kfbmisc::tailwind_color(c("zinc-200", "zinc-400", "zinc-500", "zinc-600", "zinc-800"))
+  ) +
+  kfbmisc::theme_kyle(base_size = 14) +
+  theme(
+    legend.position = "top",
+    legend.margin = margin(0, 0, 5, 0),
+    legend.justification = c(0, 1),
+    legend.location = "plot"
+  )
+)
+
+# %%
+kfbmisc::tikzsave(
+  here("Slides/05_Moving_Averages/figures/ses_weights_for_different_alpha.pdf"),
+  plot = p_ses_weights, width = 8, height = 4.5
+)
