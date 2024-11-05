@@ -119,12 +119,12 @@ This is a tentative schedule. This is the first time I've taught this course, so
 | 6 | 09/23 - 09/25 | Simple Linear Regression | Simple Linear Regression |  |
 | 7 | 09/30 - 10/02 | R Day | Multiple Regression Analysis |  |
 | 8 | 10/07 - 10/09 | Multiple Regression Analysis | Midterm |  |
-| 9 | 10/14 - 10/16 | No Class | Moving Averages and Smoothing Methods |  |
+| 9 | 10/14 - 10/16 | No Class | R Day |  |
 | 10 | 10/21 - 10/23 | Business Communication Presentation | Moving Averages and Smoothing Methods |  |
-| 11 | 10/28 - 10/30 | Moving Averages and Smoothing Methods | Regression with Time Series Data |  |
-| 12 | 11/04 - 11/06 | Regression with Time Series Data | Regression with Time Series Data |  |
-| 13 | 11/11 - 11/13 | Midterm | ARIMA Methodology |  |
-| 14 | 11/18 - 11/20 | ARIMA Methodology | ARIMA Methodology |  |
+| 11 | 10/28 - 10/30 | Moving Averages and Smoothing Methods | Moving Averages and Smoothing Methods |  |
+| 12 | 11/04 - 11/06 | R Day | Moving Averages and Smoothing Methods |  |
+| 13 | 11/11 - 11/13 | Regression with Time Series Data | Regression with Time Series Data |  |
+| 14 | 11/18 - 11/20 | Regression with Time Series Data | Midterm |  |
 | 15 | 11/25 - 11/27 | Time Series and Their Components | No Class |  |
 | 16 | 12/02 - 12/04 | Time Series and Their Components | Time Series and Their Components |  |
 | Final | 12/11 - 3 — 5pm |  |  | Final Exam |

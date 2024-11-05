@@ -33,7 +33,7 @@ Week,Dates,name,value
 8,10/07 - 10/09,Assignments,
 
 9,10/14 - 10/16,Monday,"No Class"
-9,10/14 - 10/16,Wednesday,Moving Averages and Smoothing Methods
+9,10/14 - 10/16,Wednesday,R Day
 9,10/14 - 10/16,Assignments,
 
 10,10/21 - 10/23,Monday,Business Communication Presentation
@@ -41,19 +41,19 @@ Week,Dates,name,value
 10,10/21 - 10/23,Assignments,
 
 11,10/28 - 10/30,Monday,Moving Averages and Smoothing Methods
-11,10/28 - 10/30,Wednesday,Regression with Time Series Data
+11,10/28 - 10/30,Wednesday,Moving Averages and Smoothing Methods
 11,10/28 - 10/30,Assignments,
 
-12,11/04 - 11/06,Monday,Regression with Time Series Data
-12,11/04 - 11/06,Wednesday,Regression with Time Series Data
+12,11/04 - 11/06,Monday,R Day
+12,11/04 - 11/06,Wednesday,Moving Averages and Smoothing Methods
 12,11/04 - 11/06,Assignments,
 
-13,11/11 - 11/13,Monday,Midterm
-13,11/11 - 11/13,Wednesday,ARIMA Methodology
+13,11/11 - 11/13,Monday,Regression with Time Series Data
+13,11/11 - 11/13,Wednesday,Regression with Time Series Data
 13,11/11 - 11/13,Assignments,
 
-14,11/18 - 11/20,Monday,ARIMA Methodology
-14,11/18 - 11/20,Wednesday,ARIMA Methodology
+14,11/18 - 11/20,Monday,Regression with Time Series Data
+14,11/18 - 11/20,Wednesday,Midterm
 14,11/18 - 11/20,Assignments,
 
 15,11/25 - 11/27,Monday,Time Series and Their Components
