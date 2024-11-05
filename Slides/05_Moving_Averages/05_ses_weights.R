@@ -1,6 +1,5 @@
 library(tidyverse)
-library(tinytable)
-
+library(here)
 
 ses_weights <- function(alpha = 0.5, t) {
   alpha * (1 - alpha)^t
@@ -21,6 +20,7 @@ weights <- tibble(alpha = c(0.9, 0.75, 0.5, 0.25, 0.1)) |>
   )
 
 (p_ses_weights <- ggplot(weights) +
+  geom_hline(yintercept = 0, color = kfbmisc::tailwind_color("zinc-700")) +
   geom_line(
     aes(x = t, y = w, group = alpha, color = alpha),
     linewidth = 1.25
@@ -35,12 +35,14 @@ weights <- tibble(alpha = c(0.9, 0.75, 0.5, 0.25, 0.1)) |>
   ) +
   scale_x_continuous(
     breaks = t,
-    labels = x_labels
+    minor_breaks = c(t - 0.5, 7.5),
+    labels = x_labels,
+    expand = c(0, 0.5)
   ) +
   scale_color_manual(
     values = kfbmisc::tailwind_color(c("zinc-200", "zinc-400", "zinc-500", "zinc-600", "zinc-800"))
   ) +
-  kfbmisc::theme_kyle(base_size = 14) +
+  kfbmisc::theme_kyle(base_size = 14, grid = "h") +
   theme(
     legend.position = "top",
     legend.margin = margin(0, 0, 5, 0),
