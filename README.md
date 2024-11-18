@@ -112,17 +112,17 @@ This is a tentative schedule. This is the first time I've taught this course, so
 | Week | Dates | Monday | Wednesday | Assignments |
 |----|----|----|----|----|
 | 1 | 08/19 - 08/21 | Syllabus + Intro | Stats Review | Homework 0, Sunday |
-| 2 | 08/26 - 08/28 | Stats Review | R Day |  |
-| 3 | 09/02 - 09/04 | No Class | R Day | Homework 1, Sunday |
+| 2 | 08/26 - 08/28 | Stats Review | R Lab |  |
+| 3 | 09/02 - 09/04 | No Class | R Lab | Homework 1, Sunday |
 | 4 | 09/09 - 09/11 | Introduction to Forecasting | Introduction to Forecasting |  |
 | 5 | 09/16 - 09/18 | Simple Linear Regression | Simple Linear Regression |  |
 | 6 | 09/23 - 09/25 | Simple Linear Regression | Simple Linear Regression |  |
-| 7 | 09/30 - 10/02 | R Day | Multiple Regression Analysis |  |
+| 7 | 09/30 - 10/02 | R Lab | Multiple Regression Analysis |  |
 | 8 | 10/07 - 10/09 | Multiple Regression Analysis | Midterm |  |
-| 9 | 10/14 - 10/16 | No Class | R Day |  |
+| 9 | 10/14 - 10/16 | No Class | R Lab |  |
 | 10 | 10/21 - 10/23 | Business Communication Presentation | Moving Averages and Smoothing Methods |  |
 | 11 | 10/28 - 10/30 | Moving Averages and Smoothing Methods | Moving Averages and Smoothing Methods |  |
-| 12 | 11/04 - 11/06 | R Day | Moving Averages and Smoothing Methods |  |
+| 12 | 11/04 - 11/06 | R Lab | Moving Averages and Smoothing Methods |  |
 | 13 | 11/11 - 11/13 | Regression with Time Series Data | Regression with Time Series Data |  |
 | 14 | 11/18 - 11/20 | Regression with Time Series Data | Midterm |  |
 | 15 | 11/25 - 11/27 | Time Series and Their Components | No Class |  |

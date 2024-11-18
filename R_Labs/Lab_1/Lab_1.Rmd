@@ -1,5 +1,5 @@
 ---
-title: "R Day 1 - Introduction"
+title: "R Lab 1 - Introduction"
 output: html_document
 ---
 

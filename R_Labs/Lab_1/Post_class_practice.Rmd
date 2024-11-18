@@ -1,5 +1,5 @@
 ---
-title: "R Day 1 and 2 Practice"
+title: "R Lab 1 and 2 Practice"
 output:
   html_document:
     theme: readable

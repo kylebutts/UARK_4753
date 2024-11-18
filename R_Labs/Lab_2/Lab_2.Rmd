@@ -1,5 +1,5 @@
 ---
-title: "R Day 2 - Regression"
+title: "R Lab 2 - Regression"
 output: pdf_document
 ---
 

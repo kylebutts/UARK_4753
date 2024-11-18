@@ -1,5 +1,5 @@
 ---
-title: "R Day 3 - Working with Dates"
+title: "R Lab 4 - Working with Dates"
 output: pdf_document
 ---
 
@@ -64,10 +64,6 @@ Or, we can do a rolling average of the previous values of $y_{t-k}$ from $k = 0,
 ```{r}
 slide_dbl(uark_enrollment$total, mean, .before = 3, .after = 0, .complete = TRUE)
 ```
-
-#### Exercise
-
-In your own words, describe why this might 
 
 
 
@@ -166,7 +162,8 @@ Do the following:
 
 ```{r}
 # Insert code here:
-
+avg_polls$pct_trump_ma_3day <- slide_dbl(avg_polls$pct_trump, mean, .before = 3, .after = 0, .complete = TRUE)
+avg_polls$pct_harris_ma_3day <- slide_dbl(avg_polls$pct_harris, mean, .before = 3, .after = 0, .complete = TRUE)
 
 # Then plot it using our function:
 plot_polls(avg_polls, "pct_trump_ma_3day", "pct_harris_ma_3day")

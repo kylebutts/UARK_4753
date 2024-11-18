@@ -3,6 +3,7 @@ create_dir <- function(topic_num, topic_title, topic_stub) {
     r'(\documentclass[aspectratio=169,t,11pt,table]{beamer}
 \usepackage{../../slides}
 \usepackage{../../math}
+\usepackage{../../uark_colors}
 \definecolor{accent}{HTML}{9D2235}
 \definecolor{accent2}{HTML}{2B5269}
 

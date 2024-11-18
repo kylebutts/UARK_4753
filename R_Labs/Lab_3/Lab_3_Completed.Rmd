@@ -1,5 +1,5 @@
 ---
-title: "R Day 3 - Working with Dates"
+title: "R Lab 3 - Working with Dates"
 output: pdf_document
 ---
 
