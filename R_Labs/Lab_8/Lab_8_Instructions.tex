@@ -1,0 +1,159 @@
+\documentclass[12pt]{article}
+\usepackage{../../lecture_notes}
+\usepackage{../../math}
+\usepackage{../../uark_colors}
+
+\hypersetup{
+  colorlinks = true,
+  allcolors = ozark_mountains,
+  breaklinks = true,
+  bookmarksopen = true
+}
+
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+
+\begin{document}
+\begin{center}
+  {\Huge\bf Lab 8 Instructions}
+  
+  \smallskip
+  {\large\texttt{[ECON 4753]} — \textit{University of Arkansas}}
+
+  % \medskip
+  % {\large Prof. Kyle Butts}
+\end{center}
+
+\section*{Time-series Analysis Project}
+
+This assignment will summarize the second part of the course where we
+studied time-series datasets. For this assignment, you will be asked to
+perform a lightly guided analysis of your choice of one of 3 possible
+datasets. I will give you some prompts to make sure you use the methods
+we covered in the class.
+
+You should think of this as a project where you are trying to conduct
+inference about a time-series using the tools we have learned in class.
+
+You will be graded, in part, on how professional your results look. All
+graphs should be labelled clearly and you should write in complete
+sentences in your writeup. I have provided a template that will hide
+your code in your results document that you submit (in the real world,
+your boss is not looking for your code).
+
+\newpage
+\section*{Semi-guided questions}
+
+Please work through these questions and write up your results. See the
+template for an example of how I want this to look.
+
+\begin{enumerate}
+  \item \emph{Exploring a Single Variable:} 
+  
+  Choose one continuous variable from the dataset and explore its distribution. What can you tell me about its distribution? Try visualizing the data using a histogram and/or calculate the mean and variance.
+\end{enumerate}
+
+\newpage
+\section*{Datasets}
+
+You have the choice of one of five datasets. You can see the brief
+overview of each as well as the \emph{data dictionary} that describes
+each variable in the dataset by clicking on the links.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \href{https://github.com/kylebutts/UARK_4753/tree/main/Homework/HW2/data/airbnb_nashville}{AirBnB
+  listings in Nashville} is a scrapped dataset from the website Inside
+  Airbnb. It contains information about the listing as well as reviews
+  received. I downloaded the current ``snapshot'' for Nashville,
+  Tennessee.
+\item
+  The
+  \href{https://github.com/kylebutts/UARK_4753/tree/main/Homework/HW2/data/nba_2k25_player_ratings}{NBA
+  2K25} dataset contains information about all the players in the NBA
+  2K25 video game. It contains info on the player (team, salary, years
+  in nba) and their ratings.
+\item
+  \href{https://github.com/kylebutts/UARK_4753/tree/main/Homework/HW2/data/college_scorecard}{College
+  Scorecard} is a dataset created by the US Education Department. The
+  dataset was created to allow for potential college students to easily
+  understand the cost-benefit of different colleges.
+\item
+  \href{https://github.com/kylebutts/UARK_4753/tree/main/Homework/HW2/data/imdb}{iMDB}
+  collects user reviews of movies as well as some basic info of the
+  film.
+\item
+  The
+  \href{https://github.com/kylebutts/UARK_4753/tree/main/Homework/HW2/data/community_population_survey}{CPS}
+  contains survey data on workers collected by the US Government. This
+  has characteristics of workers and their wages.
+\end{enumerate}
+
+
+\end{document}

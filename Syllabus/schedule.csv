@@ -2,66 +2,66 @@ Week,Dates,name,value
 
 1,08/19 - 08/21,Monday,Syllabus + Intro
 1,08/19 - 08/21,Wednesday,Stats Review
-1,08/19 - 08/21,Assignments,"Homework 0, Sunday"
+1,08/19 - 08/21,Assignments,"R Lab 0, *Sunday*"
 
 2,08/26 - 08/28,Monday,Stats Review
-2,08/26 - 08/28,Wednesday,R Lab
+2,08/26 - 08/28,Wednesday,Stats Review
 2,08/26 - 08/28,Assignments,
 
 3,09/02 - 09/04,Monday,"No Class"
-3,09/02 - 09/04,Wednesday,R Lab
-3,09/02 - 09/04,Assignments,"Homework 1, Sunday"
+3,09/02 - 09/04,Wednesday,R Lab 1 -- *Introduction to R*
+3,09/02 - 09/04,Assignments,"R Lab 1, *Sunday*"
 
 4,09/09 - 09/11,Monday,Introduction to Forecasting
 4,09/09 - 09/11,Wednesday,Introduction to Forecasting
 4,09/09 - 09/11,Assignments,
 
-5,09/16 - 09/18,Monday,Simple Linear Regression
+5,09/16 - 09/18,Monday,R Lab 2 -- *Working with data in R*
 5,09/16 - 09/18,Wednesday,Simple Linear Regression
-5,09/16 - 09/18,Assignments,
+5,09/16 - 09/18,Assignments,"R Lab 2, *Sunday*"
 
 6,09/23 - 09/25,Monday,Simple Linear Regression
 6,09/23 - 09/25,Wednesday,Simple Linear Regression
 6,09/23 - 09/25,Assignments,
 
-7,09/30 - 10/02,Monday,R Lab
+7,09/30 - 10/02,Monday,R Lab 3 -- *Regressions in R*
 7,09/30 - 10/02,Wednesday,Multiple Regression Analysis
-7,09/30 - 10/02,Assignments,
+7,09/30 - 10/02,Assignments,"R Lab 3, *Sunday*"
 
 8,10/07 - 10/09,Monday,Multiple Regression Analysis
 8,10/07 - 10/09,Wednesday,Midterm
 8,10/07 - 10/09,Assignments,
 
 9,10/14 - 10/16,Monday,"No Class"
-9,10/14 - 10/16,Wednesday,R Lab
+9,10/14 - 10/16,Wednesday,R Lab 4 -- *Cross-sectional Data Analysis Project*
 9,10/14 - 10/16,Assignments,
 
 10,10/21 - 10/23,Monday,Business Communication Presentation
-10,10/21 - 10/23,Wednesday,Moving Averages and Smoothing Methods
-10,10/21 - 10/23,Assignments,
+10,10/21 - 10/23,Wednesday,Time Series Smoothing Methods
+10,10/21 - 10/23,Assignments,"R Lab 4, *Sunday*"
 
-11,10/28 - 10/30,Monday,Moving Averages and Smoothing Methods
-11,10/28 - 10/30,Wednesday,Moving Averages and Smoothing Methods
+11,10/28 - 10/30,Monday,Time Series Smoothing Methods
+11,10/28 - 10/30,Wednesday,R Lab 5 -- *Intro to working with Dates in R*
 11,10/28 - 10/30,Assignments,
 
-12,11/04 - 11/06,Monday,R Lab
-12,11/04 - 11/06,Wednesday,Moving Averages and Smoothing Methods
-12,11/04 - 11/06,Assignments,
+12,11/04 - 11/06,Monday,Time Series Smoothing Methods
+12,11/04 - 11/06,Wednesday,Regression with Time Series Data
+12,11/04 - 11/06,Assignments,"R Lab 5, *Sunday*"
 
 13,11/11 - 11/13,Monday,Regression with Time Series Data
 13,11/11 - 11/13,Wednesday,Regression with Time Series Data
 13,11/11 - 11/13,Assignments,
 
-14,11/18 - 11/20,Monday,Regression with Time Series Data
+14,11/18 - 11/20,Monday,R Lab 6 -- *Time-series Regression in R*
 14,11/18 - 11/20,Wednesday,Midterm
-14,11/18 - 11/20,Assignments,
+14,11/18 - 11/20,Assignments,"R Lab 6, *Sunday*"
 
-15,11/25 - 11/27,Monday,Time Series and Their Components
+15,11/25 - 11/27,Monday,R Lab 7 -- *Time-series Data Analysis Project*
 15,11/25 - 11/27,Wednesday,"No Class"
 15,11/25 - 11/27,Assignments,
 
-16,12/02 - 12/04,Monday,Time Series and Their Components
-16,12/02 - 12/04,Wednesday,Time Series and Their Components
-16,12/02 - 12/04,Assignments,
+16,12/02 - 12/04,Monday,R Lab 7 -- *Time-series Data Analysis Project*
+16,12/02 - 12/04,Wednesday,Review
+16,12/02 - 12/04,Assignments,"R Lab 7, *Sunday*"
 
 Final,12/11 - 3 — 5pm,Assignments,Final Exam

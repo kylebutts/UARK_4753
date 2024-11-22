@@ -1,6 +1,6 @@
 ---
-title: "Analysis of X"
-author: "STUDENT NAME HERE"
+title: "R Lab 8 - Time Series Analysis Project"
+author: "PUT YOUR NAME HERE"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: pdf_document
 ---
@@ -11,11 +11,14 @@ knitr::opts_chunk$set(
   echo = FALSE, warning = FALSE, message = FALSE, 
   fig.width = 8, fig.height = 5, dpi = 200
 )
+library(lubridate)
+library(fixest)s
 ```
 
 ```{r}
 # Load data
 ```
+
 
 
 

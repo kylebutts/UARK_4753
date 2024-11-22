@@ -52,6 +52,7 @@ tab <- cal |>
   tt(
     width = c(0.1, 0.2, 0.3, 0.3, 0.3)
   ) |>
+  format_tt(j = c("Monday", "Wednesday", "Assignments"), markdown = TRUE) |>
   style_tt(i = nrow(cal), j = "Assignments", color = "#9a2515") |>
   # style_tt(i = midterm_idx_monday, j = "Monday", color = "#9a2515") |>
   style_tt(i = midterm_idx_wednesday, j = "Wednesday", color = "#9a2515") |>

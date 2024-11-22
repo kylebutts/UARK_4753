@@ -1,5 +1,5 @@
 ---
-title: "Homework 0"
+title: "Lab 0 Instructions"
 format:
   pdf:
     template: ../template.tex

@@ -1,311 +1,48 @@
 ---
-title: "R Lab 4 - Working with Dates"
+title: "R Lab 4 - Data Analysis Project"
+author: "PUT YOUR NAME HERE"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: pdf_document
 ---
-
-## Smoothing methods
-
-To estimate a rolling average, we will use the `slider` package. You may need to install it using `instll.packages("slider")`.
-
-We will experiment with the University of Arkansas enrollment data:
-
-```{r}
-library(slider)
-uark_enrollment <- data.frame(
-  year = c(2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024),
-  full_time = c(19508, 20379, 21047, 21415, 21668, 22144, 22602, 22193, 22070, 23282, 25214, 28426, 29886),
-  part_time = c(5029, 4962, 5190, 5339, 5526, 5414, 5176, 5366, 5492, 5786, 5722, 3714, 3724)
+```{r setup}
+#| include: false
+# Don't touch this chunk. This is setup code to hide your code chunks automatically (without needing to specify options on each chunk)
+knitr::opts_chunk$set(
+  echo = FALSE, warning = FALSE, message = FALSE, 
+  fig.width = 8, fig.height = 5, dpi = 200
 )
-uark_enrollment$total <- uark_enrollment$full_time + uark_enrollment$part_time
-
-print(uark_enrollment$total)
-```
-
-The basic call is 
-`slide_dbl(x, mean, .before = #, .after = #, .complete = TRUE)`
-
-If we do `.before = 0` and `.after = 0`, we will average only $y_t$:
-
-```{r}
-slide_dbl(uark_enrollment$total, mean, .before = 0, .after = 0, .complete = TRUE)
-```
-
-If we want to average +- one year, we can use `.before = 1, .after = 1`
-
-```{r}
-slide_dbl(uark_enrollment$total, mean, .before = 1, .after = 1, .complete = TRUE)
-```
-
-
-#### Exercise
-
-Manually, check this is true for $y_{2013}$ by averaging the first 3 uark_enrollment$total:
-
-```{r}
-
-```
-
-
-### Using last-period's observation
-
-For forecasting into the future, the simplest method is to use last period's observation into the future. 
-We already learned how to do this using `c(NA, uark_enrollment$total[2:T])`, but we can do it more simply by using `.before = 1, .after = -1`:
-
-```{r}
-uark_enrollment$total
-# Lag $y_t$ by 1
-slide_dbl(uark_enrollment$total, mean, .before = 1, .after = -1, .complete = TRUE)
-```
-
-### Last $K$ period's average $y_t$
-
-Or, we can do a rolling average of the previous values of $y_{t-k}$ from $k = 0, \dots, K$
-
-```{r}
-slide_dbl(uark_enrollment$total, mean, .before = 3, .after = 0, .complete = TRUE)
-```
-
-
-
-
-## Election Polling
-
-```{r}
-# setwd("R_Days/Day_4/")
-library(lubridate) # install.packages("lubridate")
-library(slider) # install.packages("slider")
-library(fpp3) # install.packages("fpp3")
-
-# Just for plotting each individual polls
-polls <- read.csv("data/all_polls_538.csv")
-polls$date <- ymd(polls$date)
-
-# Main time-series data
-avg_polls <- read.csv("data/daily_avg_polls_538.csv")
-avg_polls$date <- ymd(avg_polls$date)
 ```
 
 ```{r}
-library(ggplot2) # install.packages("ggplot2")
-
-# Custom function to make nice looking plots with raw polls and smoothed
-plot_polls <- function(avg_polls, trump_colname, harris_colname) {
-  if (!(trump_colname %in% colnames(avg_polls))) {
-    stop(sprintf("`trump_colname` = %s not found in `avg_polls", trump_colname))
-  } 
-  if (!(harris_colname %in% colnames(avg_polls))) {
-    stop(sprintf("`harris_colname` = %s not found in `avg_polls", harris_colname))
-  }
-
-  ggplot() +
-    # Raw polls
-    geom_point(
-      aes(x = date, y = pct_harris, color = "Harris", fill = "Harris"),
-      data = polls, 
-      position = position_jitter(), # jitter dates a little so it looks nicer (purely aesthetic)
-      size = 1.5, shape = 21, alpha = 0.7
-    ) +
-    geom_point(
-      aes(x = date, y = pct_trump, color = "Trump", fill = "Trump"),
-      data = polls, 
-      position = position_jitter(), # jitter dates a little so it looks nicer (purely aesthetic)
-      size = 1.5, shape = 21, alpha = 0.7
-    ) +
-    # Time-series lines
-    geom_line(
-      aes(x = date, y = .data[[harris_colname]], color = "Harris"),
-      data = avg_polls |>
-        filter(!is.na(.data[[harris_colname]])),
-      linewidth = 1.25
-    ) +
-    geom_line(
-      aes(x = date, y = .data[[trump_colname]], color = "Trump"),
-      data = avg_polls |>
-        filter(!is.na(.data[[trump_colname]])),
-      linewidth = 1.25
-    ) +
-    # Theme
-    scale_color_manual(
-      values = c("Trump" = "#FA5A51", "Harris" = "#5668AC"),
-    ) +
-    scale_fill_manual(
-      values = c("Trump" = "#FA5A51", "Harris" = "#5668AC"),
-    ) +
-    scale_y_continuous(
-      limits = c(35, 60), expand = c(0, 0)
-    ) +
-    labs(
-      y = "Percent of Voters", x = NULL, color = NULL, fill = NULL
-    ) +
-    theme_light(base_size = 14) +
-    theme(
-      legend.position = "top",
-      legend.justification = c(0, 1),
-      legend.location = "plot"
-    )
-}
+# Load data
 ```
+
+
+
+
+
+<!-- DELETE THIS AND BELOW -->
+*This is an example section to give you an idea of how your results should look.*
+
+## How does a car's mpg relate to its horespower?
+
+I am analyzing a dataset consisting of different models of cars and their characteristics. 
+I wanted to see how a car's horsepower and their mileage relate to one other. 
 
 ```{r}
-# `pct_trump` and `pct_harris` must exist in `avg_polls
-plot_polls(avg_polls, "pct_trump", "pct_harris")
+corr_mpg_hp <- cor(x = mtcars$hp, y = mtcars$mpg)
 ```
 
-
-### Perform moving averages
-
-The most common way this noisy data is summarized is with a moving average. Since we are trying to forecast the future election, let's using a moving average only using $y_{t-K}, ..., y_t$ (i.e. `.before = K` and `.after = 0`). 
-
-Do the following:
-
-1. Create a 3-day moving average of `pct_trump` and `pct_harris`.
+Here I am plotting the car's horespower and their miles per gallon. 
+You can see a strong negative correlation between the two meaning that cars with higher horespower have lower miles per gallon.
+This correlation is strong with an estimated correlation of `r round(corr_mpg_hp, 2)`.
 
 ```{r}
-# Insert code here:
-avg_polls$pct_trump_ma_3day <- slide_dbl(avg_polls$pct_trump, mean, .before = 3, .after = 0, .complete = TRUE)
-avg_polls$pct_harris_ma_3day <- slide_dbl(avg_polls$pct_harris, mean, .before = 3, .after = 0, .complete = TRUE)
-
-# Then plot it using our function:
-plot_polls(avg_polls, "pct_trump_ma_3day", "pct_harris_ma_3day")
+# Delete 
+plot(
+  x = mtcars$hp, y = mtcars$mpg, 
+  xlab = "Car's horsepower",
+  ylab = "Car's miles per gallon",
+  main = "Cars with higher horsepower have lower mileage"
+)
 ```
-
-2. Create a 7-day moving average:
-
-```{r}
-# Insert code here:
-
-
-# Then plot it using our function:
-plot_polls(avg_polls, "pct_trump_ma_7day", "pct_harris_ma_7day")
-```
-
-3. Last, create a 14-day moving average:
-
-```{r}
-# Insert code here:
-
-
-# Then plot it using our function:
-plot_polls(avg_polls, "pct_trump_ma_14day", "pct_harris_ma_14day")
-```
-
-
-#### Interpretation
-
-Write answers to the following questions:
-
-1. Compare the 3-day moving average versus the 14-day moving average. 
-
-Answer:
-
-
-
-
-
-2. In the final few days, there has been some movement in polls towards Donald Trump. Which method might you prefer to better capture this? Why?
-
-
-Answer:
-
-
-
-
-
-
-
-### Simple exponential smoothing
-
-Here is code to perform simple exponential smoothing. `alpha` is the parameter that determines the smoothness:
-
-```{r}
-simple_exp_smooth <- function(x, alpha = 0.5) {
-  x_hat <- c(x[1])
-  for (t in 2:length(x)) {
-    x_hat[t] <-
-      alpha * x[t - 1] +
-      (1 - alpha) * x_hat[t - 1]
-  }
-  x_hat[1] <- NA
-  return(x_hat)
-}
-```
-
-```{r}
-avg_polls$pct_trump_ses_pt8  = simple_exp_smooth(avg_polls$pct_trump, alpha = 0.8)
-avg_polls$pct_harris_ses_pt8 = simple_exp_smooth(avg_polls$pct_harris, alpha = 0.8)
-plot_polls(avg_polls, "pct_trump_ses_pt8", "pct_harris_ses_pt8")
-```
-
-```{r}
-avg_polls$pct_trump_ses_pt5  = simple_exp_smooth(avg_polls$pct_trump, alpha = 0.5)
-avg_polls$pct_harris_ses_pt5 = simple_exp_smooth(avg_polls$pct_harris, alpha = 0.5)
-plot_polls(avg_polls, "pct_trump_ses_pt5", "pct_harris_ses_pt5")
-```
-
-```{r}
-avg_polls$pct_trump_ses_pt2  = simple_exp_smooth(avg_polls$pct_trump, alpha = 0.2)
-avg_polls$pct_harris_ses_pt2 = simple_exp_smooth(avg_polls$pct_harris, alpha = 0.2)
-plot_polls(avg_polls, "pct_trump_ses_pt2", "pct_harris_ses_pt2")
-```
-
-
-#### Interpretation
-
-Write answers to the following questions:
-
-1.  In your own words, what does the alpha parameter change about our prediction?  
-
-Answer:
-
-
-
-
-
-## Bonus
-
-We will discuss how to modify the simple exponential smoothing model to have a time-trend.
-While we won't go into the details, it is still useful to see how to estimate it. 
-See the [Forecasting: Principles and Practices](https://otexts.com/fpp3/) book for more details.
-
-We will see in a few weeks how we do on the popular vote counts!
-
-```{r}
-# Simple exponential smoothing with trend and uncertainty quantification
-library(fpp3)
-avg_polls <- tsibble(avg_polls, index = date)
-
-forecast_harris <- avg_polls |> 
-  model(ETS(pct_harris ~ error("A") + trend("A"))) |> 
-  forecast(h = "1 day")
-forecast_trump <- avg_polls |> 
-  model(ETS(pct_trump ~ error("A") + trend("A"))) |> 
-  forecast(h = "1 day")
-
-forecast_trump
-forecast_harris
-```
-
-```{r}
-forecast_trump |>
-  autoplot(avg_polls, level = NULL) +
-  labs(
-    title = "Simple Exponential Smoothing with Trend",
-    y = "Trump Vote Share"
-  ) +
-  theme_light(base_size = 14) +
-  scale_y_continuous(limits = c(35, 60), expand = c(0, 0))
-
-forecast_harris |>
-  autoplot(avg_polls, level = NULL) +
-  labs(
-    title = "Simple Exponential Smoothing with Trend",
-    y = "Harris Vote Share"
-  ) +
-  theme_light(base_size = 14) +
-  scale_y_continuous(limits = c(35, 60), expand = c(0, 0))
-```
-
-
-
-
-

@@ -1,0 +1,51 @@
+---
+title: "Lab 8 Instructions"
+format:
+  # html: default
+  pdf:
+    template: ../template.tex
+    keep-tex: true
+    pdf-engine: latexmk
+---
+
+\section*{Time-series Analysis Project}
+
+This assignment will summarize the second part of the course where we studied time-series datasets.
+For this assignment, you will be asked to perform a lightly guided analysis of your choice of one of 3 possible datasets. 
+I will give you some prompts to make sure you use the methods we covered in the class.
+
+You should think of this as a project where you are trying to conduct inference about a time-series using the tools we have learned in class.
+
+You will be graded, in part, on how professional your results look. All graphs should be labelled clearly and you should write in complete sentences in your writeup. I have provided a template that will hide your code in your results document that you submit (in the real world, your boss is not looking for your code).
+
+
+\newpage
+\section*{Semi-guided questions}
+
+Please work through these questions and write up your results. See the template for an example of how I want this to look. 
+
+\begin{enumerate}
+  \item \emph{Exploring a Single Variable:} 
+  
+  Choose one continuous variable from the dataset and explore its distribution. What can you tell me about its distribution? Try visualizing the data using a histogram and/or calculate the mean and variance.
+\end{enumerate}
+
+
+
+\newpage
+\section*{Datasets}
+
+You have the choice of one of five datasets. 
+You can see the brief overview of each as well as the *data dictionary* that describes each variable in the dataset by clicking on the links.
+
+1. [AirBnB listings in Nashville](https://github.com/kylebutts/UARK_4753/tree/main/Homework/HW2/data/airbnb_nashville) is a scrapped dataset from the website Inside Airbnb. It contains information about the listing as well as reviews received. I downloaded the current "snapshot" for Nashville, Tennessee.
+
+2. The [NBA 2K25](https://github.com/kylebutts/UARK_4753/tree/main/Homework/HW2/data/nba_2k25_player_ratings) dataset contains information about all the players in the NBA 2K25 video game. It contains info on the player (team, salary, years in nba) and their ratings.
+
+
+3. [College Scorecard](https://github.com/kylebutts/UARK_4753/tree/main/Homework/HW2/data/college_scorecard) is a dataset created by the US Education Department. The dataset was created to allow for potential college students to easily understand the cost-benefit of different colleges.
+
+4. [iMDB](https://github.com/kylebutts/UARK_4753/tree/main/Homework/HW2/data/imdb) collects user reviews of movies as well as some basic info of the film.
+
+5. The [CPS](https://github.com/kylebutts/UARK_4753/tree/main/Homework/HW2/data/community_population_survey) contains survey data on workers collected by the US Government. This has characteristics of workers and their wages. 
+

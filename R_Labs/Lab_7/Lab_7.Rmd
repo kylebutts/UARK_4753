@@ -1,0 +1,158 @@
+---
+title: "R Lab 7 - Time Series Regression"
+author: "PUT YOUR NAME HERE"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: pdf_document
+---
+
+```{r}
+library(lubridate)
+library(tsibble) # For `yearmonth()` function
+library(fixest)
+
+# Source: https://fred.stlouisfed.org/series/CUSR0000SS62031
+df <- read.csv("movie_and_concert_ticket_price_index.csv")
+
+# Convert the `date` column to a `Date` vector using `lubridate`
+df$date <- ymd(df$date)
+
+# Plot the time-series
+plot(
+  x = df$date, y = df$price_index, 
+  xlab = "Month", 
+  ylab = "Price Index for Movie and Concert Tickets"
+)
+```
+
+
+## Estimating seasonality (monthly patterns)
+
+We will estimate a monthly pattern with our data. 
+To do so, first create a variable called month in your dataset using the `month(x, label = TRUE)` function from `lubridate`. 
+Then regress the price index on the month using `feols` with the formula `price_index ~ i(month)`:
+
+```{r}
+# Create a variable called `month` using the `month()` from `lubridate`
+
+
+# Regress the price index on month indicators
+
+```
+
+
+To visualize how your forecast is doing, we will use the `predict()` function.
+Store the results of `feols` into an object called `est` and then use `predict(est)` to get fitted values.
+Save this in a variable called `yhat_monthly`
+
+To plot them, we will use the `points()` to add extra points to our main `plot()`:
+
+```{r}
+# Get fitted values from regression and save in `yhat_monthly`
+
+
+# Plot them
+plot(x = df$date, y = df$price_index)
+points(x = df$date, y = df$yhat_monthly, col = "red")
+```
+
+### Questions
+
+1. In your regression, what is the omitted category?
+
+ANSWER HERE
+
+
+2. Which month has the highest deviation in price index?
+
+ANSWER HERE
+
+
+3. Does July have a statistically significant difference in price index relative to January?
+
+ANSWER HERE
+
+
+
+## Linear trend
+
+Create a variable `year` using the `year()` function from lubridate. 
+Then, regress the price index on the year trend and indicators for each month
+
+```{r}
+# Create `year` variable
+df$year <- year(df$date)
+
+# Regress the price index on month indicators and the year trend
+
+```
+
+Likewise, store the fitted values in a variable called `yhat_with_trend` and plot them:
+
+```{r}
+# Get fitted values from regression and save in `yhat_with_trend`
+
+
+# Plot them
+plot(x = df$date, y = df$price_index)
+points(x = df$date, y = df$yhat_with_trend, col = "red")
+```
+
+### Questions
+
+1. Does the linear trend improve our forecasting?
+
+ANSWER HERE
+
+
+2. For which parts of the time-series, does our forecast do a poor job? Explain why you think it does a poor job?
+
+ANSWER HERE
+
+
+3. Interpret the linear trend coefficient in words and form a 95% confidence interval for this estimate.
+
+ANSWER HERE
+
+
+
+
+## Piecewise-linear trends
+
+Now, we will create a piecewise linear trend that has a breakpoint in 2020. 
+To do so, we will create two trend terms:
+1. `trend_1` which just equals `year` and 
+2. `trend_2` which equals `(df$year - 2020) * (df$year > 2020)`
+
+Then, regress the price index on the two trend terms and indicators for each month
+
+```{r}
+# Create piecewise trend terms
+
+
+# Regress the price index on month indicators and the year trend
+
+```
+
+```{r}
+# Get fitted values from regression and save in `yhat_piecewise`
+
+
+# Plot them
+plot(x = df$date, y = df$price_index)
+points(x = df$date, y = df$yhat_piecewise, col = "red")
+```
+
+
+### Questions
+
+1. Do you think the piecewise trend helped? 
+
+ANSWER HERE
+
+2. Does our regression results show evidence that the trend has a significant break starting 2020? 
+
+ANSWER HERE
+
+3. Does July have a statistically significant difference in price index relative to January?
+
+ANSWER HERE

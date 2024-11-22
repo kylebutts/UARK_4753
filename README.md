@@ -111,22 +111,22 @@ This is a tentative schedule. This is the first time I've taught this course, so
 <!-- Schedule -->
 | Week | Dates | Monday | Wednesday | Assignments |
 |----|----|----|----|----|
-| 1 | 08/19 - 08/21 | Syllabus + Intro | Stats Review | Homework 0, Sunday |
-| 2 | 08/26 - 08/28 | Stats Review | R Lab |  |
-| 3 | 09/02 - 09/04 | No Class | R Lab | Homework 1, Sunday |
+| 1 | 08/19 - 08/21 | Syllabus + Intro | Stats Review | R Lab 0, *Sunday* |
+| 2 | 08/26 - 08/28 | Stats Review | Stats Review |  |
+| 3 | 09/02 - 09/04 | No Class | R Lab 1 – *Introduction to R* | R Lab 1, *Sunday* |
 | 4 | 09/09 - 09/11 | Introduction to Forecasting | Introduction to Forecasting |  |
-| 5 | 09/16 - 09/18 | Simple Linear Regression | Simple Linear Regression |  |
+| 5 | 09/16 - 09/18 | R Lab 2 – *Working with data in R* | Simple Linear Regression | R Lab 2, *Sunday* |
 | 6 | 09/23 - 09/25 | Simple Linear Regression | Simple Linear Regression |  |
-| 7 | 09/30 - 10/02 | R Lab | Multiple Regression Analysis |  |
+| 7 | 09/30 - 10/02 | R Lab 3 – *Regressions in R* | Multiple Regression Analysis | R Lab 3, *Sunday* |
 | 8 | 10/07 - 10/09 | Multiple Regression Analysis | Midterm |  |
-| 9 | 10/14 - 10/16 | No Class | R Lab |  |
-| 10 | 10/21 - 10/23 | Business Communication Presentation | Moving Averages and Smoothing Methods |  |
-| 11 | 10/28 - 10/30 | Moving Averages and Smoothing Methods | Moving Averages and Smoothing Methods |  |
-| 12 | 11/04 - 11/06 | R Lab | Moving Averages and Smoothing Methods |  |
+| 9 | 10/14 - 10/16 | No Class | R Lab 4 – *Cross-sectional Data Analysis Project* |  |
+| 10 | 10/21 - 10/23 | Business Communication Presentation | Time Series Smoothing Methods | R Lab 4, *Sunday* |
+| 11 | 10/28 - 10/30 | Time Series Smoothing Methods | R Lab 5 – *Intro to working with Dates in R* |  |
+| 12 | 11/04 - 11/06 | Time Series Smoothing Methods | Regression with Time Series Data | R Lab 5, *Sunday* |
 | 13 | 11/11 - 11/13 | Regression with Time Series Data | Regression with Time Series Data |  |
-| 14 | 11/18 - 11/20 | Regression with Time Series Data | Midterm |  |
-| 15 | 11/25 - 11/27 | Time Series and Their Components | No Class |  |
-| 16 | 12/02 - 12/04 | Time Series and Their Components | Time Series and Their Components |  |
+| 14 | 11/18 - 11/20 | R Lab 6 – *Time-series Regression in R* | Midterm | R Lab 6, *Sunday* |
+| 15 | 11/25 - 11/27 | R Lab 7 – *Time-series Data Analysis Project* | No Class |  |
+| 16 | 12/02 - 12/04 | R Lab 7 – *Time-series Data Analysis Project* | Review | R Lab 7, *Sunday* |
 | Final | 12/11 - 3 — 5pm |  |  | Final Exam |
 <!-- Schedule -->
 

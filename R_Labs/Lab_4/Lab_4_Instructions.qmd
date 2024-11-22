@@ -1,5 +1,5 @@
 ---
-title: "Homework 2"
+title: "Lab 4 Instructions"
 format:
   # html: default
   pdf:
@@ -10,8 +10,7 @@ format:
 
 \section*{Data Analysis Project}
 
-This assignment will summarize the first part of the course. 
-We have primarily studied how to use forecasting methods for cross-sectional data (i.e. data about individuals measured at a point in time). 
+This assignment will summarize the first part of the course where we studied how to use forecasting methods for cross-sectional data (i.e. data about individuals measured at a point in time). 
 For this assignment, you will be asked to perform a lightly guided analysis of your choice of one of 5 possible datasets. 
 I will give you some prompts to make sure you use the methods we covered in the class.
 

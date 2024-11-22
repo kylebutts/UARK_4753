@@ -75,7 +75,7 @@ df$ppl_hat_monthly_and_covid <- predict(est_monthly_and_covid)
     ),
   ) +
   labs(
-    x = NULL, y = "Peyton Manning's Wikipedia Views",
+    x = NULL, y = "Number of Pedesterians",
     color = NULL
   ) +
   kfbmisc::theme_kyle(base_size = 12) +
@@ -117,7 +117,7 @@ df$ppl_hat_monthly_and_covid <- predict(est_monthly_and_covid)
     ),
   ) +
   labs(
-    x = NULL, y = "Peyton Manning's Wikipedia Views",
+    x = NULL, y = "Number of Pedesterians",
     color = NULL
   ) +
   kfbmisc::theme_kyle(base_size = 12) +
