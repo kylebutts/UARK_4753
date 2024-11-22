@@ -27,7 +27,8 @@ The class will pull materials from two textbooks that are freely available onlin
 
 - Gareth, J., Daniela, W., Trevor, H., \& Robert, T. (2013). "[An introduction to statistical learning: with applications in R 2nd ed.](https://www.statlearning.com)". Spinger.
 - Hyndman, R. J., \& Athanasopoulos, G. (2018). "[Forecasting: principles and practice 3rd ed.](https://otexts.com/fpp3/)". OTexts.
-\end{enumerate}
+
+I refer to the first as "ISLR" and the second as "FPP3".
 
 In addition, we may have readings from different articles. These will be available in pdf form on Blackboard.
 
@@ -59,16 +60,15 @@ There will be two midterms and one final in this course. The final exam will be 
 
 #### Introduction to Forecasting 
 
-A short topic introducing the goal of forecasting, building vocabulary, and giving many examples of forecasting in the world. 
+<!-- A short topic introducing the goal of forecasting, building vocabulary, and giving many examples of forecasting in the world.  -->
 
 *Readings*: 
-
 - The Signal and the Noise Introduction
 - https://www.youtube.com/watch?v=z4zhI9uLs4U
 
 #### Topic 2: Fundamentals of Basic Algebra, Probability and Statistics
 
-This topic will review important concepts in algebra, probability, and statistics that will be essential for the remainder of the course. Since this is a review, the material will be covered somewhat quickly. While covering the material, the R programming language will be introduced and basic skills taught. During this topic, you will be expected to download and setup your R coding environment.
+<!-- This topic will review important concepts in algebra, probability, and statistics that will be essential for the remainder of the course. Since this is a review, the material will be covered somewhat quickly. While covering the material, the R programming language will be introduced and basic skills taught. During this topic, you will be expected to download and setup your R coding environment. -->
 
 *Readings*: 
 - Review notes on Algebra
@@ -88,20 +88,32 @@ This topic will review important concepts in algebra, probability, and statistic
 
 *Readings*: 
 - ISLR 3 intro, 3.1 intro, 3.1.1, 3.1.2, 3.1.3
+- ISLR 3.3.1, 3.5
+- ILSR 7 intro, 7.1, 7.2
 
 #### Topic 4: Multiple Regression Analysis
 
+*Readings*: 
+- ISLR 3.2 (no `Deciding on Important Variables'), 3.3
+- ILSR 7 intro, 7.1, 7.2
 
-#### Topic 5: Moving Averages and Smoothing Methods
+#### Topic 5: Regression with Time Series Data 
+
+*Readings*:
+- Time-series regression predictors: FPP3 7.1, 7.2, 7.3, 7.4, 7.6, 7.7
+
+#### Topic 6: Smoothing Methods for Time Series
+
+*Readings*:
+- Introduction to Forecasting: FPP3 1.7
+- Autocorrelation: FPP3 2.8
+- Smoothing Averages: FPP3 3.3, 8.1
+- Time-series Decomposition: FPP3 3.4, 3.2
+- Prophet Model: FPP3 12.2 and [Introduction to Prophet](https://www.youtube.com/watch?v=pOYAXv15r3A)
 
 
-#### Topic 6: Regression with Time Series Data
+*Note:* The first time I taught this, I did smoothing methods first and then time-series. I think I am going to switch it next time. Time-series regression first; then smoothing methods; and end with [Prophet](https://facebook.github.io/prophet/)
 
-
-#### Topic 7: ARIMA Methodology
-
-
-#### Topic 8: Time Series and Their Components (Optional)
 
 
 ### Tentative Schedule
