@@ -263,6 +263,7 @@ Answer:
 
 
 
+<!-- 
 ## Bonus
 
 We will discuss how to modify the simple exponential smoothing model to have a time-trend.
@@ -306,6 +307,7 @@ forecast_harris |>
   theme_light(base_size = 14) +
   scale_y_continuous(limits = c(35, 60), expand = c(0, 0))
 ```
+-->
 
 
 

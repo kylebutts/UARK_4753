@@ -68,6 +68,9 @@ ____ Replace this with your answer ____
 
 
 Plot `age` on the x-axis and `re78` on the y-axis. 
+You will see there are too many points in the plot to make sense of it.
+Add `col = rgb(0, 0, 0, alpha = 0.05), pch = 16,` as parameters to your `plot()` call to help
+
 
 ```{r}
 

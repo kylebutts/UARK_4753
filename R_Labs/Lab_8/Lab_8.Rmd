@@ -1,51 +1,129 @@
 ---
-title: "R Lab 8 - Time Series Analysis Project"
+title: "R Lab 8 - Time Series Analysis"
 author: "PUT YOUR NAME HERE"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: pdf_document
 ---
-```{r setup}
-#| include: false
-# Don't touch this chunk. This is setup code to hide your code chunks automatically (without needing to specify options on each chunk)
-knitr::opts_chunk$set(
-  echo = FALSE, warning = FALSE, message = FALSE, 
-  fig.width = 8, fig.height = 5, dpi = 200
-)
+
+For this assignment, you may chose one of four datasets to conduct your analysis on:
+1. `us_book_sales.csv` contains monthly data on US book sales (in person).
+2. `us_airline_prices.csv` contains monthly data on the average price of an airline ticket.
+3. `candy_manufacturing.csv` contains monthly data on candy manufacturing in the US. 
+4. `electricity_prices.csv` contains monthly data on the wholesale price of residential electricity.
+
+
+```{r}
 library(lubridate)
-library(fixest)s
-```
+library(fixest)
 
-```{r}
 # Load data
+
+# Convert `date` to a `Date` variable
+
 ```
 
-
-
-
-
-
-<!-- DELETE THIS AND BELOW -->
-*This is an example section to give you an idea of how your results should look.*
-
-## How does a car's mpg relate to its horespower?
-
-I am analyzing a dataset consisting of different models of cars and their characteristics. 
-I wanted to see how a car's horsepower and their mileage relate to one other. 
+Let's look at the raw data. Use `plot(x = df$date, y = df$Y type = "l")` with the correct `Y` variable name to make a time-series plot of the data 
 
 ```{r}
-corr_mpg_hp <- cor(x = mtcars$hp, y = mtcars$mpg)
+
 ```
 
-Here I am plotting the car's horespower and their miles per gallon. 
-You can see a strong negative correlation between the two meaning that cars with higher horespower have lower miles per gallon.
-This correlation is strong with an estimated correlation of `r round(corr_mpg_hp, 2)`.
+
+## Time-series Decomposition
+
+### Estimating time-trend $\hat{T}_t$
+
+We will perform a time-series decomposition using tools we have developed in the time-series topics. 
+First, we will estimate the time-trend using a $2 \times 12$ Moving Average:
+1. First, estimate a $12$-MA by using `slider::slide_dbl` with `.before = 5, .after = 6, .complete = TRUE`.
+   Store the result of this in a variable in your data-frame. 
+   (Side note that 12 is used because of monthly data. Daily data you could use a $365$-MA).
+
+2. Second, estimate a $2$-MA on the $12$-MA variable you created using `slider::slide_dbl` with `.before = 1, .after = 0, .complete = TRUE`.
+   Store the results of this in a variable called `Y_trend`, where `Y` is the name of the outcome. 
+   This is your "trend" variable, or $\hat{T}_t$.
 
 ```{r}
-# Delete 
-plot(
-  x = mtcars$hp, y = mtcars$mpg, 
-  xlab = "Car's horsepower",
-  ylab = "Car's miles per gallon",
-  main = "Cars with higher horsepower have lower mileage"
-)
+
+
 ```
+
+
+### Estimating seasonal pattern on $y_t - \hat{T}_t$
+
+Now, we will estimate a seasonal pattern. 
+To do so, "detrend" the data by taking the difference between the observed outcome and the `trend` estimate from the previous step.
+Call this variable `Y_detrended`, where `Y` is the name of the outcome. 
+
+Then regress `Y_detrended` on a set of monthly indicator variables to estimate the seasonal pattern using `feols`:
+```{r}
+
+```
+
+Now, use the `predict()` function on the monthly estimates to create a variable in your dataframe called `Y_monthly`. 
+You need to add the argument `predict(model, sample = "original")`, where `model` is the variable you saved the result of `feols` to.
+
+Add `Y_trend` and `Y_monthly` to create a variable `Y_hat` which is our time-trend plus the seasonal pattern $\hat{y}_t = \hat{T}_t + \hat{S}_t$
+
+```{r}
+
+```
+
+
+### Questions
+
+1. Create a plot the time-trend estimate $\hat{T}_t$ on the $y$-axis and the date variable on the $x$-axis. Describe the time-trend in words.
+
+```{r}
+
+```
+
+ANSWER HERE
+
+
+2. Create a plot of the true outcome variable, `Y`, on the $y$-axis and the date variable on the $x$-axis. Then using the `lines()` function, add to the plot of the `Y_hat`. Pick a color for this line so they are visually distinct (using `col = "blue"`, for example). How well do you think your forecast performs?
+
+```{r}
+
+```
+
+ANSWER HERE
+
+
+
+
+## Time-series Regression
+
+Now, we are going to try and use time-series regression to conduct inference. 
+Try to make the model relatively simple but do a good job at fitting the data. 
+
+Build your model using any of the time-series predictor variables we learned in our class:
+1. Seasonal indicators (e.g. month indicators)
+2. Linear time-trends
+3. Piecewise time-trends
+4. Indicators for weird regions (e.g. interval for covid)
+
+With your regression model, use `predict()` to create a variable `Y_hat_ols`.
+Create a plot of the true outcome variable, `Y`, on the $y$-axis and the date variable on the $x$-axis. Then using the `lines()` function, add to the plot of the `Y_hat_ols`. Pick a color for these points so they are visually distinct. 
+
+```{r}
+# Estimate time-series regression
+
+
+
+# Get fitted-values
+
+```
+
+```{r}
+# Plot fitted values 
+
+```
+
+
+
+### Questions
+
+1. Describe in words each term of your model and what time-series features you were trying to capture with those terms.
+
+
