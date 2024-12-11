@@ -354,8 +354,8 @@ holidays <- rbind(playoffs, superbowls)
 
 m <- prophet(
   growth = "linear", changepoints = NULL, n.changepoints = 25, 
-  yearly.seasonality = "auto",
-  weekly.seasonality = "auto",
+  yearly.seasonality = 10,
+  weekly.seasonality = 3,
   holidays = holidays
 )
 m <- fit.prophet(m, df)
