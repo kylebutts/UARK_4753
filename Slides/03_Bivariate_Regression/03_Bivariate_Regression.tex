@@ -867,7 +867,7 @@ mean(mtcars[["mpg"]])
 
 \begin{frame}{Regression and Sample Means}
   \begin{center}
-    \texttt{lm(y \textasciitilde{} 1, data = df)}
+    \texttt{feols(y \textasciitilde{} 1, data = df)}
   \end{center}
 
   \bigskip
@@ -878,7 +878,7 @@ mean(mtcars[["mpg"]])
 \end{frame}
 
 \begin{frame}{Indicator variable}
-  We now understnad the simplest regression on just an intercept. What about an \alert{indicator variable}? 
+  We now understand the simplest regression on just an intercept. What about an \alert{indicator variable}? 
   
   An \emph{indicator variable} is a variable that can only equal $0$ and $1$
   \begin{itemize}
@@ -959,7 +959,6 @@ mean(mtcars[["mpg"]])
 \begin{frame}{Math Details}
   \begin{align*}
     \beta_0 &= \expec{Y} - \hat{\beta}_1 \expec{X} \\
-    &= \expec{Y} - \hat{\beta}_1 \expec{X} \\
     &= \expec{Y} - \hat{\beta}_1 \pi \\
     &= \pi \expec{Y_i}{X_i = 1} + (1 - \pi) \expec{Y_i}{X_i = 0} - \pi \expec{Y_i}{X_i = 1} - \pi \expec{Y_i}{X_i = 0} \\
     &= \expec{Y_i}{X_i = 0}

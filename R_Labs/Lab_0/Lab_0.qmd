@@ -1,80 +1,40 @@
 ---
-title: "Lab 0 Instructions"
-format:
-  pdf:
-    template: ../template.tex
-    keep-tex: false
-    pdf-engine: latexmk
+title: "R Lab 0 - Getting your Computer Setup"
+author: "YOUR NAME"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format: pdf
 ---
 
-# Install R and RStudio
+# Assignment
 
-The first part of the assignment is aimed at getting your computers set up for the rest of the course. You need to download two different softwares. 
+1. Please provide a **link** to a song you like. 
+If you don't know how, refer to [this interactive tutorial](https://www.markdowntutorial.com/). 
+Give the link a meaningful title (for example, the name of the song).
 
-1. \href{https://cloud.r-project.org/}{\texttt{R}} is the statistical software that we will use for this course.
+**Answer:**
 
-2. [RStudio Desktop](https://posit.co/download/rstudio-desktop/) is a visual code editor that makes editing and running code way easier. This is what I will use to demonstrate all the coding in the class.
-
-
-You will know that you have installed R and RStudio correctly if when you start RStudio, you see a message in the Console tab that says `R 4.4.0 started':
-
-```{r R-startup, echo = F, out.width = "50%"}
-knitr::include_graphics("R-startup.png")
-```
+One of my favorite songs is 
 
 
-Good job! Now, we have to install two packages.
-Copy the following lines into the console and hit `Enter`.
-This will take a minute or two, but once you have done this you will be ready for the semester.
+
+
+2. Insert a code chunk with the content being `1 + 1`. If you don't know what a code chunk is, refer to [these notes](https://evalf21.classes.andrewheiss.com/resource/rmarkdown/). Your knitted document should have the results of the code displayed below, i.e. `# 2`.
+
+**Answer:**
+
+
+
+
+
+3. Below, I've taken the mean of ages of students in a surveyed classroom. I've stored that in a variable called `mean_ages`. In the Answer area, please write a sentence telling me the mean ages using the [inline R chunk syntax](https://evalf21.classes.andrewheiss.com/resource/rmarkdown/#inline-chunks). 
 
 ```{r}
-#| eval: false
-install.packages("tidyverse")
-install.packages("rmarkdown")
-install.packages("fixest")
-install.packages("fpp3")
-install.packages("tinytex")
-tinytex::install_tinytex()
+ages <- c(20, 18, 21, 19, 20, 17, 22, 19, 18, 19)
+mean_ages <- mean(ages)
 ```
 
-It should look like this when you are finished:
+**Answer:**
 
-```{r R-installed, echo = F, out.width = "50%"}
-knitr::include_graphics("R-installed.png")
-```
-
-
-# R Markdown
-
-You should download the file `HW0.Rmd` from canvas. It's a good idea to put all the files for the course into a seperate folder so that they all stay together and you don't accidentally delete them. Students in the past just leave them in the messy Downloads folder which makes things hard to find. Double click `HW0.Rmd` and it should open up in RStudio automatically. 
-
-Welcome to your first RMarkdown document! You might feel very lost, so the first thing 
-we will do is have you read through some resources to familiarize yourself with 
-Markdown and RMarkdown. To begin, complete the following tasks:
-
-1. Please complete this interactive tutorial to teach you [markdown syntax](https://www.markdowntutorial.com/)
-
-2. Read this guide on [Using RMarkdown](https://evalf21.classes.andrewheiss.com/resource/rmarkdown/)
-
-## Instructions for Assignment
-
-Two things for you to do for this assignment.
-
-- Fill out the few tasks given in the `.Rmd` document. Your link should have meaningful text (e.g. the song name) and our code chunk should look like 
-  
-````r
-```{r}`r ""`
-1 + 1
-```
-````
-
-- Click the `knit` button to creat html file. This will create the file in the same location as where you saved you HW0.Rmd file.
-  
-  ```{r R-knit, echo = F, out.width = "50%"}
-  knitr::include_graphics("R-knit.png")
-  ```
-
-- Upload completed html file to Blackboard. 
-
+The average age of the students is 
 
 

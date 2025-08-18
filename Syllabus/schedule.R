@@ -7,20 +7,21 @@ library(glue)
 # %%
 # # get dates
 # library(tidyverse)
-# first_day <- ymd("2024-08-19")
-# last_day <- ymd("2024-12-05")
-# labor_day <- ymd("2024-09-02")
-# fall_break <- c(ymd("2024-10-14"), ymd("2024-10-15"))
+# first_day <- ymd("2025-08-18")
+# last_day <- ymd("2025-12-03")
+# labor_day <- ymd("2054-09-01")
+# fall_break <- c(ymd("2025-10-13"), ymd("2025-10-14"))
 #
-# seq(first_day, last_day, by = "day") |>
+# days <- seq(first_day, last_day, by = "day") |>
 #   enframe(name = NULL, value = "day") |>
 #   mutate(
 #     day_of_week = wday(day, label = TRUE, abbr = FALSE)
 #   ) |>
-#   filter(day_of_week %in% c("Monday", "Wednesday")) |>
-#   # labor day
-#   # filter(day != ymd("2024-09-02")) |>
-#   mutate(Week = if_else(1 + week(day) - week(first_day)) |>
+#   filter(day_of_week %in% c("Monday", "Wednesday"))
+#
+# days |>
+#   mutate(Week = 1 + floor(as.numeric(day - first_day) / 7)) |>
+#   # filter(day != labor_day) |>
 #   mutate(value = "") |>
 #   mutate(
 #     .by = Week,
@@ -76,13 +77,15 @@ tab_md_string <- tab |>
 
 # Hacky way to change table text
 if (insert_idx[2] > insert_idx[1] + 1) {
-  rows_to_keep <- setdiff(seq_len(length(readme)), (insert_idx[1] + 1):(insert_idx[2] - 1))
+  rows_to_keep <- setdiff(
+    seq_len(length(readme)),
+    (insert_idx[1] + 1):(insert_idx[2] - 1)
+  )
   readme <- readme[rows_to_keep]
 }
 readme <- append(readme, tab_md_string, after = insert_idx[1])
 
 xfun::write_utf8(readme, here("README.md"))
-
 
 # %%
 # tribble(
