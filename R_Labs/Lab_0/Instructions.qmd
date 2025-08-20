@@ -2,7 +2,7 @@
 title: "Lab 0 Instructions"
 format:
   pdf:
-    template: ../template.tex
+    template: ../../template.tex
     keep-tex: false
     pdf-engine: latexmk
 ---

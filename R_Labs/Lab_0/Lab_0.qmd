@@ -5,11 +5,15 @@ date: "`r format(Sys.time(), '%B %d, %Y')`"
 format: pdf
 ---
 
+**Note:** Positron currently has a bug with quarto on Windows. 
+If `format: pdf` does not work, try `format: typst` and I *think* that shoudl fix it. 
+If it does not, let me know and I will help you troubleshoot.
+
 # Assignment
 
 1. Please provide a **link** to a song you like. 
-If you don't know how, refer to [this interactive tutorial](https://www.markdowntutorial.com/). 
-Give the link a meaningful title (for example, the name of the song).
+   If you don't know how, refer to [this interactive tutorial](https://www.markdowntutorial.com/). 
+   Give the link a meaningful title (for example, the name of the song).
 
 **Answer:**
 
@@ -18,7 +22,9 @@ One of my favorite songs is
 
 
 
-2. Insert a code chunk with the content being `1 + 1`. If you don't know what a code chunk is, refer to [these notes](https://evalf21.classes.andrewheiss.com/resource/rmarkdown/). Your knitted document should have the results of the code displayed below, i.e. `# 2`.
+2. Insert a code chunk with the content being `1 + 1`. 
+   If you don't know what a code chunk is, refer to [these notes](https://evalf21.classes.andrewheiss.com/resource/rmarkdown/). 
+   Your knitted document should have the results of the code displayed below, i.e. `# 2`.
 
 **Answer:**
 
@@ -26,7 +32,9 @@ One of my favorite songs is
 
 
 
-3. Below, I've taken the mean of ages of students in a surveyed classroom. I've stored that in a variable called `mean_ages`. In the Answer area, please write a sentence telling me the mean ages using the [inline R chunk syntax](https://evalf21.classes.andrewheiss.com/resource/rmarkdown/#inline-chunks). 
+3. Below, I've taken the mean of ages of students in a surveyed classroom. 
+   I've stored that in a variable called `mean_ages`. 
+   In the Answer area, please write a sentence telling me the mean ages using the [inline R chunk syntax](https://evalf21.classes.andrewheiss.com/resource/rmarkdown/#inline-chunks). 
 
 ```{r}
 ages <- c(20, 18, 21, 19, 20, 17, 22, 19, 18, 19)
