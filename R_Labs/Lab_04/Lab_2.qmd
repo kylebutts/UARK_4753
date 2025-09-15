@@ -2,29 +2,8 @@
 title: "R Lab 2 - Working with Data in R"
 author: "PUT YOUR NAME HERE"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
-output: pdf_document
+format: pdf
 ---
-
-# Review Questions
-
-## Question 1
-
-a. 
-
-b. 
-
-## Question 2 
-
-a. 
-
-b. 
-
-c. 
-
-
-
-
-# R Coding 
 
 ## Question 1 
 

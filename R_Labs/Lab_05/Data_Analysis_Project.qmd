@@ -1,9 +1,9 @@
 ---
-title: "Lab 4 Instructions"
+title: "Cross-sectional Data Analysis Project"
 format:
   # html: default
   pdf:
-    template: ../template.tex
+    template: ../../template.tex
     keep-tex: true
     pdf-engine: latexmk
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Lab 0 Instructions"
+title: "Lab 01"
 format:
   pdf:
     template: ../../template.tex
@@ -25,7 +25,7 @@ Here's a breakdown from the Positron website:
 ```{r positron-panes}
 #| echo: false
 #| caption: "Interface of the Positron IDE showing Activity Bar, Primary Side Bar, Editor, Panel, and Secondary Side Bar"
-knitr::include_graphics("positron_user_interface.jpeg")
+knitr::include_graphics("figures/positron_user_interface.jpeg")
 ```
 
 - The **Activity Bar** provides quick access to switch between core views such as Explorer, Search, [Source Control](https://positron.posit.co/git.html), and [Extensions](https://positron.posit.co/extensions.html).
@@ -125,7 +125,7 @@ After successfully rendering, the rendered output will show up in the \textbf{Vi
 #| echo: false
 #| fig-cap: "Example of Quarto Rendering"
 #| out-width: "\\textwidth"
-knitr::include_graphics("quarto_example.png")
+knitr::include_graphics("figures/quarto_example.png")
 ```
 
 

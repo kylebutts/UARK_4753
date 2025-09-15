@@ -1,0 +1,464 @@
+---
+title: "Lab 02 - Dataframes"
+author: "YOUR NAME"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format: pdf
+---
+
+# Dataframes (or, a group of vectors)
+
+Dataframes are a special object in R. 
+A dataframe is simply a collection of **vectors** and looks like a typical excel spreadsheet.
+The columns of a dataframe are each **vectors** that contain variables and a row contains an **observation**.
+This is the coding equivalent of an excel spreadsheet. 
+If you are using Positron, clicking the dataframe in the `Variables` tab or typing `View(df_name)` into the console will let you interactively scroll though the data. 
+
+First, we will load some data.frames that come with a **package** in R.
+We can do that using the `data` function.
+Let's load the `penguins` data set which contain a census conducted on multiple species of penguins on a set of islands:
+![Three species of penguins](https://github.com/allisonhorst/palmerpenguins/raw/main/man/figures/lter_penguins.png)
+
+```{r}
+data(penguins, package = "palmerpenguins")
+```
+
+We can use the `head()` function to view the first few rows. 
+It prints out the first 6 rows of the dataset so you can see the variables. 
+BTW, this function works on vectors too!
+
+```{r}
+head(penguins)
+```
+
+Another helpful function is `str()` which prints a similar format, but is a little easier to read, especially when there are a lot of variables in the dataset. 
+
+```{r}
+str(penguins)
+```
+
+The output of string shows that a data.frame is just a list of vectors that have names (`species`, `island`, ...). 
+
+Finally, you can access the number of rows and number of columns with `nrow`/`ncol`
+
+```{r}
+print(paste0(nrow(penguins), " obs. of ", ncol(penguins), " variables"))
+```
+
+#### Exercise
+
+1. What constitutes a row in the penguins dataframe? What constitutes a column?
+
+
+## Accessing vectors by name with `$`
+
+The first thing we might want to do is access some of the vectors from the `penguins` dataframe. 
+If you type `species` into the console and hit enter, you will see this error: `Error: object 'species' not found`. 
+Get used to recognizing this error becuase you will probably accidentally make this mistake a lot at first.
+
+This errors occurs because R does not know that you mean "look for `species` in the `penguins` dataset".
+To access an individual vector, we must specify *both* the dataframe and the vector's name. 
+To do this, we use the `$` operator like this: `penguins$species`. 
+This looks into the dataframe stored in the `penguins` variable and looks for the vector named `species`:
+```{r}
+penguins$species
+```
+
+When using Positron, after you type the `$` a little pop-up menu wil show up that shows you all the available variable names.
+You can use the arrow keys to find the variable and hit enter (or tab) to have it type the variable name for you.
+
+Try that below to find the avariable measuring the depth of a penguin's bill:
+```{r}
+
+```
+
+
+## General subsetting with `[,]` 
+
+Now, let's think about subsetting the dataframe to a specific set of rows. 
+Given that we used `[idx]` for vectors (either a logical vector or integer index), you might think we can do the same with data.frames.
+This is good intuition, but remember a data frame has both rows and columns!
+We will still use `[,]` to subset, but we need a `,` to specify rows and columns.
+
+The syntax therefore is `df[ROWS, COLUMNS]`. 
+Before comma = rows and After comma = columns.
+If either `ROWS` or `COLUMNS` is left blank, then it will assume you want all rows or all colums respectively.
+
+Let me show you some examples:
+
+```{r}
+## First 5 rows, all columns
+penguins[1:5,]
+```
+
+```{r}
+## All rows, the species column
+penguins[, "species"]
+```
+
+```{r}
+## First 5 rows, the species column
+penguins[1:5, "species"]
+```
+
+```{r}
+## First 10 rows, the species and island columns
+penguins[1:10, c("species", "island")]
+```
+
+
+You can "chain" together calls and between `[,]` and `$` syntaxes.
+For example let's say I want the variable `island` for the first 6 observations:
+```{r}
+penguins[1:6, "island"]
+penguins[1:6, ]$island
+```
+
+But, if I do `penguins$island`, this results in a vector. 
+So, to get the first 6 elements, I use only `[]` without a comma:
+```{r}
+penguins$island[1:6]
+```
+
+#### Exercise
+
+1. Use the `unique()` function to find the unique values of the variable `species` in the penguins dataset.
+
+```{r}
+
+```
+
+2. Use the `table()` function to find how many penguins there are of each species.
+
+```{r}
+
+```
+
+3. Imagine we use `penguins[1:5]` to try and grab the first 5 rows. What happens?
+
+```{r}
+
+```
+
+
+
+## Selecting rows based on criteria
+
+Lets see which penguins live on Torgersen.
+
+We can use the `==` operator to compare a vector to a value (or set of values). 
+For example, here we see if each penguin's island is `"Torgersen"`. 
+It produces a `boolean` vector of TRUEs and FALSEs
+
+```{r}
+on_torgersen <- penguins$island == "Torgersen"
+on_torgersen
+```
+
+We can subset the data using a boolen vector.
+We pass this boolean vector to the `ROWS` section of `[,]`
+
+```{r}
+penguins[penguins$island == "Torgersen", ]
+penguins[penguins$island == "Torgersen", ]$body_mass_g
+```
+
+You can also use the following operators to supply multiple criteria:
+- `&` And operator. Both vector 1 **and** vector 2 must be true for the observation
+- `|` Or operator. **Either** vector 1 **or** vector 2 must be true for the observation
+
+```{r}
+penguins$island == "Torgersen" & penguins$sex == "male"
+penguins$island == "Torgersen" | penguins$sex == "male"
+```
+
+
+#### Exercise
+
+1. Subset the `penguins` dataframe to male penguins that weigh over 3500 grams
+
+```{r}
+
+```
+
+
+2. Are all three species present on the Torgersen island? The `table` or `unique` functions might be helpful here.
+
+```{r}
+
+```
+
+3. Which species has the heaviest penguin? 
+
+```{r}
+
+```
+
+4. 
+
+
+
+#### Exercise
+
+![Penguin Beak Measurements](https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/man/figures/culmen_depth.png)
+
+Lets compare Bill Length between the three species of penguins in our dataset: the Adelie, Gentoo, and Chinstrap penguins.
+
+Using `[]` and `<-`, create 3 dataframes called `penguins_ad`, `penguins_gent`, and `penguins_chin` that subset based on the correct species of penguins.
+
+"Adelie", "Gentoo", "Chinstrap"
+
+```{r}
+
+```
+
+
+What is the mean of each species bill length in millimeters? (remember there are NAs so we will need to use `na.rm = TRUE`).
+
+```{r}
+
+```
+
+
+## Creating new variables
+
+We can create *new* variables in our dataset by using the `$` or `[]` operators with `<-`.
+
+```{r}
+penguins$body_mass_g
+
+# 0.0022 lbs = 1 g
+penguins$body_mass_lb <- 0.00220462 * penguins$body_mass_g
+```
+
+
+### Exericse
+
+Your R exercise asks you to calculate the standard deviation without using the `var()` or `sd()` command. We want to remove `NA`s manually to fix this. A helpful command is `is.na()`. Let's practice computing the variance of body_mass_lb by hand. You will want to use `nrow()`
+
+```{r}
+
+```
+
+
+## Loading data into R
+
+In R, you can either load data from a website or from a computer. 
+Usually data is found in a .csv file, but sometimes it will be in different forms that R can read.
+
+```{r}
+# From a website
+fandango <- read.csv("https://raw.githubusercontent.com/kylebutts/UARK_4753/refs/heads/main/R_Labs/Lab_1/fandango_score_comparison.csv")
+head(fandango)
+```
+
+However, most common is to download the data and put it in the folder where your `.Rmd` file is. 
+To load data you will need to find the file location. 
+By default, the working directory is whereever the `.qmd` file is located. So if your dataset is in the same folder as `.qmd`, you can load it by name:
+```{r}
+#| eval: FALSE
+penguins <- read.csv("data/penguins.csv")
+```
+
+Or, say you have your data in a subfolder called `data`.
+Then, you would use `penguins <- read.csv("data/penguins.csv")`.
+
+If you have a dataframe that you want to export to a csv function, you will use the function `write.csv(df, "path/to/file.csv")`. 
+This uses the same working directory as `read.csv` and relative paths to the file work the same way.  
+
+
+
+## Sorting dataframes
+
+There are two different ways to sort the rows of a data.frame.
+
+First, we can use the `order` method we used on vectors: `df[order(...), ]`.
+
+```{r}
+penguins[order(penguins$body_mass_g), ]
+```
+
+Or, we can use special function `sort_by`.
+This takes two arguments: 1. the `data.frame` and 2. the vector you want to sort by: 
+
+```{r}
+sort_by(penguins, penguins$body_mass_g)
+```
+
+Alternatively, we can pass a one-sided **formula** that gives the variables you want to sort by.
+A **formula** is a commonly used tool in R that lets you write variable name(s) without needing to specify the `data.frame` they come from.  
+A one-sided formula is written as `~ xvar` (the tilde is next to the number 1 on your keyboard). 
+
+```{r}
+sort_by(penguins, ~body_mass_g)
+```
+
+Say we want to first sort by species (so that each species is a contiguous chunk of rows) and then within species, sort by body mass. 
+To do so, we can use multiple variables separated by a `+` in the formula syntax.
+
+```{r}
+sort_by(penguins, ~species + body_mass_g)
+```
+
+
+
+# Plotting
+
+## Histograms
+
+Common functions for graphing are `hist()` for plotting one variable and `plot()` for plotting two variables. 
+
+```{r}
+# Count
+hist(penguins$body_mass_lb)
+```
+
+You can add additional commands for better plots. Use `?hist` to see the list of options. 
+
+#### Exercise
+
+1. Type `?hist` into the console and find the following options:
+
+- Find the option that will give you probabilities (instead of counts)
+- the bar color
+- the x-axis label
+- the main title
+
+Change these to make a more professional histogram:
+```{r}
+## Modify this
+hist(penguins$body_mass_lb)
+```
+
+
+2. Compare this distributions of `bill_length_mm` for Adelie and Chinstrap penguins. 
+
+```{r}
+
+```
+
+
+## Scatter Plots
+
+While we haven't talked about this yet, it is typically of interest to compare multiple variables together. 
+To plot two variables, we will use the `plot()` function to make scatter plots.
+
+```{r}
+plot(penguins$flipper_length_mm, penguins$body_mass_lb, main = "Scatter plot of flipper length and body mass")
+```
+
+It can be kind of annoying to type `penguins$` twice in plot.
+There is a second way to call `plot` which uses **formula** syntax.
+A formula has the following syntax `yvar ~ xvar` where `yvar` and `xvar` are variable names.
+So we can use `body_mass_lb ~ flipper_length_mm` to specify variables and then tell `plot` to use the `penguins` data.frame using the `data` argument.
+```{r}
+plot(
+  body_mass_lb ~ flipper_length_mm, 
+  data = penguins, 
+  main = "Scatter plot of flipper length and body mass"
+)
+```
+
+If the `data` argument is not provided, it will look for `body_mass_lb` and `flipper_length_mm` as variables defined in the **global environment**. 
+If these variables are within a data.frame and not as their own variables, then you will get the "object not found" error again.
+
+The reason I am showing you this is that this syntax will show up again when we run linear regressions in this class.
+And, in fact, this form of function calling where we use a `data` argument and then reference variables *within* that data.frame by name is actually quite common (see `dplyr` section in advanced materials).
+
+
+
+
+## (optional) ggplot2
+
+There is a package called `ggplot2` that improves base Rs graphing library. 
+We will not cover the details here, but a curious student can find much more details here: https://ggplot2-book.org/
+
+This is a particularly nice introduction: https://uopsych-r-bootcamp-2020.netlify.app/post/06-ggplot2/
+
+```{r, warning = FALSE, message = FALSE}
+library(ggplot2)
+ggplot() +
+  geom_histogram(data = penguins, aes(x = body_mass_lb, color = species, fill = species), alpha = 0.3) +
+  labs(
+    title = "Histogram of Penguin Body Mass, by species",
+    x = "Weight (in lb.)",
+    color = "Species",
+    fill = "Species"
+  ) +
+  scale_color_grey() +
+  scale_fill_grey() +
+  theme_gray()
+```
+
+```{r, warning = FALSE, message = FALSE}
+ggplot() +
+  geom_point(data = penguins, aes(x = flipper_length_mm, y = body_mass_lb, color = species)) +
+  labs(
+    title = "Scatter Plot of Penguin Data, by species",
+    x = "Flipper Length (in mm)",
+    y = "Weight (in lb.)",
+    color = "Species",
+    fill = "Species"
+  ) +
+  scale_color_grey() +
+  theme_gray()
+```
+
+`ggplot2` makes it really easy to make beautiful and professional graphs and it would be a **really** useful skill to have in your career
+
+```{r}
+ggplot(
+  data = penguins,
+  aes(
+    x = bill_length_mm,
+    y = bill_depth_mm,
+    group = species
+  )
+) +
+  geom_point(
+    aes(color = species, shape = species),
+    size = 3,
+    alpha = 0.8
+  ) +
+  geom_smooth(method = "lm", se = FALSE, aes(color = species)) +
+  theme_minimal() +
+  scale_color_manual(values = c("darkorange", "purple", "cyan4")) +
+  labs(
+    title = "Penguin bill dimensions",
+    subtitle = "Bill length and depth for Adelie, Chinstrap and Gentoo Penguins at Palmer Station LTER",
+    x = "Bill length (mm)",
+    y = "Bill depth (mm)",
+    color = "Penguin species",
+    shape = "Penguin species"
+  ) +
+  theme(
+    legend.position = "inside",
+    legend.position.inside = c(0.85, 0.15),
+    legend.background = element_rect(fill = "white", color = NA),
+    plot.title.position = "plot",
+    plot.caption = element_text(hjust = 0, face = "italic"),
+    plot.caption.position = "plot"
+  )
+```
+
+
+
+
+#### Exercise
+
+[Article about Movie Scores](https://fivethirtyeight.com/features/fandango-movies-ratings/)
+
+- Load `fandango_score_comparison.csv`
+
+- Compute the five-number summary for Rotten Tomatoes, Metacritic, and IMDB scores.
+
+- Subset data for Rotten Tomatoes scores above 90
+
+- Subset data for movies with a IMDB score above 9 and Rotten Tomatoes scores above 90.
+
+- Among those movies with a Rotten Tomatoes score above 90, what is the five-number summary of IMDB Scores
+
+- Plot a histogram of IMDB scores and a histogram of Fandango scores. Compare them (see above article for similar figure made in R!!)
+  Make sure to use high-quality labels for your chart.
+
+- Plot a scatter plot of IMDB and Rotten Tomatoes scores.
+  Make sure to use high-quality labels for your chart.

@@ -1,8 +1,8 @@
 ---
-title: "R Lab 7 - Time Series Regression"
+title: "Lab 07 - Time-series Regression"
 author: "PUT YOUR NAME HERE"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
-output: pdf_document
+format: pdf
 ---
 
 ```{r}
@@ -11,13 +11,17 @@ library(tsibble) # For `yearmonth()` function
 library(fixest)
 
 # Source: https://fred.stlouisfed.org/series/CUSR0000SS62031
-df <- read.csv("movie_and_concert_ticket_price_index.csv")
+df <- read.csv("data/movie_and_concert_ticket_price_index.csv")
 
 # Convert the `date` column to a `Date` vector using `lubridate`
 df$date <- ymd(df$date)
 
 # Plot the time-series
-plot(x = df$date, y = df$price_index)
+plot(
+  x = df$date, y = df$price_index, 
+  xlab = "Month", 
+  ylab = "Price Index for Movie and Concert Tickets"
+)
 ```
 
 
@@ -29,12 +33,12 @@ Then regress the price index on the month using `feols` with the formula `price_
 
 ```{r}
 # Create a variable called `month` using the `month()` from `lubridate`
-df$month <- month(df$date, label = TRUE)
+
 
 # Regress the price index on month indicators
-est_monthly <- feols(price_index ~ i(month), df, vcov = "hc1")
-est_monthly
+
 ```
+
 
 To visualize how your forecast is doing, we will use the `predict()` function.
 Store the results of `feols` into an object called `est` and then use `predict(est)` to get fitted values.
@@ -44,7 +48,7 @@ To plot them, we will use the `points()` to add extra points to our main `plot()
 
 ```{r}
 # Get fitted values from regression and save in `yhat_monthly`
-df$yhat_monthly <- predict(est_monthly)
+
 
 # Plot them
 plot(x = df$date, y = df$price_index)
@@ -79,15 +83,14 @@ Then, regress the price index on the year trend and indicators for each month
 df$year <- year(df$date)
 
 # Regress the price index on month indicators and the year trend
-est_trend <- feols(price_index ~ year + i(month), df, vcov = "hc1")
-est_trend
+
 ```
 
 Likewise, store the fitted values in a variable called `yhat_with_trend` and plot them:
 
 ```{r}
 # Get fitted values from regression and save in `yhat_with_trend`
-df$yhat_with_trend <- predict(est_trend)
+
 
 # Plot them
 plot(x = df$date, y = df$price_index)
@@ -124,17 +127,15 @@ Then, regress the price index on the two trend terms and indicators for each mon
 
 ```{r}
 # Create piecewise trend terms
-df$trend_1 <- df$year
-df$trend_2 <- (df$year - 2020) * (df$year > 2020)
+
 
 # Regress the price index on month indicators and the year trend
-est_piecewise <- feols(price_index ~ trend_1 + trend_2 + i(month), df, vcov = "hc1")
-est_piecewise
+
 ```
 
 ```{r}
 # Get fitted values from regression and save in `yhat_piecewise`
-df$yhat_piecewise <- predict(est_piecewise)
+
 
 # Plot them
 plot(x = df$date, y = df$price_index)

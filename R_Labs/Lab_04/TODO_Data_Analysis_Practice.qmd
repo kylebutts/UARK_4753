@@ -1,45 +1,11 @@
 ---
-title: "Lab 2 Instructions"
-format:
-  pdf:
-    template: ../template.tex
-    keep-tex: false
-    pdf-engine: latexmk
+title: "Lab 04 - Data Analysis Practice"
+author: "YOUR NAME"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format: pdf
 ---
 
-\section*{Review Questions}
-
-\subsection*{Question 1}
-
-\begin{enumerate}[label=(\alph*)]
-  \item What does $\sum_{i = 1}^5 (i - 3)$ equal?
-
-  \item Calculate the sample mean, $\bar{x} = \frac{1}{n} \sum_{i = 1}^n x_i$, where the sample observations are $x = (2, 7, 10, 6, 8)$ 
-\end{enumerate}
-
-\subsection*{Question 2}
-
-This question is based on our review of statistics. 
-Say you observe a sample of workers from a firm with sample size $n = 100$.
-You observe their wages $w_i$ and want to estimate the average wage at the firm.
-You estimate the following statistics in your sample: $\bar{w} = 17.53$ and $\var{w} = 4.2$.
-
-\medskip
-\begin{enumerate}[label=(\alph*)]
-  \item Given this information what is the (approximate) sample distribution of the sample mean?
-
-  \item Form a 95\% confidence interval for your sample mean. Interpret this in words.
-
-  \item Another student claims the average worker earns \$17. 
-  Using your confidence interval, would you reject this null with a 5\% significance level?
-\end{enumerate}
-
-
-
-
-
-\newpage
-\section*{R Coding}
+# Data Analysis Practice
 
 This assignment will explore a sample of homes in Boston suburbs. 
 It comes from the paper [Hedonic housing prices and the demand for clean air](sciencedirect.com/science/article/pii/0095069678900062) which tries to estimate how much people are willing to pay to live in homes with cleaner air.

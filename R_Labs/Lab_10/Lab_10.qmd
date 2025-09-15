@@ -1,8 +1,8 @@
 ---
-title: "R Lab 9 - Prophet Package"
+title: "Lab 10 - Prophet Forecasting"
 author: "PUT YOUR NAME HERE"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
-output: pdf_document
+format: pdf
 ---
 
 This R lab will focus on learning and understanding the forecasting techniques used by the very popular open source package `prophet` by Facebook.

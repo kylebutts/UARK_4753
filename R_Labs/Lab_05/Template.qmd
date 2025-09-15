@@ -1,9 +1,10 @@
 ---
-title: "R Lab 4 - Data Analysis Project"
+title: "GIVE YOUR PROJECT A TITLE"
 author: "PUT YOUR NAME HERE"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
-output: pdf_document
+format: pdf
 ---
+
 ```{r setup}
 #| include: false
 # Don't touch this chunk. This is setup code to hide your code chunks automatically (without needing to specify options on each chunk)
