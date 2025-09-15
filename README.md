@@ -125,16 +125,16 @@ This is a tentative schedule. This is the first time I've taught this course, so
 | Week | Dates | Monday | Wednesday | Assignments |
 |----|----|----|----|----|
 | 1 | 08/18 - 08/20 | Syllabus + Intro | Stats Review | R Lab 0, *Sunday* |
-| 2 | 08/25 - 08/27 | Stats Review | Stats Review |  |
-| 3 | 09/01 - 09/03 | No Class | R Lab 1 – *Introduction to R* | R Lab 1, *Sunday* |
-| 4 | 09/08 - 09/10 | Introduction to Forecasting | Introduction to Forecasting |  |
-| 5 | 09/15 - 09/17 | R Lab 2 – *Working with data in R* | Simple Linear Regression | R Lab 2, *Sunday* |
-| 6 | 09/22 - 09/24 | Simple Linear Regression | Simple Linear Regression |  |
-| 7 | 09/29 - 10/01 | R Lab 3 – *Regressions in R* | Multiple Regression Analysis | R Lab 3, *Sunday* |
-| 8 | 10/06 - 10/08 | Multiple Regression Analysis | Midterm |  |
-| 9 | 10/13 - 10/15 | No Class | R Lab 4 – *Cross-sectional Data Analysis Project* |  |
-| 10 | 10/20 - 10/22 | Business Communication Presentation | Time Series Smoothing Methods | R Lab 4, *Sunday* |
-| 11 | 10/27 - 10/29 | Time Series Smoothing Methods | R Lab 5 – *Intro to working with Dates in R* |  |
+| 2 | 08/25 - 08/27 | Stats Review (Class Cancelled) | Stats Review |  |
+| 3 | 09/01 - 09/03 | No Class | R Lab 1 – *Introduction to R* |  |
+| 4 | 09/08 - 09/10 | R Lab 1 – *Introduction to R* | R Lab 2 – *Working with data in R* | R Lab 1, *Sunday* |
+| 5 | 09/15 - 09/17 | Stats Review |  | R Lab 2, *Sunday* |
+| 6 | 09/22 - 09/24 | Introduction to Forecasting | Simple Linear Regression |  |
+| 7 | 09/29 - 10/01 | Simple Linear Regression | Simple Linear Regression | R Lab 3, *Sunday* |
+| 8 | 10/06 - 10/08 | Multiple Regression Analysis | Multiple Regression Analysis |  |
+| 9 | 10/13 - 10/15 | No Class | Multiple Regression Analysis |  |
+| 10 | 10/20 - 10/22 | Midterm | R Lab 4 – \*Data Analysis Project in R | R Lab 4, *Sunday* |
+| 11 | 10/27 - 10/29 | Time Series Smoothing Methods | R Lab 5 – *Intro to working with Time-Series Data in R* | R Lab 4, *Sunday* |
 | 12 | 11/03 - 11/05 | Time Series Smoothing Methods | Regression with Time Series Data | R Lab 5, *Sunday* |
 | 13 | 11/10 - 11/12 | Regression with Time Series Data | Regression with Time Series Data |  |
 | 14 | 11/17 - 11/19 | R Lab 6 – *Time-series Regression in R* | Midterm | R Lab 6, *Sunday* |

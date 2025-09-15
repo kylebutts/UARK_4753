@@ -4,45 +4,45 @@ Week,Dates,name,value
 1,08/18 - 08/20,Wednesday,Stats Review
 1,08/18 - 08/20,Assignments,"R Lab 0, *Sunday*"
 
-2,08/25 - 08/27,Monday,Stats Review
+2,08/25 - 08/27,Monday,Stats Review (Class Cancelled)
 2,08/25 - 08/27,Wednesday,Stats Review
 2,08/25 - 08/27,Assignments,
 
-3,09/01 - 09/03,Monday,"No Class"
+3,09/01 - 09/03,Monday,No Class
 3,09/01 - 09/03,Wednesday,R Lab 1 -- *Introduction to R*
-3,09/01 - 09/03,Assignments,"R Lab 1, *Sunday*"
+3,09/01 - 09/03,Assignments,
 
-4,09/08 - 09/10,Monday,Introduction to Forecasting
+4,09/08 - 09/10,Monday,R Lab 1 -- *Introduction to R*
 4,09/08 - 09/10,Wednesday,R Lab 2 -- *Working with data in R*
-4,09/08 - 09/10,Assignments,"R Lab 2, *Sunday*"
+4,09/08 - 09/10,Assignments,"R Lab 1, *Sunday*"
 
-5,09/15 - 09/17,Monday,Introduction to Forecasting
-5,09/15 - 09/17,Wednesday,Simple Linear Regression
-5,09/15 - 09/17,Assignments,
+5,09/15 - 09/17,Monday,Stats Review
+5,09/15 - 09/17,Wednesday,
+5,09/15 - 09/17,Assignments,"R Lab 2, *Sunday*"
 
-6,09/22 - 09/24,Monday,Simple Linear Regression
+6,09/22 - 09/24,Monday,Introduction to Forecasting
 6,09/22 - 09/24,Wednesday,Simple Linear Regression
 6,09/22 - 09/24,Assignments,
 
-7,09/29 - 10/01,Monday,R Lab 3 -- *Regressions in R*
-7,09/29 - 10/01,Wednesday,Multiple Regression Analysis
+7,09/29 - 10/01,Monday,Simple Linear Regression
+7,09/29 - 10/01,Wednesday,Simple Linear Regression
 7,09/29 - 10/01,Assignments,"R Lab 3, *Sunday*"
 
 8,10/06 - 10/08,Monday,Multiple Regression Analysis
-8,10/06 - 10/08,Wednesday,Midterm
+8,10/06 - 10/08,Wednesday,Multiple Regression Analysis
 8,10/06 - 10/08,Assignments,
 
-9,10/13 - 10/15,Monday,"No Class"
-9,10/13 - 10/15,Wednesday,R Lab 4 -- *Cross-sectional Data Analysis Project*
-9,10/13 - 10/15,Assignments,"R Lab 4, *Sunday*"
+9,10/13 - 10/15,Monday,No Class
+9,10/13 - 10/15,Wednesday,Multiple Regression Analysis
+9,10/13 - 10/15,Assignments,
 
-10,10/20 - 10/22,Monday,TBD
-10,10/20 - 10/22,Wednesday,Time Series Smoothing Methods
-10,10/20 - 10/22,Assignments,
+10,10/20 - 10/22,Monday,Midterm 
+10,10/20 - 10/22,Wednesday,R Lab 4 -- *Data Analysis Project in R
+10,10/20 - 10/22,Assignments,"R Lab 4, *Sunday*"
 
 11,10/27 - 10/29,Monday,Time Series Smoothing Methods
 11,10/27 - 10/29,Wednesday,R Lab 5 -- *Intro to working with Time-Series Data in R*
-11,10/27 - 10/29,Assignments,
+11,10/27 - 10/29,Assignments,"R Lab 4, *Sunday*"
 
 12,11/03 - 11/05,Monday,Time Series Smoothing Methods
 12,11/03 - 11/05,Wednesday,Regression with Time Series Data
@@ -57,7 +57,7 @@ Week,Dates,name,value
 14,11/17 - 11/19,Assignments,"R Lab 6, *Sunday*"
 
 15,11/24 - 11/26,Monday,R Lab 7 -- *Time-series Data Analysis Project*
-15,11/24 - 11/26,Wednesday,"No Class"
+15,11/24 - 11/26,Wednesday,No Class
 15,11/24 - 11/26,Assignments,
 
 16,12/01 - 12/03,Monday,R Lab 7 -- *Time-series Data Analysis Project*
