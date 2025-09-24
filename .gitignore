@@ -23,12 +23,15 @@ Textbooks/*
 *.fdb_latexmk
 *.run.xml
 *.synctex.gz
+*.synctex(busy)
 *.nav
 *.snm
 *.*-SAVE-ERROR
 *.listing
 *.vrb
 *.listing
+*.xdv
 
 # Repo specific
 notes_for_next_time.md
+
