@@ -268,8 +268,8 @@ feols(average_score_sat_math ~ i(borough, ref = "Manhattan"), data = nyc)
 
 ```{r}
 workers <- read.csv("data/cps.csv")
-str(workers)
 workers$college <- 1 - workers$nodegree
+str(workers)
 ```
 
 For interactions between two discrete variables, we need a special syntax:
@@ -285,5 +285,32 @@ feols(re78 ~ 0 + i(black) + i(black, age), workers)
 ```
 
 
+#### Exercise
+
+1. Using a regression, what are the average earnings in 1975 (`re75`) for Black workers, Hispanic workers, and White workers?
+
+```{r}
+
+```
+
+**Answer:**
+
+
+2. Use a regression to estimate the association of marriage and 1975 earnings. How much more do married people earn on average?
+
+```{r}
+
+```
+
+**Answer:**
+
+
+3. Modify this regression to test whether the difference in earnings is larger for people with college degrees than those without.
+
+```{r}
+feols(re75 ~ i(married, i.college), data = workers)
+```
+
+**Answer:**
 
 
