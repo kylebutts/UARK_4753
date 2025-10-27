@@ -1,0 +1,191 @@
+\documentclass[12pt]{article}
+\usepackage{../../../lecture_notes}
+\usepackage{../../../math}
+\usepackage{../../../uark_colors}
+
+\hypersetup{
+  colorlinks = true,
+  allcolors = ozark_mountains,
+  breaklinks = true,
+  bookmarksopen = true
+}
+
+\newcommand{\answer}[1]{{\color{blue_winged_teal}\textbf{Answer:} #1}}
+\newcommand{\pts}[1]{{\color{zinc500}[#1 points]}}
+
+\begin{document}
+\begin{center}
+  {\Huge\bf Midterm 1 - Fall 2025}
+  
+  \smallskip
+  {\large\it ECON 4753 — University of Arkansas}
+\end{center}
+
+\vspace{5mm}
+\begin{enumerate}
+  \item Say you have a sample of observations of some variable.  
+  You want to summarize the variable to a stakeholder.
+  \begin{enumerate}[label=(\alph*)]
+    \item \pts{10} Describe two ways you can help someone understand the distribution of a variable and what function you might use in \texttt{R} to do this.
+    
+    \answer{
+      E.g. \texttt{summary} to present summary statistics of the variable; \texttt{hist} to plot the full distribution of the variable visually.
+    }
+    
+    \item \pts{10} In your own words, describe what the concept of the sampling distribution of a statistic is. 
+    Why is it helpful to know about the sample distribution of a statistic?
+
+    \answer{
+      A sampling distribution represents the notion of `repeated sampling', where you grab many different samples from the population of the sample size and calculate the statistic for each sample. 
+      The distribution of estimates is the sample distribution.
+    }
+
+    \item \pts{5} Typically, we report 95\% confidence intervals. 
+    Give an example where someone might want to use a higher level of confidence (e.g 99\% or 99.9\%)
+
+    \answer{
+      Higher levels of confidence make us wrong about the population mean less often. 
+      This is important when the cost of being wrong is high (e.g. trying to predict natural disasters).
+    }
+  \end{enumerate}
+  
+  \bigskip
+  \item This question is based on our review of statistics. 
+  Say you observe a sample of workers from a firm with sample size $n = 100$.
+  You observe their wages $w_i$ and want to estimate the average wage at the firm.
+  You estimate the following statistics in your sample: $\bar{w} = 17.53$ and $\var{w} = 4.2$.
+
+  \medskip
+  \begin{enumerate}[label=(\alph*)]
+    \item \pts{5} Given this information what is the (approximate) sample distribution of the sample mean?
+    
+    \answer{
+      $\bar{w} \sim \mathcal{N}(\mu, 4.2/100)$. 
+      Note, it should not be $\mathcal{N}(17.53, 4.2/100)$.
+    }
+
+    \item \pts{10} Form a 95\% confidence interval for your sample mean. Interpret this in words.
+
+    \answer{
+      $17.53 \pm 1.96 * \sqrt(4.2/100) = \left( 17.13, 17.93 \right)$.
+
+      With 95\% confidence, the population mean falls between 17.13 and 17.93.
+    }
+
+    \item \pts{5} Another student claims the average worker earns \$17. 
+    Using your confidence interval, would you reject this null with a 5\% significance level?
+
+    \answer{
+      We can reject the null that the true average is \$17 because it does not fall within the 95\% confidence interval.
+
+      As an alternative answer, we could calculate the $t$-statistic as $\frac{17.53 - 17}{\sqrt{4.2/100}} = 2.58$. 
+      Since this is larger than the critical value of 1.96, we reject the null with 5\% level of significance.
+    }
+  \end{enumerate}
+
+
+
+\end{enumerate}
+
+\newpage
+Below is the result of a two regressions using data on nutrition information on Starbucks' food items. 
+
+\begin{enumerate}
+  \setcounter{enumi}{2}
+  \item  First, we will look at this regression of the number of calories in the food item on indicators for each food type with `bakery' beign the omitted group.
+
+  \begin{codeblock}[{}]
+OLS estimation, Dep. Var.: calories
+Observations: 73
+Standard-errors: IID 
+                      Estimate Std. Error   t value   Pr(>|t|)    
+(Intercept)          368.78049    12.9273 28.527289  < 2.2e-16 ***
+type::bistro box       8.71951    31.9934  0.272541 7.8603e-01    
+type::hot breakfast  -43.78049    31.9934 -1.368422 1.7568e-01    
+type::petite        -191.00271    30.4699 -6.268568 2.8685e-08 ***
+type::sandwich        26.93380    33.8516  0.795644 4.2901e-01 
+  \end{codeblock}
+
+
+  \begin{enumerate}[label=(\alph*)]
+    \item \pts{5} What is the average amount of calories for food items in the `petite' type?
+    
+    \answer{$368.78 + -191.00 = 177.78$.}
+
+    \item \pts{5} Which food type has the largest number of calories on average?
+    
+    \answer{Sandwiches have the largest number of calories on average.}
+    
+    \item \pts{10} What is the difference in average amount of calories for `bistro box' foods relative to sandwiches? How would you modify this regression to test if the difference is statistically significant?
+    
+    \answer{
+      $(368.78 + 8.72) - (368.78 + 26.93) = -18.21$.
+
+      To test for significance, we could set sandwiches as the omitted category.
+    }
+  \end{enumerate}
+
+  \newpage
+  \item Second, we regress the number of calories in the item on the amount of fat in each item (in grams).
+
+  \begin{codeblock}[{}]
+OLS estimation, Dep. Var.: calories
+Observations: 73
+Standard-errors: Heteroskedasticity-robust 
+            Estimate Std. Error  t value   Pr(>|t|)    
+(Intercept) 183.2400   20.98025  8.73393 7.2892e-13 ***
+fat          11.2768    1.09564 10.29240 1.0109e-15 ***
+  \end{codeblock}
+
+
+  \begin{enumerate}[label=(\alph*)]
+    \item \pts{10} Interpret the coefficient on `\texttt{fat}' in words. Comment on its statistical significance.
+    
+    \answer{
+      For every additional gram of fat, we predict the food will have on average 11.27 extra calories. 
+      This estimate is statisticallly significant at the 5\% level.
+    }
+    
+    \item \pts{5} Predict the number of calories in a food item with 14g of fat.
+    
+    \answer{
+      $183.2400 + 11.2768 * 14 = 341.11$ calories.
+    }
+
+    \item \pts{10} Construct a 95\% confidence interval around the slope coefficient. 
+    What is the smallest slope that you can not reject with a 5\% level of significance?
+
+    \answer{
+      $11.2768 \pm 1.96 * 1.09564 = \left( 9.13, 13.42 \right)$.
+      The smallest slope we can not reject with a 5\% level of significance is 9.13. 
+    }
+  \end{enumerate}
+
+  \bigskip
+  Finally, we add the number of carbs in that item as a second explanatory variable.
+
+  \begin{codeblock}[{}]
+OLS estimation, Dep. Var.: calories
+Observations: 73
+Standard-errors: Heteroskedasticity-robust 
+            Estimate Std. Error  t value  Pr(>|t|)    
+(Intercept) 39.10401  13.709974  2.85223 0.0057027 ** 
+fat          9.98090   0.476424 20.94964 < 2.2e-16 ***
+carb         3.62562   0.202739 17.88319 < 2.2e-16 ***
+  \end{codeblock}
+
+  \begin{enumerate}[label=(\alph*)]
+    \item[(d)] \pts{10} Why do you think the slope coefficient on `\texttt{fat}' went down after controlling for `\texttt{carb}'?
+    
+    \answer{
+      Since \texttt{fat} and \texttt{carb} are likely positively correlated in foods, the coefficient on \texttt{fat} was previously getting `credit' for the differences in \texttt{carb}. 
+
+      Any answer that comments on the two being correlated will get points.
+    }
+  \end{enumerate}
+  
+
+
+\end{enumerate}
+
+\end{document}
