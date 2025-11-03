@@ -1,4 +1,4 @@
-# %% 
+# %%
 # https://developer.imdb.com/non-commercial-datasets/
 library(tidyverse)
 library(here)
@@ -9,7 +9,8 @@ imdb <- basics |>
   inner_join(rating, by = "tconst") |>
   janitor::clean_names() |>
   select(
-    -end_year, -original_title,
+    -end_year,
+    -original_title,
     title = primary_title,
     is_adult_movie = is_adult,
     release_year = start_year
@@ -34,18 +35,24 @@ imdb <- basics |>
     is_scifi = str_detect(genres, "Sci-Fi")
   ) |>
   select(
-    title, release_year, average_rating, num_votes, runtime_minutes, everything()
+    title,
+    release_year,
+    average_rating,
+    num_votes,
+    runtime_minutes,
+    everything()
   )
 
 plot(
-  average_rating ~ release_year, data = imdb,
+  average_rating ~ release_year,
+  data = imdb,
   alp = 0.03
 )
 
-fs::dir_create(here("Homework/HW2/data/imdb/"))
+fs::dir_create(here("R_Labs/Lab_05/data/imdb/"))
 write_csv(
   imdb,
-  file = here("Homework/HW2/data/imdb/imdb.csv")
+  file = here("R_Labs/Lab_05/data/imdb/imdb.csv")
 )
 
-# %% 
+# %%

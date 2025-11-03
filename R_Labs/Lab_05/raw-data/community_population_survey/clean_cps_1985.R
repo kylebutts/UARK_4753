@@ -22,8 +22,8 @@ cps <- CPS1985 |>
   ) |>
   select(-gender, -ethnicity)
 
-fs::dir_create(here("Homework/HW2/data/community_population_survey/"))
+fs::dir_create(here("R_Labs/Lab_05/data/community_population_survey/"))
 write_csv(
   cps,
-  file = here("Homework/HW2/data/community_population_survey/cps_1985.csv")
+  file = here("R_Labs/Lab_05/data/community_population_survey/cps_1985.csv")
 )

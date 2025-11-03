@@ -2,17 +2,33 @@
 # https://insideairbnb.com/get-the-data/
 library(tidyverse)
 library(here)
-raw <- read_csv(here("Homework/HW2/raw-data/airbnb_nashville/nashville_airbnb_listings_2024_10_15.csv"))
+raw <- read_csv(here(
+  "R_Labs/Lab_05/raw-data/airbnb_nashville/nashville_airbnb_listings_2024_10_15.csv"
+))
 
 airbnb <- raw |>
   select(
-    name, description,
-    host_since, host_response_time, host_response_rate,
-    host_is_superhost, host_neighbourhood,
+    name,
+    description,
+    host_since,
+    host_response_time,
+    host_response_rate,
+    host_is_superhost,
+    host_neighbourhood,
     room_type,
-    price, bedrooms, beds, bathrooms, accommodates,
-    has_availability, availability_30,
-    number_of_reviews, review_scores_rating, review_scores_cleanliness, review_scores_accuracy, review_scores_checkin, review_scores_location,
+    price,
+    bedrooms,
+    beds,
+    bathrooms,
+    accommodates,
+    has_availability,
+    availability_30,
+    number_of_reviews,
+    review_scores_rating,
+    review_scores_cleanliness,
+    review_scores_accuracy,
+    review_scores_checkin,
+    review_scores_location,
     review_scores_communication,
     calculated_host_listings_count
   ) |>
@@ -24,8 +40,10 @@ airbnb <- raw |>
   )
 
 
-fs::dir_create(here("Homework/HW2/data/airbnb_nashville/"))
+fs::dir_create(here("R_Labs/Lab_05/data/airbnb_nashville/"))
 write_csv(
   airbnb,
-  file = here("Homework/HW2/data/airbnb_nashville/airbnb_nashville_listings.csv")
+  file = here(
+    "R_Labs/Lab_05/data/airbnb_nashville/airbnb_nashville_listings.csv"
+  )
 )

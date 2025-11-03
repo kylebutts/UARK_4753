@@ -2,19 +2,19 @@
 library(tidyverse)
 library(here)
 raw <- read_csv(here(
-  "Homework/HW2/raw-data/college_scorecard/Most-Recent-Cohorts-Institution.csv"
+  "R_Labs/Lab_05/raw-data/college_scorecard/Most-Recent-Cohorts-Institution.csv"
 ))
 
-scorecard <- raw |> 
+scorecard <- raw |>
   filter(HIGHDEG >= 3) |> # must offer bachelor's degree
   filter(REGION %in% 2:8) |>
   select(
     institution = INSTNM,
-    state = STABBR, 
-    region = REGION, 
+    state = STABBR,
+    region = REGION,
     ownership = CONTROL,
-    hbcu = HBCU, 
-    predominetly_black_institution = PBI, 
+    hbcu = HBCU,
+    predominetly_black_institution = PBI,
     admission_rate = ADM_RATE,
     sat_verbal_first_quartile = SATVR25,
     sat_verbal_median = SATVRMID,
@@ -50,20 +50,27 @@ scorecard <- raw |>
       ownership == 3 ~ "Private for-profit"
     ),
     region = case_when(
-      region == 1, "New England (CT, ME, MA, NH, RI, VT)",
-      region == 2, "Mid East (DE, DC, MD, NJ, NY, PA)",
-      region == 3, "Great Lakes (IL, IN, MI, OH, WI)",
-      region == 4, "Plains (IA, KS, MN, MO, NE, ND, SD)",
-      region == 5, "Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA, WV)",
-      region == 6, "Southwest (AZ, NM, OK, TX)",
-      region == 7, "Rocky Mountains (CO, ID, MT, UT, WY)",
-      region == 8, "Far West (AK, CA, HI, NV, OR, WA)"
+      region == 1,
+      "New England (CT, ME, MA, NH, RI, VT)",
+      region == 2,
+      "Mid East (DE, DC, MD, NJ, NY, PA)",
+      region == 3,
+      "Great Lakes (IL, IN, MI, OH, WI)",
+      region == 4,
+      "Plains (IA, KS, MN, MO, NE, ND, SD)",
+      region == 5,
+      "Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA, WV)",
+      region == 6,
+      "Southwest (AZ, NM, OK, TX)",
+      region == 7,
+      "Rocky Mountains (CO, ID, MT, UT, WY)",
+      region == 8,
+      "Far West (AK, CA, HI, NV, OR, WA)"
     )
   )
 
-fs::dir_create(here("Homework/HW2/data/college_scorecard/"))
+fs::dir_create(here("R_Labs/Lab_05/data/college_scorecard/"))
 write_csv(
   scorecard,
-  file = here("Homework/HW2/data/college_scorecard/college_scorecard.csv")
+  file = here("R_Labs/Lab_05/data/college_scorecard/college_scorecard.csv")
 )
-
