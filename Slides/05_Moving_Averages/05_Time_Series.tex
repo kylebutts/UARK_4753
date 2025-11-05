@@ -1,0 +1,1719 @@
+\documentclass[aspectratio=169,t,11pt,table]{beamer}
+\usepackage{../../slides}
+\usepackage{../../math}
+\usepackage{../../uark_colors}
+\definecolor{accent}{HTML}{9D2235}
+\definecolor{accent2}{HTML}{2B5269}
+
+\title{Topic 5: Time Series, Regression, Moving Averages, and Smoothing Methods}
+\subtitle{\it  ECON 4753 — University of Arkansas}
+\date{Fall 2024}
+\author{Prof. Kyle Butts}
+
+\begin{document}
+
+% ------------------------------------------------------------------------------
+\begin{frame}[noframenumbering,plain]
+\maketitle
+
+% \bottomleft{\footnotesize $^*$A bit of extra info here. Add an asterich to title or author}
+\end{frame}
+% ------------------------------------------------------------------------------
+
+\section{Introduction to Time-Series}
+
+\begin{frame}{Time-series}
+  \alert{Time-series} data is a set of observations $y_t$ that occur for a single unit measured over the course of time
+  \begin{itemize}
+    \item You observe a set of observations $x_t$ for $t \in \{ 1, \dots, T \}$
+    \item In general, we call $t$ the `period'
+  \end{itemize}
+
+  \pause
+  \bigskip
+  Examples include:
+  \begin{itemize}
+    \item Annual data on the DGP of a country
+    \item Hourly stock price for a company
+    \item Annual data on cigarette consumption per capita in a state 
+    \item A sport's teams number of points scored in games (unequally spaced)
+  \end{itemize}
+\end{frame}
+
+\imageframe{figures/unemployment_rate.pdf}
+\imageframe{figures/apple_stock.pdf}
+\imageframe{figures/smoking_california.pdf}
+\imageframe{figures/smoking_a_few_states.pdf}
+\imageframe{figures/arkansas_2023_football.pdf}
+
+\begin{frame}{What is special about time-series?}
+  In our previous topics, we have been thinking about \alert{cross-sectional} data
+  \begin{itemize}
+    \item That is, we view a set of individuals viewed at a point in time
+  \end{itemize}
+
+  \bigskip
+  In cross-sectional data, knowing about one indivdiual does not really tell me much information about another
+  \begin{itemize}
+    \item This is not \emph{entirely true}; e.g. worker's in same firm have common experiences, kids in same school have same teacher quality, etc.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{What is special about time-series?}
+  In time-series data, knowing last period's value of $y_{t-1}$ is often very useful for this period's value of $y_{t}$
+  \begin{itemize}
+    \item This property is essential in forecasting; following a variable over time might let us predict futrue values
+  \end{itemize}
+
+  \pause
+  \bigskip
+  Another way of saying this, is if we randomly shuffled time-series data, we would lose information!
+  \begin{itemize}
+    \item This is not true of a cross-sectional dataset; we can reshuffle rows without problem
+  \end{itemize}
+\end{frame}
+
+\imageframe{figures/unemployment_rate.pdf}
+\imageframe{figures/unemployment_rate_rand_shuffle.pdf}
+
+\begin{frame}{What we can gain from using time-series}
+  Time-series forecasting can be useful to:
+  \begin{itemize}
+    \item Predict future values based on past data
+
+    \item Inform decision-making by anticipating changes over time
+
+    \item Identify patterns like trends or seasonality
+  \end{itemize}
+\end{frame}
+
+
+\section{Time-series Statistics}
+
+\begin{frame}{Statistics of Time-series}
+  For the next few slides, we will discuss some \alert{statistics} of time-series data that we might be interested in
+
+  \bigskip
+  To review, in cross-sectional data, we mainly cared about:
+  \begin{itemize}
+    \item the \alert{mean} and the \alert{variance} of a single variable, and
+    \item the \alert{correlation} between two variables
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Autocovariance}
+  \alert{Autocovariance} measures the covariance between a variable and a lagged version of itself over successive time periods.
+
+  \bigskip
+  In formal terms, the autocovariance at lag $k$ is defined as:
+  $$
+    \gamma_k = \cov{y_t, y_{t-k}} = \expec{(y_t - \mu)(y_{t-k} - \mu)}
+  $$
+  where:
+  \begin{itemize}
+    \item $\mu$ is the mean of $y_t$,
+    \item $\cov{y_t, y_{t-k}}$ is the covariance between $y_t$ and $y_{t-k}$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Autocovariance}
+  \vspace*{-\bigskipamount}
+  $$
+    \gamma_k = \cov{y_t, y_{t-k}} = \expec{(y_t - \mu)(y_{t-k} - \mu)}
+  $$
+
+  \emph{Intuition}: Autocovariance helps quantify how much the past values of $y$ move together with its current value.
+  \begin{itemize}
+    \item When $y_{t-k}$ was above the mean, was $y_t$ typically above it's mean?
+  \end{itemize}
+
+  \bigskip
+  \pause
+  In most settings, it is likely that $\gamma_1 \geq \gamma_2 \geq \dots$
+  \begin{itemize}
+    \item More-recent `shocks' (in say $t-1$) tend to persist for a little and then fade-out
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Autocovariance}
+  \vspace*{-\bigskipamount}
+  $$
+    \gamma_k = \cov{y_t, y_{t-k}} = \expec{(y_t - \mu)(y_{t-k} - \mu)}
+  $$
+
+  \bigskip
+  As an aside, note that when $k = 0$, 
+  $$
+    \gamma_0 = \cov{y_t, y_t} = \var{y_t}
+  $$
+\end{frame}
+
+\begin{frame}{Autocorrelation}
+  \alert{Autocorrelation} is the normalized version of autocovariance. It measures the correlation of a variable with its lagged values.
+
+  \bigskip
+  The autocorrelation at lag $k$ is defined as:
+  $$
+    \rho_k = \frac{\gamma_k}{\var{y_t}} = \frac{\cov{y_t, y_{t-k}}}{\var{y_t}}
+  $$
+  where:
+  \begin{itemize}
+    \item $\gamma_k$ is the autocovariance at lag $k$,
+    \item $\gamma_0$ is the variance of $y_t$ (i.e., autocovariance at lag 0).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Autocorrelation}
+  \vspace*{-\bigskipamount}
+  $$
+    \rho_k = \frac{\gamma_k}{\var{y_t}} = \frac{\cov{y_t, y_{t-k}}}{\var{y_t}}
+  $$
+  
+  \bigskip
+  \alert{Intuition}: Autocorrelation tells us the strength of the relationship between $y_t$ and its past values. It ranges between -1 and 1.
+\end{frame}
+
+\imageframe{figures/unemployment_rate.pdf}
+
+\begin{frame}{Unemployment Example}
+  In the unemployment example, the time-series 
+  $$
+    \hat{\gamma}_1 = \cov{y_t, y_{t-1}} = 2.968 \quad \text{ and } \quad \hat{\rho}_1 = 0.961
+  $$
+  \begin{itemize}
+    \item Unsurprisingly the correlation of unemployment from 1-month to the next is very strong
+  \end{itemize}
+
+  \pause
+  \bigskip
+  This is useful for forecasting; a very strong autocorrelation tells us that recent values of $y$ should be useful for predicting future values of $y$
+\end{frame}
+
+\begin{frame}{Unemployment Example}
+  Let's look at the correlation unemployment over 12 periods (year to year)
+  $$
+    \hat{\rho}_{12} = 0.659
+  $$
+  \begin{itemize}
+    \item Shocks to last year's unemployment seem to `persist' into the current period
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Unemployment Example}
+  If we use the reshuffled gdp data, what do we think the autocorrelation may be?
+  \pause
+  $$
+    \hat{\rho}_{1, \texttt{reshuffled}} =  -0.03081183
+  $$  
+  \begin{itemize}
+    \item When we completely randomly shuffled the data, we have destroyed any autocorrelation! 
+  \end{itemize}
+
+  \pause  
+  \bigskip
+  This makes sense. If I reshuffled the data, knowing last month's (reshuffled) unemployment is no longer useful for predicting this month's (reshuffled) unemployment rate
+\end{frame}
+
+
+\section{Learning from Time-Series}
+
+\begin{frame}{Two goals of time-series}
+  There are two possible goals that we can tackle when working with time-series data:
+  \begin{enumerate}
+    \item Learn about \emph{persistent} patterns in how $y$ evolves over time while ignoring random fluctuations (inference)
+    \begin{itemize}
+      \item E.g. learn about seasonality, trends, etc.
+    \end{itemize}
+
+    \item Predict future values of $y_t$ (forecasting)
+    \begin{itemize}
+      \item The above step might be useful in predicting future $y$, but not necessary (only care about prediction)
+    \end{itemize}
+  \end{enumerate}
+
+  \bigskip
+  Will try to clarify when we are discussing forecasting vs. describing time-series patterns (inference)
+\end{frame}
+
+\begin{frame}{Learning from time-series}
+  We observe a set of time-series observations $y_t$. Think of the observed $y$ as being generated by 
+  $$
+    y_t = {\color[HTML]{B3114B} \mu_t} + \varepsilon_t
+  $$
+  \begin{itemize}
+    \item ${\color[HTML]{B3114B} \mu_t}$ is the `typical' or `systematic' value of $y$ at time $t$
+    
+    \item $\varepsilon_t$ is a random fluctuation
+  \end{itemize}
+
+  \bigskip
+  Of course, we do not know which fluctuations are due to $\mu_t$ changing over time or $\varepsilon_t$ changing over time
+  \begin{itemize}
+    \item Without any more structure, this is is an impossible task
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Learning from time-series}
+  \vspace*{-\bigskipamount}
+  $$
+    y_t = {\color[HTML]{B3114B} \mu_t} + \varepsilon_t
+  $$
+
+  \bigskip
+  All hope is not lost though. Looking at the previous time-series graphs, it is clear we can learn \emph{something}
+\end{frame}
+
+\begin{frame}{}
+  $$
+    y_t = {\color[HTML]{B3114B} \mu_t} + \varepsilon_t
+  $$
+  
+  Here are some examples of what we can hope to learn using time-series data:
+  \begin{enumerate}
+    \item Identify \alert{seasonality} in data 
+    \begin{itemize}
+      \item Does the change in ${\color[HTML]{B3114B} \mu_t}$ over the year follow a standard pattern?
+      \item E.g. retail sales increasing in December
+    \end{itemize}
+    
+    \item Detect long-term \alert{trends} 
+    \begin{itemize}
+      \item How does ${\color[HTML]{B3114B} \mu_t}$ change over time? 
+      \item E.g. trend in GDP over time
+    \end{itemize}
+    
+    \item Assess how \alert{strongly autocorrelated} the data is 
+    \begin{itemize}
+      \item How `sticky' shocks are from past periods are
+    \end{itemize}
+  \end{enumerate}
+\end{frame}
+
+
+\begin{frame}{Key insight in time-series forecasting}
+  \alert{Key Insight}: By analyzing the changes across time, we reveal structure and patterns that help in making better predictions. 
+  For example:
+  \begin{itemize}
+    \item Does yesterday's sales help us learn about what products people will buy today?
+    \item Do we see an up-swing in jacket sales every October?
+  \end{itemize}
+  
+  \pause
+  \bigskip
+  Of course, this can fail if the underlying structure of the world changes over time
+  \begin{itemize}
+    \item If we are using data from early 2000s on homes, we will surely fail at forecasting during the Great Recession
+  \end{itemize}  
+\end{frame}
+
+\begin{frame}{Evaluating forecasting methods}
+  As usual, we can use the mean-squared prediction error to evaluate our models:
+  $$
+    \text{MSE} = \frac{1}{T} \sum_{t=1}^T (y_t - \hat{y}_t)^2
+  $$
+
+  \begin{itemize}
+    \item Typically, will evaluate on the time-series data you do observe
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Evaluating forecasting methods}
+  Time-series forecasting is particularly difficult to evaluate
+  \begin{itemize}
+    \item Our training data is past-values up until today
+    \item Our testing data is values in the future
+  \end{itemize}
+
+  \bigskip
+  If the structure of the world changes over time, then our testing data \emph{can} look fundamentally different over time
+  \begin{itemize}
+    \item Consumer preferences change over time can make predicting future sales hard
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Over-fitting}
+  For this reason, we have to be \emph{very} careful when using forecasting methods on time-series
+  \begin{itemize}
+    \item Over-fitting the past data makes us learn `false' time-series relationships
+  \end{itemize}
+\end{frame}
+
+
+\section{Time-series Regression}
+
+\begin{frame}{Local Methods}
+  The previous topic introduced smoothing methods for inference and prediction in time-series. The central idea to smoothing methods was to use `local' information:
+  \begin{itemize}
+    \item To form a forecast $\hat{y}_t$, use observations ``close'' to $t$
+  \end{itemize}
+
+  \bigskip
+  We studied the advantages and disadvantages of these methods: 
+  \begin{itemize}
+    \item Pro: these methods do good at picking up on sudden changes to $\mu_t$ (if the smoothing was not too extreme)
+
+    \item But, they did a bad job at learning about seasonality and trends
+    \begin{itemize}
+      \item Holts-Winter method can help with this
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Time-Series Regression Methods}
+  In this topic, we will focus on a different approach to conducting inference on time-series using our trusted friend \emph{regression}
+
+  \bigskip
+  Advantages of regression:
+  \begin{itemize}
+    \item Regression uses all the observations to fit the model, so can better learn trends and seasonality
+    
+    \item Regression can include other predictors (e.g. predicting GDP given unemployment)
+  \end{itemize}
+
+  \bigskip
+  The main disadvantage is that compared to smoothing methods, regression does a less-good job at predicting short-term changes 
+\end{frame}
+
+\begin{frame}{Time-series Regression Set-up}
+  All that we have learned in cross-sectional regressions will apply in the case of time-series. 
+  \begin{itemize}
+    \item The `unit of observation' is a time-period $t$
+    \item The outcome variable is the variable measured at time $t$, $y_t$
+    \item we will have a set of explanatory variables for each time-period
+  \end{itemize}
+
+  \bigskip
+  Example, we will will discuss regressing $y_t$ on indicators for day of the week (Sunday through Saturday)
+  \begin{itemize}
+    \item $\implies$ regression coefficients will estimate the average $y$ for each day of the week
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Regression refresher}
+  For a set of explanatory variables, $X_t$, we predict $y_t$ using the model
+  $$
+    \hat{y}_t = X_t \beta
+  $$
+
+  \bigskip
+  The coefficient $\beta$ is estimated by minimizing the mean-squared prediction error
+  $$
+    \frac{1}{T} \sum_{t=1}^T (y_t - X_t \beta)^2
+  $$
+  \begin{itemize}
+    \item The only difference from cross-sectional regression is in the choice of $X_t$ (e.g. day-of-week indicators)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Missing data and Regression}
+  % TODO:
+  One distinct advantage about regression is that we do not require `complete' time-series data
+  \begin{itemize}
+    \item E.g. if we are missing data for some months, we can still estimate our model. 
+    \begin{itemize}
+      \item Smoothing methods have a difficult time with missing data
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Inference in Time-series Regression}
+  Inference is more complicated with time-series regressions
+  
+  \begin{itemize}
+    \item Shocks to one time-period $u_t$ can show up and impact other time-periods $u_s$
+    \item In principle, all observations are relatted with one-another
+  \end{itemize}
+
+  \pause
+  \bigskip\medskip
+  The idea of `repeated sampling' is a bit odd in this context too:
+  \begin{itemize}
+    \item Our sample is one realization of the time-series
+    
+    \item Resampling is like `rewinding' and getting a new history for $t = 1, \dots, T$
+  \end{itemize}
+\end{frame}
+
+\section{Time-series Predictors}
+
+\begin{frame}{Time-series Predictors}
+  This section will introduce a set of useful predictors that can be used (in-combination) to perform inference on time-series data
+\end{frame}
+
+\subsection{Seasonality}
+
+\begin{frame}{Estimating seasonal trends}
+  The first predictor we will discuss is estimation of seasonal, or repeated, patterns:
+  \begin{itemize}
+    \item Quarterly patterns
+    \item Monthly patterns
+    \item Day-of-week patterns
+    \item Time-of-day patterns
+  \end{itemize}
+
+  \bigskip
+  These methods will rely on using a set of indicator variables
+\end{frame}
+
+\begin{frame}{Estimating seasonal trends}
+  The easiest way to estimate these patterns is to use the \texttt{lubridate} package to get the relevant variable:
+  \begin{itemize}
+    \item Quarterly: \texttt{quarter(date)}
+    \item Monthly: \texttt{month(date, label = TRUE)}
+    \item Day-of-week: \texttt{wday(date, label = TRUE)}
+    \item Time-of-day: \texttt{hour(date)}
+  \end{itemize}
+
+  \bigskip
+  Then, you can create indicator variables using \texttt{i()} in your call to \texttt{feols} (from the \texttt{fixest} package)
+\end{frame}
+
+\begin{frame}{Estimating seasonal trends}
+  For example, consider the estimating a monthly pattern. 
+  The regression will be given by
+  $$
+    y_t = \alpha + \sum_{m = 1}^{12} \one{\texttt{Month}(t) = m} \beta_m + u_t
+  $$
+
+  \bigskip
+  Remember that since we have an intercept, one of the indicator variables will drop out.
+  
+  \bigskip
+  $\hat{\beta}_m$ represent the difference in average $y_t$ for month $m$ relative to the omitted month 
+  \begin{itemize}
+    \item E.g. if we do not include January, then $\hat{\beta}_{2}$ is the difference between Februaries' mean $y$ relative to January's
+  \end{itemize}
+\end{frame}
+
+\imageframe{figures/jewelry_sales_raw.pdf}
+
+\begin{frame}[fragile]{Predicting jewerly sales monthly pattern}
+  \begin{codeblock}
+df$month = month(df$date, label = TRUE)
+est_monthly <- feols(
+  sales ~ i(month), data = df, vcov = "hc1"
+)
+
+# predict y using the model
+df$sales_hat <- predict(est_monthly)
+  \end{codeblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{codeblock}
+            Estimate Std. Error    t value   Pr(>|t|)    
+(Intercept) -68.8100   0.556885 -123.56221  < 2.2e-16 ***
+month::Feb  108.3500   2.711906   39.95346  < 2.2e-16 ***
+month::Mar   49.4989   3.563492   13.89056  < 2.2e-16 ***
+month::Apr   65.3322   7.953131    8.21465 8.8182e-13 ***
+month::May  113.9544  19.769283    5.76422 9.5184e-08 ***
+month::Jun   57.2211   8.369328    6.83700 6.9588e-10 ***
+month::Jul   66.3544   2.017959   32.88196  < 2.2e-16 ***
+month::Aug   73.7322   0.928813   79.38332  < 2.2e-16 ***
+month::Sep   62.6767   1.275046   49.15639  < 2.2e-16 ***
+month::Oct   73.1767   1.561164   46.87316  < 2.2e-16 ***
+month::Nov   89.1433   1.553690   57.37526  < 2.2e-16 ***
+month::Dec  193.0322   3.738664   51.63134  < 2.2e-16 ***
+  \end{codeblock}
+\end{frame}
+
+\imageframe{figures/jewelry_sales_monthly_pattern.pdf}
+
+\begin{frame}{Significance tests}
+  $\hat{\beta}_m$ represent the difference in average $y_t$ for month $m$ relative to the omitted month 
+
+  \bigskip
+  We can use a $t$-test to compare if the month's average $y_t$ is significantly different than the omitted month:
+  \begin{itemize}
+    \item Test the null that $\hat{\beta}_m = 0$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Another example}
+  The following slides will present another example using daily data on the number of views on Peyton Manning's wikipedia page
+\end{frame}
+
+\imageframe{figures/peyton_raw.pdf}
+\imageframe{figures/peyton_monthly.pdf}
+
+\begin{frame}{Practice Questions}
+  On the following slide, I will present the results from our regression with monthly indicators. Answer the following questions (take a picture):
+  \begin{itemize}
+    \item What is the omitted category?
+    
+    \item In which month are the wikipedia views the highest?
+    
+    \item Are views significantly lower in February than January?
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{}
+  \begin{codeblockfootnote}[{}]
+OLS estimation, Dep. Var.: views 
+             Estimate Std. Error   t value   Pr(>|t|)    
+(Intercept)  8.985181   0.051221 175.42034  < 2.2e-16 ***
+month::Feb  -0.583683   0.084752  -6.88696 6.9644e-12 ***
+month::Mar  -1.150467   0.073183 -15.72035  < 2.2e-16 ***
+month::Apr  -1.309271   0.057717 -22.68421  < 2.2e-16 ***
+month::May  -1.487304   0.056482 -26.33250  < 2.2e-16 ***
+month::Jun  -1.714787   0.057479 -29.83353  < 2.2e-16 ***
+month::Jul  -1.433526   0.060080 -23.86035  < 2.2e-16 ***
+month::Aug  -0.996372   0.058421 -17.05493  < 2.2e-16 ***
+month::Sep  -0.310229   0.070998  -4.36952 1.2890e-05 ***
+month::Oct  -0.409981   0.067193  -6.10155 1.1904e-09 ***
+month::Nov  -0.461025   0.066963  -6.88482 7.0678e-12 ***
+month::Dec  -0.427606   0.065228  -6.55556 6.5398e-11 ***
+  \end{codeblockfootnote}
+\end{frame}
+
+
+
+\subsection{Time-trends}
+
+\begin{frame}{Estimating time-trends}
+  While estimating seasonatity / recurring patterns is relatively simple, the trends of a time-series is much more difficult and flexible
+  \begin{itemize}
+    \item The general path of the time-series can evolve in many different ways
+  \end{itemize}
+
+  \bigskip
+  In general, we should look at the time-series data to inform us about how we want to model the trends. 
+  \begin{itemize}
+    \item The point of this section is to show you some methods you can use and when each might work well
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Linear time-trends}
+  The simplest model for trends is a \alert{linear time-trend}:
+  $$
+    y_t = \alpha + \lambda t + u_t
+  $$
+  Linear time-trends imply that the outcome variable $y_t$ grows (on average) by $\lambda$ for every-period
+
+  \bigskip
+  This is a quite restrictive model, but is often times sufficient
+\end{frame}
+
+\imageframe{figures/gdp_raw.pdf}
+\imageframe{figures/gdp_linear_trend.pdf}
+
+\begin{frame}[fragile]{Estimating linear time trends in \texttt{R}}
+  \vspace*{-\bigskipamount}
+  $$
+    y_t = \alpha + \lambda t + u_t
+  $$
+
+  To run this regression, we need to generate the $t$ variable
+  \begin{itemize}
+    \item A column that contains $1, 2, 3, \dots, T$
+  \end{itemize}
+
+  \bigskip
+  Two notes:
+  \begin{itemize}
+    \item Note if we have missing observations, that is okay just skip those numbers 
+    \item $t$ does not need to start at 1; it will just change the $\hat{\alpha}$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Estimating linear time trends in \texttt{R}}
+  Remember that a \texttt{Date} object in R actually is just a number (he number of days since "1970-01-01")
+  \begin{itemize}
+    \item This means internally consecutive days look like $t, t+1, t+2, \dots$ like we need! 
+    \item Or, monthly data is spaced by 28/30/31 days
+  \end{itemize}
+
+  \bigskip
+  So for a linear time-trend, you can just use `date' as a continuous variable
+\end{frame}
+
+\begin{frame}[fragile]{Estimating linear time trends in \texttt{R}}
+
+  \begin{codeblock}
+feols(gdp ~ date, data = df, vcov = "hc1")
+  \end{codeblock}
+
+  \medskip
+  \begin{codeblock}[{}]
+OLS estimation, Dep. Var.: gdp
+Observations: 99
+Standard-errors: Heteroskedasticity-robust 
+                Estimate Std. Error  t value  Pr(>|t|)    
+(Intercept) -11945.78793 898.176248 -13.3000 < 2.2e-16 ***
+date             1.89173   0.063438  29.8201 < 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  \end{codeblock}
+\end{frame}
+
+\begin{frame}[fragile]{Interpreting linear time trend}
+  \vspace*{-\bigskipamount}
+  \begin{codeblock}[{}]
+                Estimate Std. Error  t value  Pr(>|t|)    
+(Intercept) -11945.78793 898.176248 -13.3000 < 2.2e-16 ***
+date             1.89173   0.063438  29.8201 < 2.2e-16 ***
+  \end{codeblock}
+
+  Every 1 day, U.S. GDP is predicted to grow by 1.89 billion \$ 
+  \begin{itemize}
+    \item Every quarter, $91 * 1.89 = 171.99$ billion \$
+
+    \item Every year, $365 * 1.89 = 689.85$ billion \$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Forecasting with linear time trend}
+  To forecast into the future, you just extend the time-trend $T+1, T+2, \dots$
+  
+  The forecasted value becomes 
+  $$
+    \hat{y}_{T+k} = \hat{\alpha} + \hat{\lambda} (T+k)
+  $$
+
+  \pause
+  \bigskip
+  \bgYellow{! Note of Caution:} Always \emph{be careful extending time-trends} too far out
+  \begin{itemize}
+    \item E.g. say you predicted a slightly higher $\hat{\lambda}$ than the true growth rate, extending that out 15 periods means you will estimate $\hat{y}_{T + 15}$ to be way too high
+  
+    \item More, time-trends tend to plateau 
+    \begin{itemize}
+      \item e.g. virality tends to die out
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Linear Time-trends Failure}
+  While time-trends do a great job at summarizing succinctly a trend in $y_t$, it often can be too crude
+
+  \begin{itemize}
+    \item Perhaps the trend changes over time (e.g. improvements slow down)
+    
+    \item Especially at risk when the time-series is long
+  \end{itemize}
+
+  \bigskip
+  One way to check for this is to look at the difference between $y_t - \hat{y}_t$
+  \begin{itemize}
+    \item Visually inspect if the residual has any remaining trends
+  \end{itemize}
+
+  \bigskip
+  Let's look at the example of the time for the winner of the Boston Marathon
+\end{frame}
+
+\imageframe{figures/marathon_linear_trend.pdf}
+\imageframe{figures/marathon_minutes_minus_linear_trend.pdf}
+
+\begin{frame}{Quadratic trends}
+  Given our discussion in cross-sectional regression, you might be tempted to model more flexible `trends' via higher-order polynomial terms
+  $$
+    y_t = \alpha + \lambda_1 t + + \lambda_2 t^2 u_t
+  $$
+
+  \bigskip
+  \begin{tcolorbox}[boxrule = 0pt, frame hidden, sharp corners, enhanced, borderline west = {4pt}{0pt}{red}, interior hidden]
+    {\color{red}\Large $\times$\ } Do not do this! When you forecast into the future, the higher order polynomials can shoot off very quickly! 
+   \end{tcolorbox}
+\end{frame}
+
+\begin{frame}{Changing trends}
+  One way to improve our model without introducing too much complexity is to break up the series into different `epoch' (i.e. eras / moments). 
+  \begin{itemize}
+    \item Estimate a separate trend for each epoch
+  \end{itemize}
+
+  \bigskip
+  This is called a \alert{piecewise linear trends} 
+
+  \bigskip
+  In our marathon times example:
+  \begin{itemize}
+    \item An initial epoch of small changes in time,
+    \item Followed by a steep decline in times, 
+    \item and then a final epoch where things leveled off
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Changing trends}
+  More formally, let $B_\ell$ be the breakpoints for each epoch. Then, we can write our model as 
+  $$
+    y_t = \alpha + \lambda_1 t + \sum_{\ell = 2}^L \one{t \geq B_\ell} * (t - B_\ell) * \lambda_\ell + u_t
+  $$
+  \begin{itemize}
+    \item At each point $B_2, \dots, B_L$, the slope changes
+    \item $\hat{\lambda}_1$ is the slope of the first epoch
+    \item $\hat{\lambda}_2, \dots, \hat{\lambda}_L$ are the difference in slopes from the preivous epoch
+  \end{itemize}
+
+  \bigskip
+  For example, to get the slope in the third-epoch we do $\hat{\lambda}_1 + \hat{\lambda}_2 + \hat{\lambda}_3$
+\end{frame}
+
+\begin{frame}[fragile]{title}
+  In \texttt{R}, you can define epoch like:
+  \begin{codeblock}
+df$trend_1 <- df$year
+df$trend_2 <- (df$year - 1950) * (df$year > 1950)
+df$trend_3 <- (df$year - 1980) * (df$year > 1980)
+  \end{codeblock}
+
+  Then you estimate the piece-wise time trend model with
+  \begin{codeblock}
+feols(y ~ trend_1 + trend_2 + trend_3, data = df)
+  \end{codeblock}
+\end{frame}
+
+\imageframe{figures/marathon_linear_trend.pdf}
+\imageframe{figures/marathon_piecewise_linear.pdf}
+
+\begin{frame}{Forecasting with changing trends}
+  \vspace*{-\bigskipamount}
+  $$
+    y_t = \alpha + \lambda_1 t + \sum_{\ell = 2}^L \one{t \geq B_\ell} * (t - B_\ell) * \lambda_\ell + u_t
+  $$
+  
+  \bigskip
+  For forecasting, note that your prediction will be based on the slope of the final epoch
+  \begin{itemize}
+    \item This is because $T + k \geq B_L$, so all the $\lambda_\ell$ are `active'
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Choosing breakpoints}
+  We selected the breakpoints, more or less, visually
+  \begin{itemize}
+    \item 1950 and 1980 looked to be when breaks happen
+  \end{itemize}
+
+  \pause
+  \bigskip
+  Alternatively, we could try and `detect' break-points
+  \begin{itemize}
+    \item The goal is to select $B_\ell$ to do the best job at predicting $y_t$
+    \item Perhaps even select the number of breaks $L$
+  \end{itemize}
+
+  \pause
+  \bigskip
+  The rough idea would be to select $B_1, \dots, B_L$ to minimize mean-squared prediction error
+  \begin{itemize}
+    \item But, we must be careful not to overfit the data! Can either `regularize' or try and hold out a random portion of the time-series to evaluate out-of-sample MSPE
+  \end{itemize} 
+\end{frame}
+
+
+
+\subsection{More flexibly modelling trends}
+
+% TODO: Add year effects
+\begin{frame}{Flexibly modelling trends}
+  The linear time-trend $\lambda t$ is useful for:
+  \begin{itemize}
+    \item Summarizing the time-series trend succinctly
+    
+    \item Useful for forecasting into the future
+
+    \item But can be over-simplifying of a model
+  \end{itemize}
+
+  \bigskip
+  If inference is the goal, we can more flexibly model trends using more fine-grained indicator variables (e.g. month $\times$ year)
+  \begin{itemize}
+    \item This limits the ability to extrapolate into the future because we can not estimate the coefficient for years outside our sample
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Monthly patterns vs. Year-by-month}
+  What we have seen so far is how to estimate a recurring monthly pattern
+  \begin{itemize}
+    \item Each year has the same predicted value in a given month
+  \end{itemize}
+
+  \pause
+  \bigskip
+  When you have something like weekly or daily data, you can estimate a year-by-month pattern
+  \begin{itemize}
+    \item The estimate for January 2015 is different from January 2016
+    \item In \texttt{R}, you can use the \texttt{yearmonth()} function from the \texttt{tsibble} package
+  \end{itemize}
+\end{frame}
+
+\imageframe{figures/peyton_raw.pdf}
+\imageframe{figures/peyton_year_by_month.pdf}
+
+\begin{frame}{Monthly patterns vs. Year-by-month}
+  Note that while year-by-month offers more detail, it is harder to interpret
+  \begin{itemize}
+    \item Monthly patterns are easier to convey and more informative for future forecasting
+    \item Year-by-month patterns are more flexible at inference, but can not be used for forecasting in the future (January 2025 is different from Janaury 2024)
+  \end{itemize}
+
+  \pause
+  \bigskip
+  When your time-series has a longer interval (e.g. monthly), you can not use year-by-month indicator variables
+  \begin{itemize}
+    \item If you have monthly data, your year-by-month indicators will \emph{perfectly} fit the data
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{A mix of the two}
+  One way to balance between these two approaches is to:
+  \begin{itemize}
+    \item Use month indicator variables for seasonality
+    
+    \item Use indicators for each year to let a level shift for each year
+  \end{itemize}
+
+  \bigskip
+  I did this for our Peyton Manning views dataset
+  \begin{itemize}
+    \item Because of domain knowledge, I use season effects rather than year effects (the `year' starts in September)
+  \end{itemize}
+\end{frame}
+
+\imageframe{figures/peyton_season_effects.pdf}
+
+
+\subsection{Step-functions}
+
+% TODO: Steps for recessions (e.g. post 2008? )
+% TODO: Difference between level-shift for all post-periods or indicator for recession period
+
+\begin{frame}{Outliers / Weird Shocks}
+  Sometimes, your dataset will have really weird jumps
+  \begin{itemize}
+    \item E.g. Covid-19 pandemic shows up in a lot of time-series plots
+    % \item E.g. when I was at Microsoft, South American countries would have Xbox usages spikes when FIFA would come out (it would come out at different times of the year)
+  \end{itemize}
+
+  \bigskip
+  These really odd periods of time, while few in number, can have a large effect on your forecasting models
+\end{frame}
+
+\imageframe{figures/melbourne_pedestrians_raw.pdf}
+\imageframe{figures/melbourne_pedestrians_monthly.pdf}
+
+\begin{frame}{Dealing with Weird Shocks}
+  For these periods, we can either
+  \begin{itemize}
+    \item (1) drop them from the regression (potentially losing valuable information)
+    
+    \item (2) or, add these shocks to our model
+  \end{itemize}
+
+  \pause
+  \bigskip
+  To adapt our model, we will add indicator variables for ranges (similar to our Epoch time-trends)
+  $$
+    y_t = \alpha + \sum_{m = 1}^{12} \one{\texttt{Month}(t) = m} \beta_m + \text{Covid Period}_t \delta_1 + \text{Post-Covid Period}_t \delta_2 + u_t
+  $$
+  
+  \begin{itemize}
+    \item Let's see how this small change impacts our forecast performance
+  \end{itemize}
+\end{frame}
+
+\imageframe{figures/melbourne_pedestrians_monthly_and_covid.pdf}
+
+\begin{frame}[fragile]{Coding in \texttt{R}}
+  \begin{codeblock}
+df$covid_period <- (df$date >= ymd("2020-03-21")) & 
+  (df$date < ymd("2020-10-27"))
+df$post_covid_period <- (df$date >= ymd("2020-10-27"))
+
+feols(
+  ppl ~ i(month) + i(covid_period) + i(post_covid_period),
+  data = df, vcov = "hc1"
+)
+  \end{codeblock}
+\end{frame}
+
+\begin{frame}{Dealing with Structural Changes}
+  In some cases, we see fundamental changes to the economy
+  \begin{itemize}
+    \item Periods prior to some point have different seasonal patterns and trends
+  \end{itemize}
+
+  \bigskip
+  In this case, you could interact month indicators with pre- and post- indicators 
+  \begin{itemize}
+    \item Month $\times$ Pre indicators estimate pattern \emph{before} switch
+    \item Month $\times$ Post indicators estimate pattern \emph{after} switch
+    
+    \item Adding a Post indicator allows the average level to be different before/after
+  \end{itemize}
+\end{frame}
+
+
+\subsection{Additional covariates}
+
+\begin{frame}{Additional covariates}
+  So far all of our methods have just relied on using the \texttt{date} as the explanatory variable and have discussed different ways of using that:
+  \begin{itemize}
+    \item Smoothing averages based on time
+    \item Seasonal patterns
+    \item Linear, piecewise, or more flexible time-trends
+  \end{itemize}
+
+  \bigskip
+  One huge advantage of regressions is that you can include other predictors in your model
+  \begin{itemize}
+    \item E.g. predicting sales on a given day using month indicators and \emph{also} the price on the day
+  \end{itemize}  
+\end{frame}
+
+\begin{frame}{Including additional covariates}
+  \vspace*{-\bigskipamount}
+  $$
+    \text{sales}_t = \alpha + \sum_{m = 1}^{12} \one{\texttt{Month}(t) = m} \beta_m + p_t \gamma + u_t
+  $$
+
+  In this case, we include linearly the price charged at time $t$ for the good
+
+  \pause
+  \bigskip
+  This regression model can be (approximately) interpreted as:
+  \begin{enumerate}
+    \item First, removing the portion of sales that are predicted by the variation in price over time
+    
+    \item Second, running a time-series regression on the remaining variation
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Usefullness of covariates}
+  \vspace*{-\bigskipamount}
+  $$
+    \text{sales}_t = \alpha + \sum_{m = 1}^{12} \one{\texttt{Month}(t) = m} \beta_m + p_t \gamma + u_t
+  $$
+
+  The big advantage is we can now make predictions into the future where we both:
+  \begin{itemize}
+    \item Set the price to what we intend for it to be
+    \item And extrapolate the time-series pattern into the future
+  \end{itemize}  
+\end{frame}
+
+
+\section{Inference on forecasts}
+
+\begin{frame}{Inference on forecasts}
+  So far we have discussed creating inference and forecasts $\hat{y}_t$ about time-series
+
+  \bigskip
+  We have remained silent on how to express uncertainty around our findings
+  \begin{itemize}
+    \item This is the second half of statistics!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Prediction from regression}
+  For generality, we will consider the generic multiple regression model:
+  $$
+    y_t = \beta_0 + X_{1,t} \beta_1 + \dots + X_{K,t} \beta_K + u_t
+  $$
+  
+  \begin{itemize}
+    \item E.g. $K = 1$ and $X_{1,t}= t$ is the linear-time trend model
+  \end{itemize}
+
+  \bigskip
+  For a given value of $(x_{1}, \dots, x_{K})$, our prediction is given by
+  $$
+    \hat{y} = \hat{\beta}_0 + x_1 \hat{\beta}_1 + \dots + x_K \hat{\beta}_K
+  $$
+\end{frame}
+
+\begin{frame}{Prediction from regression}
+  Compared to the true expected value of $y$:
+  $$
+    \expec{y}{x} = \beta_{0,0} + x_1 \beta_{1,0} + \dots + x_K \beta_{K,0}
+  $$
+
+  \bigskip
+  The difference between the two is due to noise in the coefficient estimates:
+  \begin{align*}
+    \hat{y} - \expec{y}{x} &= 
+    \left( \hat{\beta}_0 - \beta_{0,0} \right) + x_1 \left( \hat{\beta}_1 - \beta_{1,0} \right) + \dots + x_K \left( \hat{\beta}_K - \beta_{K,0} \right) 
+  \end{align*}
+
+  \bigskip
+  $\implies$ In repeated samples $\hat{\beta}$ are the only terms that vary
+\end{frame}
+
+\begin{frame}{Inference on Regression Predictions}
+  \vspace*{-\bigskipamount}
+  \begin{align*}
+    \hat{y} - \expec{y}{x} &= 
+    \left( \hat{\beta}_0 - \beta_{0,0} \right) + x_1 \left( \hat{\beta}_1 - \beta_{1,0} \right) + \dots + x_K \left( \hat{\beta}_K - \beta_{K,0} \right) 
+  \end{align*}
+
+  \bigskip
+  Remember, we know how to express uncertainty around each $\hat{\beta}$ using the $\text{SE}(\hat{\beta})$ from our regression table
+  \begin{itemize}
+    \item However, that is not enough since $\hat{\beta}$ might be correlated with each-other
+  \end{itemize}
+
+  \pause
+  \bigskip
+  This means each term in the above are correlated, so inference is more difficult
+  \begin{itemize}
+    \item Fortunately, the \texttt{predict} function you've seen provides standard errors on our prediction
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{In-sample prediction}
+  The first-thing we might want to do is predict $\hat{y}_t$ in our sample and add confidence intervals. This returns a data.frame with two-columns $\hat{y}$ and $\text{SE}(\hat{y})$
+  
+  \begin{codeblock}
+est <- feols(y ~ date, data = df, vcov = "hc1")
+# In-sample predictions
+predictions <- predict(est, se.fit = TRUE)
+  \end{codeblock}
+  \begin{codeblock}[{}]
+       fit   se.fit
+1 20817.14 225.9461
+2 20819.04 226.0038
+3 20820.93 226.0615
+4 20822.82 226.1192
+  \end{codeblock}
+\end{frame}
+
+\begin{frame}[fragile]{Forecasting into the future}
+  Then, we could try and predict out-of-sample. To do this, we need to create a new data.frame with the $X$ variables we need
+
+  \begin{codeblock}
+# The next 5 days from our sample
+prediction_df <- data.frame(
+  date = ymd("2021-06-30") + 1:5
+)
+predict(est_linear_trend, newdata = prediction_df, se.fit = TRUE)
+  \end{codeblock}
+\end{frame}
+
+\begin{frame}[fragile]{Forecasting and confidence intervals}
+  \begin{codeblock}
+predict(est_linear_trend, newdata = prediction_df, se.fit = TRUE)
+  \end{codeblock}
+  \begin{codeblock}[{}]
+       fit   se.fit
+1 23635.83 314.3643
+  \end{codeblock}
+
+  For the first-prediction, form a 95\% confidence interval for this prediction:
+  \pause
+  $$
+    23635.83 \pm 1.96 * 314.3643 = (23019.68, 24251.98)
+  $$
+\end{frame}
+
+\begin{frame}[fragile]{Forecasting and confidence intervals}
+  \begin{codeblock}
+predictions <- 
+  predict(est_linear_trend, newdata = prediction_df, se.fit = TRUE)
+predictions$ci_lower <- predictions$fit - 1.96 * predictions$se.fit
+predictions$ci_upper <- predictions$fit + 1.96 * predictions$se.fit
+  \end{codeblock}
+
+  \begin{codeblock}[{}]
+       fit   se.fit ci_lower ci_upper
+1 23635.83 314.3643 23019.67 24251.98
+2 23637.72 314.4248 23021.45 24253.99
+3 23639.61 314.4854 23023.22 24256.00
+4 23641.50 314.5459 23024.99 24258.01
+5 23643.39 314.6064 23026.77 24260.02
+  \end{codeblock}
+\end{frame}
+
+\section{Smoothing Methods for Inference}
+
+\begin{frame}{Smoothing Methods}
+  Recall we said $y_t$ was generated by 
+  $$
+    y_t = {\color[HTML]{B3114B} \mu_t} + \varepsilon_t
+  $$
+  \begin{itemize}
+    \item ${\color[HTML]{B3114B} \mu_t}$ is the `typical' or `systematic' value of $y$ at time $t$
+  \end{itemize}
+
+  \bigskip
+  The idea of \alert{smoothing methods} is to use time periods right around period $t$ to estimate a smoothed value at period $t$
+  \begin{itemize}
+    \item Want to ``smooth'' over random fluctuations 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Example Electrical Manufacturing in the EU}
+  On the following slide I'm going to show you production figures across the European Union
+  \begin{itemize}
+    \item Time-series data is on electircal manufactuing (computers and other technology) and is from EUROSTAT 
+  \end{itemize}
+
+  \bigskip
+  When looking at this figure, try to imagine the `systematic' component versus the random fluctuation $\varepsilon_t$
+  $$
+    y_t = {\color[HTML]{B3114B} \mu_t} + \varepsilon_t
+  $$
+\end{frame}
+
+\imageframe{figures/electrical_q_raw.pdf}
+\imageframe{figures/electrical_q_hat_moving_average_3.pdf}
+
+\begin{frame}{Smoothing methods}
+  In the previous figure, I created a \alert{moving average} where I estimated the ${\color[HTML]{B3114B} \mu_t}$ as being an average of $y_{t-2}, y_{t-1}, y_{t}, y_{t+1}, y_{t+2}$
+
+  \begin{itemize}
+    \item This helped to smooth out some of the random fluctuations, perhaps better isolating systematic trends in $y_t$
+  \end{itemize}
+
+  \bigskip
+  \pause
+  What happens if I average a bit more over time?
+\end{frame}
+
+\imageframe{figures/electrical_q_hat_moving_average_9.pdf}
+\imageframe{figures/electrical_q_hat_moving_average_25.pdf}
+
+\begin{frame}{Moving average}
+  In general, our moving average can be calculated as follows:
+  $$
+    \hat{y}_t = \sum_{k=-K}^K \frac{1}{2K+1} y_{t + k}
+  $$
+
+  \bigskip
+  This is just the sample mean using observations within $\pm K$ periods of $t$
+  \begin{itemize}
+    \item $K$ is the number of observations on each side of $y_t$ we include
+    \item $2K+1$ is the number of observations. Note $+1$ because we include $y_t$
+  \end{itemize}
+  
+  \pause
+  \bigskip
+  I will show you how to do this using the \texttt{slider} package in \texttt{R}
+\end{frame}
+
+\begin{frame}{What happened to the end points?}
+  $$
+    \hat{y}_t = \sum_{k=-K}^K \frac{1}{2K+1} y_{t + k}
+  $$
+  Note when calculating a rolling-average, we will face problems on either end of our observed time-series
+  \begin{itemize}
+    \item E.g. for my first observation, I do not have the $y$ from the period before
+  \end{itemize}
+
+  \pause
+  \bigskip
+  That is what causes the truncated ends of the smoothed time-series graph
+\end{frame}
+
+\imageframe{figures/electrical_q_hat_moving_average_25.pdf}
+
+\begin{frame}{Problems with moving averages}{``Over-smoothing''}
+  When $K$ is large, we are using observations quite far away from the current period (e.g. using data from 12 months ago)
+  \begin{itemize}
+    \item This prevents $\hat{y}_t$ from being driven too much by the current period's observation (for better or worse!)
+  \end{itemize}
+
+  \pause
+  \bigskip
+  When we have a high-degree of smoothing, our smoothed time-series misses out on true shocks to $\mu_t$ that are short-lived 
+  \begin{itemize}
+    \item In our previous example, the overly-smoothed version misses the short jump in manufacturing in the early 2000s
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Problems with moving averages}{Seasonality}
+  Say you had time-series data on candy sales over the course of the last decade
+  \begin{itemize}
+    \item You would see a bump every October for Halloween (i.e. it is part of ${\color[HTML]{B3114B} \mu_t}$)
+  \end{itemize}
+
+  \bigskip
+  Even a moderately small $K = 1$ would make $\hat{y}_t$ be too small in October
+  \begin{itemize}
+    \item Temporary seasonal swings in $y$ (i.e. last only a period or two) are going to be lost
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Selecting $K$}
+  There is a trade-off at play
+  \begin{itemize}
+    \item Using a small $K$ only uses the most recent information (perhaps better picking up on recent shocks)
+    
+    \item Using a larger $K$ helps average over non-persistant random noise
+  \end{itemize}
+
+  \pause
+  \bigskip
+  This is an example of a \emph{bias-variance tradeoff}
+  \begin{itemize}
+    \item Smaller $K$ lowers bias, but increases variance
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Mean-squared prediction error}
+  Say we wanted to use data to tell us the `best' $K$ to use for forming $\hat{y}_t$
+
+  \bigskip
+  We could search over $K = 0, 1, 2, 3, \dots$ and see which gives us the smallest mean-squared prediction error:
+  $$
+    \text{MSE} = \frac{1}{T} \sum_{t=1}^T (y_t - \hat{y}_t)^2
+  $$
+\end{frame}
+
+\begin{frame}{Mean-squared prediction error}
+  \vspace*{-\bigskipamount}
+  $$
+    \text{MSE} = \frac{1}{T} \sum_{t=1}^T (y_t - \hat{y}_t)^2
+  $$
+  
+  \bigskip
+  For smoothing averages, when $K = 0$, we just use $\hat{y}_t = y_t$ and we have MSE of $0$
+  \begin{itemize}
+    \item As $K$ increases, the MSE necessarily grows
+  \end{itemize}
+
+  \bigskip
+  Trying to select $K$ this way fails utterly because we are using our training data as our testing data!
+\end{frame}
+
+
+\subsection{Trends and Seasonality}
+
+\begin{frame}{Seasonality, Trends, and Shocks}
+  It is often desirable to break up ${\color[HTML]{B3114B} \mu_t}$ into two components:
+  $$
+    y_t = T_t + S_t +  \varepsilon_t
+  $$
+  \begin{itemize}
+    \item $S_t$ is the seasonality term (e.g. year over year)
+    
+    \item $T_t$ is the trend-term
+    
+    \item and $\varepsilon_t$ is the remaining noise (random fluctuations)
+  \end{itemize}
+
+  \bigskip
+  Let's look into how we can try to separate trends from seasonality
+  \begin{itemize}
+    \item This section will cover the `classical' decomposition (see 3.4 in Forecasting: Principles and Practices)
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Moving average to remove seasonality, $S_t$}
+  It turns out, there is a particular moving average that can remove seasonality from the data
+  \begin{itemize}
+    \item For this example, we will think of monthly data and try to remove annual trend (you can similarly do this with quarterly data)
+  \end{itemize}
+
+  \bigskip
+  Remember we can write our general moving average as
+  $$
+    \hat{y}_t = \sum_{k=-K}^K w_k y_{t + k}
+  $$
+  \begin{itemize}
+    \item If we choose $K$ and $w_k$ right, we will try to remove seasonality
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Moving average to remove seasonality, $S_t$}
+  \begin{align*}
+    \hat{y}_t &= \frac{1}{24} y_{t-6} + \frac{1}{12} y_{t-5} + \frac{1}{12} y_{t-4} + \frac{1}{12} y_{t-3} + \frac{1}{12} y_{t-2} + \frac{1}{12} y_{t-1} \\
+    &\quad + \frac{1}{12} y_{t} \\
+    &\quad + \frac{1}{12} y_{t+1} + \frac{1}{12} y_{t+2} + \frac{1}{12} y_{t3+3} \frac{1}{12} y_{t+4} + \frac{1}{12} y_{t+5} + \frac{1}{24} y_{t+6} 
+  \end{align*}
+
+  Basically a $\pm K$ smoothing average, but first and last get a half the weight
+\end{frame}
+
+\begin{frame}{Moving average to remove seasonality, $S_t$}
+  Or, can do the following:
+  \begin{itemize}
+    \item 12-month rolling average
+    \item 2-month rolling average of the 12-month rolling average
+  \end{itemize}
+
+  Sometimes called the $2 \times 12$ MA
+\end{frame}
+
+\imageframe{figures/retail.pdf}
+\imageframe{figures/retail_ma_2_by_12.pdf}
+
+\begin{frame}{$2 \times 12$ MA}
+  Our $2 \times 12$ moving-average serves as the classical estimate of $\hat{T}_t$, i.e. the time-trend
+
+  \pause
+  \bigskip
+  For quarterly data, you would do
+  $$
+    \hat{y}_t = \frac{1}{8} y_{t-2} + \frac{1}{4} y_{t-1} + \frac{1}{4} y_{t} + \frac{1}{4} y_{t+1}+ \frac{1}{8} y_{t+2}
+  $$
+\end{frame}
+
+\begin{frame}{De-trending our data}
+  Now, we can ``de-trend'' our data by forming $y_t - \hat{T}_t$
+  \begin{itemize}
+    \item $\hat{T}_t$ is our $2 \times 12$ moving average estimate
+  \end{itemize}
+
+  \bigskip
+  What remains is 
+  $$
+    y_t - \hat{T}_t \approx S_t + \varepsilon_t
+  $$
+\end{frame}
+
+\begin{frame}{Estimating seasonality}
+  We want to know how does $y_t - \hat{T}_t$ cycle throughout the year
+  \begin{itemize}
+    \item E.g. is retail employment systematically higher in November and December?
+  \end{itemize}
+
+  \bigskip
+  The classical way to estimate this is take the average of $y_t - \hat{T}_t$ separately for each month
+  \begin{itemize}
+    \item Each month's average serves as the estimated month's ``seasonal trend'', $\hat{S}_t$
+    \begin{itemize}
+      \item Takes the same value year over year
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Seasonality estimation in R}
+  The classical way to estimate this is take the average of $y_t - \hat{T}_t$ separately for each month
+  \begin{itemize}
+    \item This can be done by regression $y_t - \hat{T}_t$ on a set of month indicators (and no intercept)
+  \end{itemize}
+
+  \bigskip
+  In \texttt{R}, this can be done with 
+  \begin{codeblock}
+feols(y_minus_trend ~ 0 + i(month(date)), data = df)
+  \end{codeblock}
+\end{frame}
+
+\imageframe{figures/retail_ma_2_by_12.pdf}
+\imageframe{figures/retail_detrended.pdf}
+\imageframe{figures/retail_seasonal.pdf}
+
+\begin{frame}{Residual}
+  \vspace*{-\bigskipamount}
+  $$
+    y_t - \hat{T}_t - \hat{S}_t \approx \varepsilon_t
+  $$
+  \begin{itemize}
+    \item $\hat{T}_t$ is the $2 \times 12$ moving average estimate of trends
+    
+    \item $\hat{S}_t$ is the monthly average of $y_t - \hat{T}_t$
+  \end{itemize}
+
+  \bigskip
+  What remains after this is a de-trended and de-seasoned data, i.e. random fluctuations
+  \begin{itemize}
+    \item Should visually inspect this to see how good we did at removing trends and seasonality
+  \end{itemize}
+\end{frame}
+
+\imageframe{figures/retail_resid.pdf}
+
+
+\section{Smoothing Methods for Forecasting}
+
+\begin{frame}{Smoothing Methods for Forecasting}
+  Our previous goal was to learn the `systematic' part of the time-series $y_t = \mu_t + \varepsilon_t$
+\end{frame}
+
+\begin{frame}{``Rules'' for forecasting}
+  Typically, we will want to only use data from period $t$ or prior in our model 
+  \begin{itemize}
+    \item E.g. I can't use $y_{t+2}$ to predict tomorrow's $y_{t+1}$ 
+  \end{itemize}
+
+  \bigskip
+  When predicting the future, I can't view use data from the future
+  \begin{itemize}
+    \item So the model I learn can only use past data
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Simplest forecasting method}
+  The \alert{simplest} forecasting method is to use $y_{t-1}$, the previous period's value, as the forecast for $y_t$:
+
+  $$
+    \hat{y}_t = y_{t-1}
+  $$
+  
+  This method is going to use only information from the most recent observations
+  \begin{itemize}
+    \item Maybe the most recent observation is the most-relevant for predicting today
+    \begin{itemize}
+      \item I.e. autocorrleation is high
+    \end{itemize}
+    
+    \item If ${\color[HTML]{B3114B} \mu_t}$ is really wild (i.e. no trends/seasonality), then we should only use recent information
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Cons of using $y_{t-1}$ as a forecast}
+  Using $y_{t-1}$ could fail when:
+  \begin{itemize}
+    \item The data has \alert{trends} or \alert{seasonality} that $y_{t-1}$ doesn't capture
+    \begin{itemize}
+      \item Using August's jacket sales to predict September's jacket sales will not do well
+    \end{itemize}
+
+    \pause
+    \item $y_{t-1}$ can be quite \emph{noisy} 
+    \begin{itemize}
+      \item Maybe yesterday's value of $y$ was weird because of a bad news story that turned out to not be a big deal
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\imageframe{figures/electrical_q_raw.pdf}
+\imageframe{figures/electrical_q_hat_last.pdf}
+
+\begin{frame}{Predicition Error}
+  On the last slide, it's hard to see, but the $\hat{y}_t = y_{t-1}$ does a bad job at predicting $y_t$
+  \begin{itemize}
+    \item The data jumps around too much, so yesterday's value is only weakly predictive of today's value
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Smoothing Methods}
+  We can try to improve on the simple method by smoothing over the last $K$ periods:
+  $$
+    \hat{y}_t = \sum_{k=1}^K w_k y_{t - k},
+  $$
+  where 
+  \begin{itemize}
+    \item $K$ is the number of lags to smooth over
+    \item $w_k$ is the weights put on the $k$-th lagged value of $y$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Smoothing Methods}
+  \vspace*{-\bigskipamount}
+  $$
+    \hat{y}_t = \sum_{k=1}^K w_k y_{t - k},
+  $$
+  
+  \bigskip
+  For example: 
+  \begin{itemize}
+    \item $K = 1$ and $w_1 = 1$ is the simple method $\hat{y}_t = y_{t-1}$
+    
+    \pause
+    \item $K = 3$ and $w_3 = \frac{1}{3}$ is the average of three-previous periods
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Average of previous $y$s}
+  Say we use an average of the $K$ most recent observations:
+  $$
+    \hat{y}_t = \sum_{k=1}^K \frac{1}{K} y_{t - k},
+  $$
+
+  \pause
+  \bigskip
+  As you move ahead one time period, you lose 1 observation ($t - K$) and gain one observation $t$
+  \begin{itemize}
+    \item The most recent observation $y_t$ updates what we think the moving average is
+  \end{itemize}
+\end{frame}
+
+\imageframe{figures/electrical_q_hat_avg_last_3.pdf}
+
+\begin{frame}{Prediction}
+  Note for the next period $y_{t+1}$, we can form our out-of-sample forecast as:
+  $$
+    \hat{y}_{t+1} = \sum_{k=1}^K \frac{1}{K} y_{t - k},
+  $$
+  \begin{itemize}
+    \item This is not true of our mouving average
+  \end{itemize}
+\end{frame}
+
+\subsection{Exponential Smoothing}
+
+\begin{frame}{Exponential Smoothing}
+  It turns out, there is a (typically) better method over the sample average of the previous $K$ periods. 
+
+  \bigskip
+  It is called \alert{Exponential Smoothing} and is quite popular because it works well
+  \begin{itemize}
+    \item Also has some generalizations that allow it to be more flexible
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Simple Exponential Smoothing}
+  The \alert{simple exponential smoothing} method forms predictions in a \emph{recursive manner}:
+  $$
+    \hat{y}_{t+1} = \alpha y_t + (1 - \alpha) \hat{y}_{t}
+  $$
+  \begin{itemize}
+    \item To predict $y$ in period $t+1$, take a weighted sum of the observed $y_t$ and the prediction $\hat{y}_{t-1}$    
+  \end{itemize}
+
+  
+  \bigskip
+  We learn the true value of $y_t$ and update our prediction for the next period
+  
+  \begin{itemize}
+    \item When $y_t > \hat{y}_t$, we revise up our forecast
+    
+    \item When $y_t < \hat{y}_t$, we revise down our forecast
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{How much to update, $\alpha$}
+  \vspace*{-\bigskipamount}
+  $$
+    \hat{y}_{t+1} = \alpha y_t + (1 - \alpha) \hat{y}_{t}
+  $$
+
+  \bigskip
+  $\alpha$ tells us how much to update
+  \begin{itemize}
+    \item $\alpha = 1$ means throw out old prediction and use $y_t$
+    
+    \item $\alpha = 0$ means do not update at all
+    
+    \item $1 > \alpha > 0$ means updating more (close to $1$) or less strongly (close to $0$)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Simple Exponential Smoothing}
+  \vspace*{-\bigskipamount}
+  $$
+    \hat{y}_{t+1} = \alpha y_t + (1 - \alpha) \hat{y}_{t}
+  $$
+  
+  \bigskip
+  There's a problem here though, because how do we get $\hat{y}_{t}$? Well we get it using $\hat{y}_{t-1}$
+  \begin{itemize}
+    \item And to get $\hat{y}_{t-1}$ we need $\hat{y}_{t-2}$...
+    \item and turtles all the way down ...
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Simple Exponential Smoothing}
+  Starting from period $t = 1$, 
+  \begin{align*}
+    \hat{y}_{2} &= \alpha y_1 + (1-\alpha) \ell_0\\
+    \hat{y}_{3} &= \alpha y_2 + (1-\alpha) \hat{y}_{2}\\
+    \vdots\\
+    \hat{y}_{T} &= \alpha y_{T-1} + (1-\alpha) \hat{y}_{T-1}\\
+    \hat{y}_{T+1} &= \alpha y_T + (1-\alpha) \hat{y}_{T}.
+  \end{align*}
+
+  So, we only need the starting point $\ell_0$
+\end{frame}
+
+\begin{frame}{Simple Exponential Smoothing}
+  Since we usually do not care that much about predicting early period's $y$'s, we can just pick $\ell_0$ to be $y_1$ 
+  \begin{itemize}
+    \item It does not turn out to matter that much for forecasting if $T$ is large
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Updating parameter $\alpha$}
+  \vspace*{-\bigskipamount}
+  $$
+    \hat{y}_{t+1} = \alpha y_t + (1 - \alpha) \hat{y}_{t}
+  $$
+
+  \bigskip
+  Let's look at a couple examples of $\alpha$ to build intuition on how this works
+\end{frame}
+
+\imageframe{figures/electrical_q_hat_ses_alpha_0_8.pdf}
+\imageframe{figures/electrical_q_hat_ses_alphas.pdf}
+
+\begin{frame}{Simple Exponential Smoothing and Recursion}
+  We can trace out how $\hat{y}_t$ works as follows:
+  \begin{align*}
+    \hat{y}_{t+1} 
+    &= \alpha y_t + (1 - \alpha) \hat{y}_t \\
+    &= \alpha y_t + (1 - \alpha) \left( \alpha y_{t-1} + (1 - \alpha) \hat{y}_{t-1} \right) \\
+    \pause
+    &= \alpha y_t + \alpha (1 - \alpha) y_{t-1} + (1 - \alpha)^2 \hat{y}_{t-1}  \\
+  \end{align*}
+\end{frame}
+
+\begin{frame}{Simple Exponential Smoothing and Recursion}
+  You can repeat this process many times
+  \begin{align*}
+    \hat{y}_{t+1} 
+    &= \alpha y_t + \alpha (1 - \alpha) y_{t-1} + \alpha (1 - \alpha)^2 \hat{y}_{t-1}  \\
+    &= \alpha y_t + \alpha (1 - \alpha) y_{t-1} + \alpha (1 - \alpha)^2  y_{t-1} + (1- \alpha)^3 \hat{y}_{t-2}  \\
+    &= \alpha y_t + \alpha (1 - \alpha) y_{t-1} + \alpha (1 - \alpha)^2  y_{t-1} + \alpha (1- \alpha)^3 y_{t-2} + (1 - \alpha)^4 \hat{y}_{t-3}  \\
+  \end{align*}
+
+  \bigskip
+  Simple Exponential Smoothing is actually taking a weighted average of past $y$ values all the way back to the first-period
+\end{frame}
+
+\imageframe{figures/ses_weights_for_different_alpha.pdf}
+
+\begin{frame}{Weights and `adaptability'}
+  From the previous figure, it is clear that different values of $\alpha$ bput different weights on long-run values
+  \begin{itemize}
+    \item A large $\alpha$ is more `adaptable' in that it can respond much more quickly to changes in $y$
+    
+    \item A small $\alpha$ puts weight more evenly
+  \end{itemize}
+
+  \bigskip
+  The different emphasis that these weights put have implications for how the SES method deals with trends and seasonality
+\end{frame}
+
+\subsection{Trends and Seasonality with SES}
+
+\begin{frame}{Trends}
+  The simple exponential smoothing method can fail when the data has long-term trends
+  \begin{itemize}
+    \item When $\alpha$ is smaller, we lean more on observations from the past (when the trend was lower)
+  \end{itemize}
+
+  \bigskip
+  For example, let's look at smoothing US GDP estimates
+\end{frame}
+
+\imageframe{figures/gdp.pdf}
+\imageframe{figures/gdp_ses_alphas.pdf}
+
+\begin{frame}{Simple Exponential Smoothing and Trends}
+  Since GDP is consistently trending upwards, old values of $y_{t-k}$ are systematically lower
+  \begin{itemize}
+    \item Lower values of $\alpha$ will put more weight on older values, hence $\hat{y}_t$ being systematically too low
+  \end{itemize}
+
+  \bigskip
+  SES will also miss trends
+  \begin{itemize}
+    \item E.g. consider retail employment which is systematically higher around the end of the year
+  \end{itemize}
+\end{frame}
+
+\imageframe{figures/retail.pdf}
+\imageframe{figures/retail_ses_alphas.pdf}
+
+
+\begin{frame}{Holt-Winters method}
+  Once again, we face this problem with these methods that we focus mainly on using recent observations in terms of $t$
+  \begin{itemize}
+    \item This ignores \emph{trends} and \emph{seasonality}
+  \end{itemize}
+
+  \bigskip
+  The \alert{Holt-Winters} method is a more advanced method that allows for (1) repeated seasonality (year-over-year) and (2) smoothly-evolving trends 
+  \begin{itemize}
+    \item Allows us to not `overfit' short term fluctuations as much by learning something about general longer-run trends
+  \end{itemize}
+\end{frame}
+
+
+
+\end{document}
