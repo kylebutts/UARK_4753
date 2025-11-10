@@ -7,7 +7,7 @@ format: pdf
 
 ## Smoothing methods
 
-To estimate a rolling average, we will use the `slider` package. You may need to install it using `instll.packages("slider")`.
+To estimate a rolling average, we will use the `slider` package. You may need to install it using `install.packages("slider")`.
 
 We will experiment with the University of Arkansas enrollment data:
 

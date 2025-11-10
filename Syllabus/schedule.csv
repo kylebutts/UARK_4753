@@ -40,28 +40,28 @@ Week,Dates,name,value
 10,10/20 - 10/22,Wednesday,R Lab 4 -- *Data Analysis Project in R
 10,10/20 - 10/22,Assignments,"R Lab 4, *Sunday*"
 
-11,10/27 - 10/29,Monday,Time Series Smoothing Methods
-11,10/27 - 10/29,Wednesday,R Lab 5 -- *Intro to working with Time-Series Data in R*
+11,10/27 - 10/29,Monday,R Lab 4 -- *Data Analysis Project in R
+11,10/27 - 10/29,Wednesday,Time Series Methods
 11,10/27 - 10/29,Assignments,"R Lab 4, *Sunday*"
 
-12,11/03 - 11/05,Monday,Time Series Smoothing Methods
-12,11/03 - 11/05,Wednesday,Regression with Time Series Data
+12,11/03 - 11/05,Monday,Time Series Methods
+12,11/03 - 11/05,Wednesday,Time Series Methods
 12,11/03 - 11/05,Assignments,"R Lab 5, *Sunday*"
 
-13,11/10 - 11/12,Monday,Regression with Time Series Data
-13,11/10 - 11/12,Wednesday,Regression with Time Series Data
+13,11/10 - 11/12,Monday,R Lab 5 -- *Intro to working with Time-Series Data in R*
+13,11/10 - 11/12,Wednesday,Time Series Methods
 13,11/10 - 11/12,Assignments,
 
 14,11/17 - 11/19,Monday,R Lab 6 -- *Time-series Regression in R*
-14,11/17 - 11/19,Wednesday,Midterm
+14,11/17 - 11/19,Wednesday,Time Series Methods
 14,11/17 - 11/19,Assignments,"R Lab 6, *Sunday*"
 
-15,11/24 - 11/26,Monday,R Lab 7 -- *Time-series Data Analysis Project*
+15,11/24 - 11/26,Monday,Time Series Methods
 15,11/24 - 11/26,Wednesday,No Class
 15,11/24 - 11/26,Assignments,
 
-16,12/01 - 12/03,Monday,R Lab 7 -- *Time-series Data Analysis Project*
-16,12/01 - 12/03,Wednesday,Review
+16,12/01 - 12/03,Monday,Midterm
+16,12/01 - 12/03,Wednesday,R Lab 7 -- *Time-series Data Analysis Project*
 16,12/01 - 12/03,Assignments,"R Lab 7, *Sunday*"
 
 Final,TBD,Assignments,Final Exam

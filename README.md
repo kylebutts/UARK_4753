@@ -134,12 +134,12 @@ This is a tentative schedule. This is the first time I've taught this course, so
 | 8 | 10/06 - 10/08 | Multiple Regression Analysis | Multiple Regression Analysis |  |
 | 9 | 10/13 - 10/15 | No Class | Multiple Regression Analysis |  |
 | 10 | 10/20 - 10/22 | Midterm | R Lab 4 – \*Data Analysis Project in R | R Lab 4, *Sunday* |
-| 11 | 10/27 - 10/29 | Time Series Smoothing Methods | R Lab 5 – *Intro to working with Time-Series Data in R* | R Lab 4, *Sunday* |
-| 12 | 11/03 - 11/05 | Time Series Smoothing Methods | Regression with Time Series Data | R Lab 5, *Sunday* |
-| 13 | 11/10 - 11/12 | Regression with Time Series Data | Regression with Time Series Data |  |
-| 14 | 11/17 - 11/19 | R Lab 6 – *Time-series Regression in R* | Midterm | R Lab 6, *Sunday* |
-| 15 | 11/24 - 11/26 | R Lab 7 – *Time-series Data Analysis Project* | No Class |  |
-| 16 | 12/01 - 12/03 | R Lab 7 – *Time-series Data Analysis Project* | Review | R Lab 7, *Sunday* |
+| 11 | 10/27 - 10/29 | Time Series Methods | Time Series Methods | R Lab 4, *Sunday* |
+| 12 | 11/03 - 11/05 | Time Series Methods | Time Series Methods | R Lab 5, *Sunday* |
+| 13 | 11/10 - 11/12 | R Lab 5 – *Intro to working with Time-Series Data in R* | Time Series Methods |  |
+| 14 | 11/17 - 11/19 | R Lab 6 – *Time-series Regression in R* | Time Series Methods | R Lab 6, *Sunday* |
+| 15 | 11/24 - 11/26 | Time Series Methods | No Class |  |
+| 16 | 12/01 - 12/03 | Midterm | R Lab 7 – *Time-series Data Analysis Project* | R Lab 7, *Sunday* |
 | Final | TBD |  |  | Final Exam |
 <!-- Schedule -->
 

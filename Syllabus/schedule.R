@@ -55,8 +55,7 @@ tab <- cal |>
   ) |>
   format_tt(j = c("Monday", "Wednesday", "Assignments"), markdown = TRUE) |>
   style_tt(i = nrow(cal), j = "Assignments", color = "#9a2515") |>
-  # style_tt(i = midterm_idx_monday, j = "Monday", color = "#9a2515") |>
-  style_tt(i = midterm_idx_wednesday, j = "Wednesday", color = "#9a2515") |>
+  # style_tt(i = midterm_idx_wednesday, j = "Wednesday", color = "#9a2515") |>
   style_tt(i = noclass_idx_monday, j = "Monday", color = "#f26d21") |>
   style_tt(i = noclass_idx_wednesday, j = "Wednesday", color = "#f26d21")
 

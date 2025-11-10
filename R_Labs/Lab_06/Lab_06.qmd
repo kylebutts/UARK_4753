@@ -1,10 +1,16 @@
 ---
-title: "Lab 06 - Working with Time-Series"
+title: "Lab 06 - Working with Time-Series Data"
 author: "YOUR NAME"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 format: pdf
 ---
 
+
+```{r}
+library(lubridate)
+library(tsibble) # For `yearmonth()` function
+library(fixest)
+```
 
 # Time to work with Times
 
@@ -17,6 +23,7 @@ The simplest time-series data to deal with is annual data.
 For example, take `uark_enrollment` below.
 
 ```{r}
+# fmt: skip
 uark_enrollment <- data.frame(
   year = c(2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024),
   full_time = c(19508, 20379, 21047, 21415, 21668, 22144, 22602, 22193, 22070, 23282, 25214, 28426, 29886),
@@ -53,6 +60,7 @@ Here we have box scores from Arkansas football's 2023 season, but note the days 
 
 ```{r}
 # Arkansas' 2023 football games
+# fmt: skip
 football <- data.frame(
   date = c(
     "11-11-2023", "11-04-2023", "09-23-2023", "09-02-2023", "10-07-2023",
@@ -105,7 +113,7 @@ It turns out R has a bunch of functionality to work with dates built in.
 But, I think the easiest way to work with dates is to use the `lubridate` package, so let's load that **library**.
 
 ```{r}
-## You might need to install this. 
+## You might need to install this.
 ## To do so, run this:
 ## install.packages("lubridate")
 library(lubridate)
@@ -148,7 +156,12 @@ cat(paste0("Today is ", today, ". Tomorrow is ", tomorrow, "."))
 
 Dates and the `date` function work as vectors too:
 ```{r}
-last_4_classes <- date(c("2025-10-22", "2025-10-20", "2025-10-15", "2025-10-13"))
+last_4_classes <- date(c(
+  "2025-11-05",
+  "2025-11-03",
+  "2025-10-29",
+  "2025-10-27"
+))
 print(last_4_classes)
 ```
 
@@ -190,7 +203,7 @@ It is **very important** to sort you data when working with time-series data!
 ```{r}
 football <- sort_by(football, ~date)
 
-## equivalent to 
+## equivalent to
 ## football <- sort_by(football, football$date)
 ## football <- sort_by(football, football$year, football$month, football$day)
 ## football <- football[order(football$date), ]
@@ -215,7 +228,7 @@ year(football$date)
 month(football$date)
 month(football$date, label = TRUE)
 
-## day of month = 
+## day of month =
 day(football$date)
 mday(football$date)
 
@@ -278,21 +291,21 @@ Do this to create the variable `unemployment$unrate_lag1`
 T <- nrow(unemployment)
 
 ## Get y_{t-1}
-unemployment$unrate_lag1 <- 
+unemployment$unrate_lag1 <-
   c(NA, unemployment$unrate[1:(T - 1)])
 
 ## Get y_{t-2}
-unemployment$unrate_lag2 <- 
+unemployment$unrate_lag2 <-
   c(NA, NA, unemployment$unrate[1:(T - 2)])
 
 ## Get y_{t-3}
-unemployment$unrate_lag3 <- 
+unemployment$unrate_lag3 <-
   c(NA, NA, NA, unemployment$unrate[1:(T - 3)])
 
 ## Grab last-years values, y_{t-12}
-unemployment$unrate_lag12 <- 
+unemployment$unrate_lag12 <-
   c(
-    rep(NA, 12), 
+    rep(NA, 12),
     unemployment$unrate[1:(T - 12)]
   )
 ```
@@ -312,7 +325,7 @@ Instead of `na.rm = TRUE`, we need to use the argument `use = "complete.obs"`.
 ```{r}
 cor(
   x = unemployment$unrate,
-  y = unemployment$unrate_lag1, 
+  y = unemployment$unrate_lag1,
   use = "complete.obs"
 )
 
@@ -341,7 +354,7 @@ One important variable we might want is the quarter that a date falls within (Q1
 unemployment$quarter <- quarter(unemployment$date)
 
 ## Keep yourself from accidentally using quarter as a numeric
-unemployment$quarter <- 
+unemployment$quarter <-
   paste("Q", unemployment$quarter)
 ```
 
@@ -361,13 +374,15 @@ unemployment$q3 <- (quarter(unemployment$date) == 3)
 unemployment$q4 <- (quarter(unemployment$date) == 4)
 est_bad_version <- feols(
   unrate ~ 0 + q1 + q2 + q3 + q4,
-  data = unemployment, vcov = "hc1"
+  data = unemployment,
+  vcov = "hc1"
 )
 
 ## Use `i`, it prints more nicely and is more simple!
 est <- feols(
   unrate ~ 0 + i(quarter(date)),
-  data = unemployment, vcov = "hc1"
+  data = unemployment,
+  vcov = "hc1"
 )
 etable(est)
 ```
@@ -378,7 +393,8 @@ If we were to add an intercept, then we would estimate difference in means betwe
 ```{r}
 est_w_intercept <- feols(
   unrate ~ 1 + i(quarter(date)),
-  data = unemployment, vcov = "hc1"
+  data = unemployment,
+  vcov = "hc1"
 )
 etable(est, est_w_intercept)
 ```

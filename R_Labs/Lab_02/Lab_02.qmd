@@ -247,7 +247,7 @@ Usually data is found in a .csv file, but sometimes it will be in different form
 
 ```{r}
 # From a website
-fandango <- read.csv("https://raw.githubusercontent.com/kylebutts/UARK_4753/refs/heads/main/R_Labs/Lab_1/fandango_score_comparison.csv")
+fandango <- read.csv("https://raw.githubusercontent.com/kylebutts/UARK_4753/refs/heads/main/R_Labs/Lab_02/data/fandango_score_comparison.csv")
 head(fandango)
 ```
 
@@ -451,9 +451,9 @@ ggplot(
 
 - Compute the five-number summary for Rotten Tomatoes, Metacritic, and IMDB scores.
 
-- Subset data for Rotten Tomatoes scores above 90
+- Subset data for Rotten Tomatoes scores above 80
 
-- Subset data for movies with a IMDB score above 9 and Rotten Tomatoes scores above 90.
+- Subset data for movies with a IMDB score above 8 and Rotten Tomatoes scores above 90.
 
 - Among those movies with a Rotten Tomatoes score above 90, what is the five-number summary of IMDB Scores
 
