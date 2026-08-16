@@ -1,5 +1,5 @@
 ---
-title: "Lab 10 - Prophet Forecasting"
+title: "Lab 09 - Prophet Forecasting"
 author: "PUT YOUR NAME HERE"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 format: pdf
@@ -15,17 +15,15 @@ Finally, we load in our Peyton Manning wikipedia views daily time-series. Prophe
 library(lubridate)
 library(prophet) # install.packages("prophet")
 
-# I fixed a small bug, we will see if it is merged by next year's class
-# https://github.com/facebook/prophet/pull/2641
-source("temp_prophet_fix_seasonality.R") 
-
 library(ggplot2)
 theme_set(
-  theme_light() + 
-  theme(panel.border = element_blank())
+  theme_light() +
+    theme(panel.border = element_blank())
 )
 
-df <- read.csv("https://raw.githubusercontent.com/facebook/prophet/main/examples/example_wp_log_peyton_manning.csv")
+df <- read.csv(
+  "https://raw.githubusercontent.com/facebook/prophet/main/examples/example_wp_log_peyton_manning.csv"
+)
 df$ds <- ymd(df$ds)
 
 plot(x = df$ds, y = df$y, type = "l")
@@ -80,7 +78,9 @@ To do so, let's disable all of the model parameters so that we have a completely
 ```{r}
 # Disable everything
 m <- prophet(
-  growth = "flat", changepoints = NULL, n.changepoints = 0, 
+  growth = "flat",
+  changepoints = NULL,
+  n.changepoints = 0,
   yearly.seasonality = FALSE,
   weekly.seasonality = FALSE,
   holidays = NULL,
@@ -120,7 +120,9 @@ Let's start with
 ```{r}
 # Yearly seasonality with fourier order 1
 m <- prophet(
-  growth = "flat", changepoints = NULL, n.changepoints = 0, 
+  growth = "flat",
+  changepoints = NULL,
+  n.changepoints = 0,
   yearly.seasonality = 1,
   weekly.seasonality = FALSE,
   holidays = NULL,
@@ -139,7 +141,9 @@ prophet_plot_components(m, forecast)
 ```{r}
 # Yearly seasonality with fourier order 3
 m <- prophet(
-  growth = "flat", changepoints = NULL, n.changepoints = 0, 
+  growth = "flat",
+  changepoints = NULL,
+  n.changepoints = 0,
   yearly.seasonality = 3,
   weekly.seasonality = FALSE,
   holidays = NULL,
@@ -158,7 +162,9 @@ prophet_plot_components(m, forecast)
 ```{r}
 # Yearly seasonality with the default order (10)
 m <- prophet(
-  growth = "flat", changepoints = NULL, n.changepoints = 0, 
+  growth = "flat",
+  changepoints = NULL,
+  n.changepoints = 0,
   yearly.seasonality = TRUE,
   weekly.seasonality = FALSE,
   holidays = NULL,
@@ -184,7 +190,9 @@ Next, we will do the same with day-of-week patterns using `weekly.seasonality` p
 # Yearly seasonality with the default order (10)
 # & weekly seasonality with fourier order 1
 m <- prophet(
-  growth = "flat", changepoints = NULL, n.changepoints = 0, 
+  growth = "flat",
+  changepoints = NULL,
+  n.changepoints = 0,
   yearly.seasonality = 10,
   weekly.seasonality = 1,
   holidays = NULL,
@@ -204,7 +212,9 @@ prophet_plot_components(m, forecast)
 # Yearly seasonality with the default order (10)
 # & weekly seasonality with the default order (3)
 m <- prophet(
-  growth = "flat", changepoints = NULL, n.changepoints = 0, 
+  growth = "flat",
+  changepoints = NULL,
+  n.changepoints = 0,
   yearly.seasonality = 10,
   weekly.seasonality = 3,
   holidays = NULL,
@@ -233,7 +243,9 @@ The second compenent is adding piece-wise linear trends where the number of chan
 # & weekly seasonality with the default order (3)
 # & linear trend
 m <- prophet(
-  growth = "linear", changepoints = NULL, n.changepoints = 0, 
+  growth = "linear",
+  changepoints = NULL,
+  n.changepoints = 0,
   yearly.seasonality = "auto",
   weekly.seasonality = "auto",
   holidays = NULL,
@@ -258,7 +270,9 @@ Let's now upgrade to a piece-wise linear trend with a change point that starts w
 # & weekly seasonality with the default order (3)
 # & piece-wise trend with 1 (potential) change point (automatically chosen)
 m <- prophet(
-  growth = "linear", changepoints = c("2012-03-07"), n.changepoints = 1, 
+  growth = "linear",
+  changepoints = c("2012-03-07"),
+  n.changepoints = 1,
   yearly.seasonality = "auto",
   weekly.seasonality = "auto",
   holidays = NULL,
@@ -283,7 +297,9 @@ If we leave `changepoints = NULL`, the model will instead automatically chose wh
 # & weekly seasonality with the default order (3)
 # & piece-wise trend with 1 (potential) change point (automatically chosen)
 m <- prophet(
-  growth = "linear", changepoints = NULL, n.changepoints = 1, 
+  growth = "linear",
+  changepoints = NULL,
+  n.changepoints = 1,
   yearly.seasonality = "auto",
   weekly.seasonality = "auto",
   holidays = NULL,
@@ -308,7 +324,9 @@ The default is to allow 25 change points (that's a lot!). But note the model doe
 # & weekly seasonality with the default order (3)
 # & piece-wise trend with the default number of (potential) change points (25) (automatically chosen)
 m <- prophet(
-  growth = "linear", changepoints = NULL, n.changepoints = 25, 
+  growth = "linear",
+  changepoints = NULL,
+  n.changepoints = 25,
   yearly.seasonality = "auto",
   weekly.seasonality = "auto",
   holidays = NULL,
@@ -335,11 +353,20 @@ Last, we will add holiday indicators. Here too, `prophet` is particular about th
 playoffs <- data.frame(
   holiday = "playoff",
   ds = ymd(c(
-    "2008-01-13", "2009-01-03", "2010-01-16",
-    "2010-01-24", "2010-02-07", "2011-01-08",
-    "2013-01-12", "2014-01-12", "2014-01-19",
-    "2014-02-02", "2015-01-11", "2016-01-17",
-    "2016-01-24", "2016-02-07"
+    "2008-01-13",
+    "2009-01-03",
+    "2010-01-16",
+    "2010-01-24",
+    "2010-02-07",
+    "2011-01-08",
+    "2013-01-12",
+    "2014-01-12",
+    "2014-01-19",
+    "2014-02-02",
+    "2015-01-11",
+    "2016-01-17",
+    "2016-01-24",
+    "2016-02-07"
   )),
   lower_window = 0,
   upper_window = 1
@@ -353,7 +380,9 @@ superbowls <- data.frame(
 holidays <- rbind(playoffs, superbowls)
 
 m <- prophet(
-  growth = "linear", changepoints = NULL, n.changepoints = 25, 
+  growth = "linear",
+  changepoints = NULL,
+  n.changepoints = 25,
   yearly.seasonality = 10,
   weekly.seasonality = 3,
   holidays = holidays
@@ -362,8 +391,8 @@ m <- fit.prophet(m, df)
 future <- make_future_dataframe(m, periods = 90)
 forecast <- predict(m, future)
 
-plot(m, forecast) + 
-  add_changepoints_to_plot(m) 
+plot(m, forecast) +
+  add_changepoints_to_plot(m)
 ```
 
 ```{r}
@@ -416,6 +445,7 @@ Fit a prophet model using the defaults and plot the forecast (using `plot`) and 
 # Fit model and plot fitted predictions
 
 ```
+
 ```{r}
 # Components
 
@@ -438,14 +468,3 @@ ANSWER HERE
 
 
 
-
-```{r}
-m <- prophet()
-m <- fit.prophet(m, bitcoin)
-future <- make_future_dataframe(m, periods = 45)
-forecast <- predict(m, future)
-plot(m, forecast)
-```
-```{r}
-prophet_plot_components(m, forecast)
-```

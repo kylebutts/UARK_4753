@@ -1,129 +1,470 @@
 ---
-title: "Lab 09 - Time Series Practice"
+title: "Lab 09 - Prophet Forecasting"
 author: "PUT YOUR NAME HERE"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 format: pdf
 ---
 
-For this assignment, you may chose one of four datasets to conduct your analysis on:
-1. `us_book_sales.csv` contains monthly data on US book sales (in person).
-2. `us_airline_prices.csv` contains monthly data on the average price of an airline ticket.
-3. `candy_manufacturing.csv` contains monthly data on candy manufacturing in the US. 
-4. `electricity_prices.csv` contains monthly data on the wholesale price of residential electricity.
+This R lab will focus on learning and understanding the forecasting techniques used by the very popular open source package `prophet` by Facebook.
 
+First let's load our `lubridate` package and the `prophet` package (you will likely need to install this). Second, there is a small bug in their code that I fixed, so run the `source()` line below to fix it. 
+
+Finally, we load in our Peyton Manning wikipedia views daily time-series. Prophet is a bit odd and require our data to have *specific* names, `ds` for date and `y` for the outcome variable.
 
 ```{r}
 library(lubridate)
-library(fixest)
+library(prophet) # install.packages("prophet")
 
-# Load data
+library(ggplot2)
+theme_set(
+  theme_light() +
+    theme(panel.border = element_blank())
+)
 
-# Convert `date` to a `Date` variable
+df <- read.csv(
+  "https://raw.githubusercontent.com/facebook/prophet/main/examples/example_wp_log_peyton_manning.csv"
+)
+df$ds <- ymd(df$ds)
 
-```
-
-Let's look at the raw data. Use `plot(x = df$date, y = df$Y type = "l")` with the correct `Y` variable name to make a time-series plot of the data 
-
-```{r}
-
-```
-
-
-## Time-series Decomposition
-
-### Estimating time-trend $\hat{T}_t$
-
-We will perform a time-series decomposition using tools we have developed in the time-series topics. 
-First, we will estimate the time-trend using a $2 \times 12$ Moving Average:
-1. First, estimate a $12$-MA by using `slider::slide_dbl` with `.before = 5, .after = 6, .complete = TRUE`.
-   Store the result of this in a variable in your data-frame. 
-   (Side note that 12 is used because of monthly data. Daily data you could use a $365$-MA).
-
-2. Second, estimate a $2$-MA on the $12$-MA variable you created using `slider::slide_dbl` with `.before = 1, .after = 0, .complete = TRUE`.
-   Store the results of this in a variable called `Y_trend`, where `Y` is the name of the outcome. 
-   This is your "trend" variable, or $\hat{T}_t$.
-
-```{r}
-
-
+plot(x = df$ds, y = df$y, type = "l")
 ```
 
 
-### Estimating seasonal pattern on $y_t - \hat{T}_t$
+## Default parameters
 
-Now, we will estimate a seasonal pattern. 
-To do so, "detrend" the data by taking the difference between the observed outcome and the `trend` estimate from the previous step.
-Call this variable `Y_detrended`, where `Y` is the name of the outcome. 
+By default `prophet` is set up to do a really good job at forecasting daily time-series data (the people at Facebook do a lot of this...). 
 
-Then regress `Y_detrended` on a set of monthly indicator variables to estimate the seasonal pattern using `feols`:
+First, we call `prophet()` which sets up model parameters (we will leave them all blank to accept their defaults). We will store it in a variable we call `m`. Then, we call `fit.propet()` on `m` and our data frame (`df`) and save it back into `m`.
+
 ```{r}
+# Default prophet call
+m <- prophet()
+
+# the date column must be `ds`
+# the outcome variable must be `y`
+m <- fit.prophet(m, df)
+```
+
+Somewhere internally, `prophet` has set up our predictors and run a time-series regression model. To see how it performs, we will complete the forecasting. First, let's create a `future` dataset which really just extends our `df$ds` into the future by the number of days specified in `periods`:
+
+```{r}
+# Extend `df$ds` into the future by `periods` days
+future <- make_future_dataframe(m, periods = 90)
+```
+
+Next, we will call `predict` using our fit model `m` and the `future` data frame.
+```{r}
+forecast <- predict(m, future)
+```
+
+We can plot the forecast using `plot(m, forecast)`:
+```{r}
+plot(m, forecast)
+```
+
+We can also "peak" into the time-series components using `prophet_plot_components(m, forecast)`:
+
+```{r}
+prophet_plot_components(m, forecast)
+```
+
+
+
+## Breaking down how `prophet` creates a forecast
+
+Let's build up the `prophet` model piece by piece to figure out what it's doing. 
+To do so, let's disable all of the model parameters so that we have a completely uninformative forecast:
+
+```{r}
+# Disable everything
+m <- prophet(
+  growth = "flat",
+  changepoints = NULL,
+  n.changepoints = 0,
+  yearly.seasonality = FALSE,
+  weekly.seasonality = FALSE,
+  holidays = NULL,
+)
+m <- fit.prophet(m, df)
+future <- make_future_dataframe(m, periods = 90)
+forecast <- predict(m, future)
+
+plot(m, forecast)
+```
+
+```{r}
+prophet_plot_components(m, forecast)
+```
+
+
+
+There are three main terms in the forecast:
+$$
+y_t = S_t + T_t + H_t + \varepsilon_t,
+$$
+where
+- $S_t$ is the seasonality term (e.g. day-of-year, day-of-week, and time-of-day)
+- $T_t$ is the trend term (e.g. linear or piece-wise linear)
+- $H_t$ is the "holiday" term (e.g. a set of indicators for "holidays" like holiday time, covid, etc.)
+
+We will add in each term one-by-one to the forecast
+
+
+
+### Yearly seasonality using Fourier series
+
+Let's add in a day-of-the-year seasonal pattern. The way `prophet` does this is using a Fourier series, i.e. smooth combinations of sine and cosine curves with period equal to 365.25 days.
+Let's start with 
+
+
+```{r}
+# Yearly seasonality with fourier order 1
+m <- prophet(
+  growth = "flat",
+  changepoints = NULL,
+  n.changepoints = 0,
+  yearly.seasonality = 1,
+  weekly.seasonality = FALSE,
+  holidays = NULL,
+)
+m <- fit.prophet(m, df)
+future <- make_future_dataframe(m, periods = 90)
+forecast <- predict(m, future)
+
+plot(m, forecast)
+```
+
+```{r}
+prophet_plot_components(m, forecast)
+```
+
+```{r}
+# Yearly seasonality with fourier order 3
+m <- prophet(
+  growth = "flat",
+  changepoints = NULL,
+  n.changepoints = 0,
+  yearly.seasonality = 3,
+  weekly.seasonality = FALSE,
+  holidays = NULL,
+)
+m <- fit.prophet(m, df)
+future <- make_future_dataframe(m, periods = 90)
+forecast <- predict(m, future)
+
+plot(m, forecast)
+```
+
+```{r}
+prophet_plot_components(m, forecast)
+```
+
+```{r}
+# Yearly seasonality with the default order (10)
+m <- prophet(
+  growth = "flat",
+  changepoints = NULL,
+  n.changepoints = 0,
+  yearly.seasonality = TRUE,
+  weekly.seasonality = FALSE,
+  holidays = NULL,
+)
+m <- fit.prophet(m, df)
+future <- make_future_dataframe(m, periods = 90)
+forecast <- predict(m, future)
+
+plot(m, forecast)
+```
+
+```{r}
+prophet_plot_components(m, forecast)
+```
+
+
+
+### Weekly seasonality using Fourier series
+
+Next, we will do the same with day-of-week patterns using `weekly.seasonality` parameter. Let's again start with 1 and then extend to the default (3). 
+
+```{r}
+# Yearly seasonality with the default order (10)
+# & weekly seasonality with fourier order 1
+m <- prophet(
+  growth = "flat",
+  changepoints = NULL,
+  n.changepoints = 0,
+  yearly.seasonality = 10,
+  weekly.seasonality = 1,
+  holidays = NULL,
+)
+m <- fit.prophet(m, df)
+future <- make_future_dataframe(m, periods = 90)
+forecast <- predict(m, future)
+
+plot(m, forecast)
+```
+
+```{r}
+prophet_plot_components(m, forecast)
+```
+
+```{r}
+# Yearly seasonality with the default order (10)
+# & weekly seasonality with the default order (3)
+m <- prophet(
+  growth = "flat",
+  changepoints = NULL,
+  n.changepoints = 0,
+  yearly.seasonality = 10,
+  weekly.seasonality = 3,
+  holidays = NULL,
+)
+m <- fit.prophet(m, df)
+future <- make_future_dataframe(m, periods = 90)
+forecast <- predict(m, future)
+
+plot(m, forecast)
+```
+
+```{r}
+prophet_plot_components(m, forecast)
+```
+
+
+
+### Piece-wise linear trends
+
+So we have seen how `prophet` fits repeating patterns: day-of-the-year, day-of-the-week, and (if we had sub-daily data) time-of-the-day. 
+
+The second compenent is adding piece-wise linear trends where the number of change points and where they are located are selected "optimally" by the data.
+
+```{r}
+# Yearly seasonality with the default order (10)
+# & weekly seasonality with the default order (3)
+# & linear trend
+m <- prophet(
+  growth = "linear",
+  changepoints = NULL,
+  n.changepoints = 0,
+  yearly.seasonality = "auto",
+  weekly.seasonality = "auto",
+  holidays = NULL,
+)
+m <- fit.prophet(m, df)
+future <- make_future_dataframe(m, periods = 90)
+forecast <- predict(m, future)
+
+plot(m, forecast) +
+  add_changepoints_to_plot(m)
+```
+
+```{r}
+prophet_plot_components(m, forecast)
+```
+
+
+Let's now upgrade to a piece-wise linear trend with a change point that starts when he was traded to the Broncos (2012-03-07):
+
+```{r}
+# Yearly seasonality with the default order (10)
+# & weekly seasonality with the default order (3)
+# & piece-wise trend with 1 (potential) change point (automatically chosen)
+m <- prophet(
+  growth = "linear",
+  changepoints = c("2012-03-07"),
+  n.changepoints = 1,
+  yearly.seasonality = "auto",
+  weekly.seasonality = "auto",
+  holidays = NULL,
+)
+m <- fit.prophet(m, df)
+future <- make_future_dataframe(m, periods = 90)
+forecast <- predict(m, future)
+
+plot(m, forecast) +
+  add_changepoints_to_plot(m)
+```
+
+```{r}
+prophet_plot_components(m, forecast)
+```
+
+
+If we leave `changepoints = NULL`, the model will instead automatically chose where the changepoint is
+
+```{r}
+# Yearly seasonality with the default order (10)
+# & weekly seasonality with the default order (3)
+# & piece-wise trend with 1 (potential) change point (automatically chosen)
+m <- prophet(
+  growth = "linear",
+  changepoints = NULL,
+  n.changepoints = 1,
+  yearly.seasonality = "auto",
+  weekly.seasonality = "auto",
+  holidays = NULL,
+)
+m <- fit.prophet(m, df)
+future <- make_future_dataframe(m, periods = 90)
+forecast <- predict(m, future)
+
+plot(m, forecast) +
+  add_changepoints_to_plot(m)
+```
+
+```{r}
+prophet_plot_components(m, forecast)
+```
+
+
+The default is to allow 25 change points (that's a lot!). But note the model does not need to use all of the change points if the model determines it is starting to overfit the time-series sample
+
+```{r}
+# Yearly seasonality with the default order (10)
+# & weekly seasonality with the default order (3)
+# & piece-wise trend with the default number of (potential) change points (25) (automatically chosen)
+m <- prophet(
+  growth = "linear",
+  changepoints = NULL,
+  n.changepoints = 25,
+  yearly.seasonality = "auto",
+  weekly.seasonality = "auto",
+  holidays = NULL,
+)
+m <- fit.prophet(m, df)
+future <- make_future_dataframe(m, periods = 90)
+forecast <- predict(m, future)
+
+plot(m, forecast) +
+  add_changepoints_to_plot(m)
+```
+
+```{r}
+prophet_plot_components(m, forecast)
+```
+
+
+
+### Holiday indicators
+
+Last, we will add holiday indicators. Here too, `prophet` is particular about the column names. I've added the days he played in a playoff game and when he played in a superbowl game.
+
+```{r}
+playoffs <- data.frame(
+  holiday = "playoff",
+  ds = ymd(c(
+    "2008-01-13",
+    "2009-01-03",
+    "2010-01-16",
+    "2010-01-24",
+    "2010-02-07",
+    "2011-01-08",
+    "2013-01-12",
+    "2014-01-12",
+    "2014-01-19",
+    "2014-02-02",
+    "2015-01-11",
+    "2016-01-17",
+    "2016-01-24",
+    "2016-02-07"
+  )),
+  lower_window = 0,
+  upper_window = 1
+)
+superbowls <- data.frame(
+  holiday = "superbowl",
+  ds = ymd(c("2010-02-07", "2014-02-02", "2016-02-07")),
+  lower_window = 0,
+  upper_window = 1
+)
+holidays <- rbind(playoffs, superbowls)
+
+m <- prophet(
+  growth = "linear",
+  changepoints = NULL,
+  n.changepoints = 25,
+  yearly.seasonality = 10,
+  weekly.seasonality = 3,
+  holidays = holidays
+)
+m <- fit.prophet(m, df)
+future <- make_future_dataframe(m, periods = 90)
+forecast <- predict(m, future)
+
+plot(m, forecast) +
+  add_changepoints_to_plot(m)
+```
+
+```{r}
+prophet_plot_components(m, forecast)
+```
+
+
+### Questions
+
+Using the components plot of the full model (including holidays), explain  to your "boss" in a sentence or two the pattern described each components:
+
+**Trend**
+
+ANSWER HERE
+
+**Holidays**
+
+ANSWER HERE
+
+**Weekly**
+
+ANSWER HERE
+
+**Yearly**
+
+ANSWER HERE
+
+
+
+
+
+
+
+
+## Trying with bitcoin daily price data:
+
+```{r}
+bitcoin <- read.csv("data/bitcoin_daily.csv")
+bitcoin <- bitcoin[, c("date", "price_close")]
+colnames(bitcoin) <- c("ds", "y")
+bitcoin$ds <- ymd(bitcoin$ds)
+
+plot(x = bitcoin$ds, y = bitcoin$y, type = "l")
+```
+
+
+Fit a prophet model using the defaults and plot the forecast (using `plot`) and then plot the components (using `prophet_plot_components`). Predict out for 45 days into the future.
+
+```{r}
+# Fit model and plot fitted predictions
 
 ```
 
-Now, use the `predict()` function on the monthly estimates to create a variable in your dataframe called `Y_monthly`. 
-You need to add the argument `predict(model, sample = "original")`, where `model` is the variable you saved the result of `feols` to.
-
-Add `Y_trend` and `Y_monthly` to create a variable `Y_hat` which is our time-trend plus the seasonal pattern $\hat{y}_t = \hat{T}_t + \hat{S}_t$
-
 ```{r}
+# Components
 
 ```
 
 
 ### Questions
 
-1. Create a plot the time-trend estimate $\hat{T}_t$ on the $y$-axis and the date variable on the $x$-axis. Describe the time-trend in words.
+Consider a scenario where you work at a financial firm. You want to tell your boss to buy bitcoin if you forecast the price going up, but *really* don't want to be wrong. 
 
-```{r}
-
-```
+1. What does your forecast predict to happen to the future price of bitcoin? Using your plot components, write why you think the forecast might be missing the recent jump in prices?
 
 ANSWER HERE
 
 
-2. Create a plot of the true outcome variable, `Y`, on the $y$-axis and the date variable on the $x$-axis. Then using the `lines()` function, add to the plot of the `Y_hat`. Pick a color for this line so they are visually distinct (using `col = "blue"`, for example). How well do you think your forecast performs?
-
-```{r}
-
-```
+2. Using your components plot, describe what you are assuming about the time-series trend when making the forecast. Should this make you feel cautious about your recommendation?
 
 ANSWER HERE
 
 
-
-
-## Time-series Regression
-
-Now, we are going to try and use time-series regression to conduct inference. 
-Try to make the model relatively simple but do a good job at fitting the data. 
-
-Build your model using any of the time-series predictor variables we learned in our class:
-1. Seasonal indicators (e.g. month indicators)
-2. Linear time-trends
-3. Piecewise time-trends
-4. Indicators for weird regions (e.g. interval for covid)
-
-With your regression model, use `predict()` to create a variable `Y_hat_ols`.
-Create a plot of the true outcome variable, `Y`, on the $y$-axis and the date variable on the $x$-axis. Then using the `lines()` function, add to the plot of the `Y_hat_ols`. Pick a color for these points so they are visually distinct. 
-
-```{r}
-# Estimate time-series regression
-
-
-
-# Get fitted-values
-
-```
-
-```{r}
-# Plot fitted values 
-
-```
-
-
-
-### Questions
-
-1. Describe in words each term of your model and what time-series features you were trying to capture with those terms.
 
 

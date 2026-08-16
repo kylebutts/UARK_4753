@@ -1,5 +1,5 @@
 ---
-title: "Lab 06 - Working with Time-Series Data"
+title: "Lab 06 - Time-Series Data and Time-Series Regression"
 author: "YOUR NAME"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 format: pdf
@@ -8,7 +8,6 @@ format: pdf
 
 ```{r}
 library(lubridate)
-library(tsibble) # For `yearmonth()` function
 library(fixest)
 ```
 
@@ -248,7 +247,7 @@ quarter(football$date, type = "year.quarter")
 ```
 
 
-#### Exercise
+#### Exercises
 
 What is the most common month in the football dataset? 
 Hint: use the `table` function to help.
@@ -355,75 +354,209 @@ unemployment$quarter <- quarter(unemployment$date)
 
 ## Keep yourself from accidentally using quarter as a numeric
 unemployment$quarter <-
-  paste("Q", unemployment$quarter)
+  paste0("Q", unemployment$quarter)
 ```
 
 
 
-## Basic time-series regression
+# Time-series Regression
 
-As a preview of what is to come, let's see which quarter of the year has the lowest unemployment rate:
+This part will focus on time-series regression. 
+For this, we will use the unemployment data as well as a data on the "movie and concert ticket price index". 
+
+## Unemployment rate
+
+### Estimating seasonality patterns
+
+Let's see which quarter of the year has the lowest unemployment rate.
+We can create this using the `quarter` function from lubridate:
 
 ```{r}
-library(fixest)
-
 ## Do not do this
 unemployment$q1 <- (quarter(unemployment$date) == 1)
 unemployment$q2 <- (quarter(unemployment$date) == 2)
 unemployment$q3 <- (quarter(unemployment$date) == 3)
 unemployment$q4 <- (quarter(unemployment$date) == 4)
 est_bad_version <- feols(
-  unrate ~ 0 + q1 + q2 + q3 + q4,
+  unrate ~ q1 + q2 + q3 + q4,
   data = unemployment,
   vcov = "hc1"
 )
 
 ## Use `i`, it prints more nicely and is more simple!
 est <- feols(
+  unrate ~ i(quarter(date)),
+  data = unemployment,
+  vcov = "hc1"
+)
+etable(est_bad_version, est)
+```
+
+Just like with cross-sectional regression, a regression of an outcome on a set of indicator variables with an intercept estimates difference in means relative to the baseline (omitted) group.
+Without an intercept (using `0 + ` in our formula) estimates the different group means: 
+
+```{r}
+est_without_intercept <- feols(
   unrate ~ 0 + i(quarter(date)),
   data = unemployment,
   vcov = "hc1"
 )
-etable(est)
+etable(est, est_without_intercept)
 ```
 
-Just like with cross-sectional regression, a regression of an outcome on a set of indicator variables (without an intercept) produces a set of averages. 
-If we were to add an intercept, then we would estimate difference in means between groups:
 
-```{r}
-est_w_intercept <- feols(
-  unrate ~ 1 + i(quarter(date)),
-  data = unemployment,
-  vcov = "hc1"
-)
-etable(est, est_w_intercept)
-```
+### Estimating linear trend
 
-Let's fit a simple time-trend to the data. 
-We can use `predict` to get fitted values and then add them to the plot using the `lines` function.
+Let's fit a simple linear time-trend to the data. 
+Since `date` is just a numeric variable that increments by 1 for each day, we can just include it in our regression model:
 ```{r}
 model_linear_trend <- feols(
   unrate ~ date,
   data = unemployment
 )
+model_linear_trend
+```
+
+
+We can use `predict` to get fitted values and then add them to the plot using the `lines` function:
+```{r}
 unemployment$unrate_linear_trend <- predict(model_linear_trend)
 plot(unrate ~ date, data = unemployment, type = "l")
 lines(unrate_linear_trend ~ date, data = unemployment, col = "blue")
 ```
 
+### Combining
 
-## Exercise
-
-1. What were the average numbers of points scored by Arkansas in the 2023 for each month? 
-   Use a regression to answer this question
+Let's combine both a linear time-trend and indicators for each quarter in a single regression.
 
 ```{r}
+unemployment_model <- feols(
+  unrate ~ date + i(quarter(date)),
+  data = unemployment
+)
+unemployment_model
+```
+
+The coefficient on `date` represents the linear time-trend (every day unemployment rate goes down on average by -0.000124 percentage points).
+The coefficients on `quarter` represent a quarter specific seasonal effect; there appears to be no statistically significant seasonal pattern (since each coefficient is insignificant)
+
+
+
+## Movie and Concert Price Ticket
+
+### Time-series Regression Model
+
+Now let's load our movie and concert price index dataset. 
+
+```{r}
+library(lubridate)
+library(fixest)
+
+# Source: https://fred.stlouisfed.org/series/CUSR0000SS62031
+df <- read.csv("data/movie_and_concert_ticket_price_index.csv")
+
+# Convert the `date` column to a `Date` vector using `lubridate`
+df$date <- ymd(df$date)
+
+# Plot the time-series
+plot(
+  x = df$date,
+  y = df$price_index,
+  xlab = "Month",
+  ylab = "Price Index for Movie and Concert Tickets"
+)
+```
+
+We are going to fit a model with a linear time-trend and indicators for each month for the movie and concert price index data. 
+To do so, first create a variable called month in your dataset using the `month(x, label = TRUE)` function from `lubridate`. 
+Then regress the price index on the month using `feols` with the formula `price_index ~ date + i(month)`:
+
+```{r}
+# Create a variable called `month` using the `month()` from `lubridate`
+
+# Regress the price index on `date` and month indicators
 
 ```
 
 
+To visualize how your forecast is doing, we will use the `predict()` function.
+Store the results of `feols` into an object called `est` and then use `predict(est)` to get fitted values.
+Save this in a variable called `yhat_monthly`
+
+To plot them, we will use the `points()` to add extra points to our main `plot()`:
+
+```{r}
+# Get fitted values from regression and save in `yhat_monthly`
+
+# Plot them
+plot(x = df$date, y = df$price_index)
+points(x = df$date, y = df$yhat_monthly, col = "red")
+```
+
+
+#### Exercises
+
+1. In your regression, what is the omitted month?
+
+ANSWER HERE
+
+
+2. Which month has the highest deviation in price index?
+
+ANSWER HERE
+
+
+3. Does July have a statistically significant difference in price index relative to January?
+
+ANSWER HERE
+
+4. Interpret the linear trend coefficient in words and form a 95% confidence interval for this estimate.
+
+ANSWER HERE 
+
+5. Which parts of the data does our linear trend do well? Which parts do we predict poorly? 
+
+ANSWER HERE
 
 
 
+### Piecewise-linear trends
+
+Now, we will create a piecewise linear trend that has a breakpoint in 2020. 
+To do so, we will create two trend terms:
+1. `trend_1` which just equals `year` and 
+2. `trend_2` which equals `(df$year - 2020) * (df$year > 2020)`
+
+Then, regress the price index on the two trend terms and indicators for each month
+
+```{r}
+# Create piecewise trend terms
+
+# Regress the price index on month indicators and the piecewise-linear trend
+
+```
+
+```{r}
+# Get fitted values from regression and save in `yhat_piecewise`
+
+# Plot them
+plot(x = df$date, y = df$price_index)
+points(x = df$date, y = df$yhat_piecewise, col = "red")
+```
+
+
+### Questions
+
+1. Do you think the piecewise trend helped? 
+
+ANSWER HERE
+
+2. Does our regression results show evidence that the trend has a significant break starting 2020? 
+
+ANSWER HERE
+
+3. Does July have a statistically significant difference in price index relative to January?
+
+ANSWER HERE
 
 
