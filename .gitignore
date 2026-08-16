@@ -35,3 +35,6 @@ Textbooks/*
 # Repo specific
 notes_for_next_time.md
 
+# 
+*.zip
+

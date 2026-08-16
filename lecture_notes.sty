@@ -26,7 +26,7 @@
 % \usepackage[default]{lato}
 % % Source Code Pro for monospace font
 % \usepackage[scale=0.95]{plex-mono}
-% \renewcommand{\ttdefault}{\plexmonofamily} 
+%  
 
 % Small adjustments to text kerning
 \usepackage{microtype}
@@ -462,6 +462,26 @@
     basicstyle = \small\ttfamily,
     columns = fixed,
     keepspaces = true,
+    language = #1
+  }
+}
+
+\DeclareTCBListing{smallcodeblock}{ !O{R} }{
+  listing only,
+  interior hidden,
+  top = -12pt, 
+  bottom = -6pt,
+  left = 4pt, 
+  right = 0pt,
+  boxrule = 0pt, 
+  frame hidden, 
+  sharp corners, 
+  borderline west = {2pt}{0pt}{zinc400}, 
+  enhanced,
+  breakable,
+  listing options={
+    basicstyle = \footnotesize\ttfamily,
+    columns = fixed,
     language = #1
   }
 }
