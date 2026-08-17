@@ -1,5 +1,5 @@
 ---
-title: "Lab 1"
+title: "Lab 00 - Computer Setup"
 author: "YOUR NAME"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 format: pdf

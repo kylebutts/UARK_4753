@@ -1,6 +1,6 @@
 # Forecasting `[ECON 4753]`
 
-Fall 2024 • Instructor: Kyle Butts
+Fall 2026 • Instructor: Kyle Butts
 
 Monday, Wednesday 3:05 PM - 4:20 PM at Kimpell Hall 206A
 
