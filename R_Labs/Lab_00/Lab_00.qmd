@@ -6,18 +6,15 @@ format: pdf
 ---
 
 **Note:** Positron currently has a bug with quarto on Windows. 
-If `format: pdf` does not work, try `format: typst` and I *think* that shoudl fix it. 
+If `format: pdf` does not work, try `format: typst` and I *think* that should fix it. 
 If it does not, let me know and I will help you troubleshoot.
 
 # Assignment
 
-1. Please provide a **link** to a song you like. 
-   If you don't know how, refer to [this interactive tutorial](https://www.markdowntutorial.com/). 
-   Give the link a meaningful title (for example, the name of the song).
+1. Say you have a Saturday afternoon free, no responsibilities, and money in checkings. 
+   What would you do with your afternoon?
 
 **Answer:**
-
-One of my favorite songs is 
 
 
 
