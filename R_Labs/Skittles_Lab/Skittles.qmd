@@ -1,0 +1,259 @@
+---
+title: "Skittles Lab"
+format:
+  # html: default
+  pdf:
+    template: ../../template.tex
+    keep-tex: true
+    pdf-engine: latexmk
+---
+
+<!-- ![Skittles](https://images.pexels.com/photos/34947133/pexels-photo-34947133.jpeg) -->
+
+```{r setup}
+#| include: false
+# This is setup code to hide your code chunks automatically (without needing to specify options on each chunk)
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 8,
+  fig.height = 5,
+  dpi = 200
+)
+```
+
+```{r}
+library(tidyverse)
+library(tinytable)
+library(ggplot2)
+library(kfbmisc)
+
+# http://www.color-hex.com/color-palette/1146
+skittles_palette <- c(
+  "Red" = "#c0043f",
+  "Orange" = "#e64808",
+  "Yellow" = "#f1be02",
+  "Green" = "#048207",
+  "Purple" = "#441349"
+)
+
+skittles <- read.csv("data/skittles_data_reddit.csv")
+skittles$Total <- skittles$Red +
+  skittles$Orange +
+  skittles$Yellow +
+  skittles$Green +
+  skittles$Purple
+
+skittles_long <- skittles |>
+  pivot_longer(
+    cols = c("Red", "Orange", "Yellow", "Green", "Purple"),
+    names_to = "color",
+    values_to = "count"
+  ) |>
+  select(Pack, color, count, Total) |>
+  mutate(
+    share = count / Total
+  )
+
+draws_long <- skittles |>
+  pivot_longer(
+    cols = c(First_Draw, Second_Draw, Third_Draw, Fourth_Draw),
+    names_to = "draw",
+    values_to = "color"
+  ) |>
+  mutate(
+    draw_number = match(
+      draw,
+      c("First_Draw", "Second_Draw", "Third_Draw", "Fourth_Draw")
+    )
+  )
+```
+
+## Raw Data {.unnumbered}
+
+Each bar represents one pack, with the colored sections showing how many
+Skittles of each color it contains. This plot shows the variation from pack to
+pack and makes it possible to compare the total counts and color composition
+of individual packs. Are the packs similar in their color composition, or are
+some colors noticeably more common in particular packs? The plot also gives us
+a first look at whether the packs appear to contain a consistent number of
+Skittles.
+
+```{r}
+#| fig-cap: "Color Counts by Pack"
+ggplot() +
+  geom_bar(
+    aes(x = Pack, y = count, fill = color),
+    data = skittles_long,
+    stat = "identity"
+  ) +
+  scale_x_continuous(
+    breaks = seq(1, 36, by = 3),
+    minor_breaks = NULL,
+    expand = expansion(0, 0.2)
+  ) +
+  scale_fill_manual(values = skittles_palette) +
+  labs(
+    x = "Pack Number",
+    y = "Skittle Count",
+    fill = NULL
+  ) +
+  theme_kyle(legend = "top") +
+  kfbmisc::barchart_settings()
+``` 
+
+
+## Number of Skittles per Pack {.unnumbered}
+
+The average number of Skittles per pack is `r sprintf("%0.2f", mean(skittles$Total))` with a standard deviation of `r sprintf("%0.2f", sd(skittles$Total))`. Is this
+variation small enough to describe the packs as consistent, or do pack totals
+differ substantially?
+The histogram shows how the total number of Skittles is distributed across the
+packs collected by the class. The solid curve is the smoothed density of the
+observed totals, while the dashed curve is a normal distribution with the same
+mean and standard deviation.
+
+```{r}
+#| fig-cap: "Total Number Skittles in a Pack"
+ggplot() +
+  geom_histogram(
+    aes(x = Total, y = after_stat(count) / sum(after_stat(count))),
+    data = skittles,
+    fill = "grey50",
+    binwidth = 1,
+    alpha = 0.4
+  ) +
+  geom_density(
+    aes(x = Total, color = "Density Curve"),
+    data = skittles,
+    linewidth = 1.5,
+    key_glyph = "path"
+  ) +
+  ## Normal approximation
+  stat_function(
+    aes(color = "Normal Distribution"),
+    fun = function(x) {
+      dnorm(x, mean = mean(skittles$Total), sd = sd(skittles$Total))
+    },
+    xlim = range(skittles$Total),
+    # color = "grey50",
+    linewidth = 1.5,
+    linetype = "dashed",
+    key_glyph = "path"
+  ) +
+  scale_color_manual(
+    values = c("grey50", kyle_color("magenta")),
+  ) +
+  labs(
+    x = "Number of Skittles in Pack",
+    y = "Share of Packs with this Count",
+    fill = NULL,
+    color = NULL
+  ) +
+  theme_kyle(legend = "top") +
+  kfbmisc::barchart_settings()
+```
+
+
+## Color Proportions in Early Draws {.unnumbered}
+
+This figure compares the color proportions observed after the first one, two,
+three, and four draws. Comparing the groups shows how the observed mix changes
+as more Skittles are included in the sample. With only a few draws, how much
+can the observed color mix vary just by chance? Does the mix become more
+representative of the available colors as the number of draws increases?
+
+```{r}
+#| fig-cap: "Color Proportions in the First Three Draws"
+draw_proportions <- draws_long |>
+  crossing(draws_included = 1:4) |>
+  filter(draw_number <= draws_included) |>
+  count(draws_included, color) |>
+  complete(
+    draws_included,
+    color = names(skittles_palette),
+    fill = list(n = 0)
+  ) |>
+  group_by(draws_included) |>
+  mutate(
+    proportion = n / sum(n),
+    draws = factor(
+      draws_included,
+      levels = 1:4,
+      labels = c(
+        "First draw",
+        "First two draws",
+        "First three draws",
+        "First four draws"
+      )
+    )
+  ) |>
+  ungroup()
+
+ggplot(draw_proportions, aes(x = draws, y = proportion, fill = color)) +
+  geom_col(position = "dodge") +
+  scale_y_continuous(labels = scales::label_percent()) +
+  scale_fill_manual(values = skittles_palette) +
+  labs(
+    x = NULL,
+    y = "Proportion of Draws",
+    fill = NULL
+  ) +
+  theme_kyle(legend = "top") +
+  kfbmisc::barchart_settings()
+```
+
+
+
+## Distribution of Each Color {.unnumbered}
+
+The five panels show the distribution of each color's share within a pack.
+The horizontal position of a pack depends on the proportion of its Skittles
+that have that color, so the panels can be compared for center and spread. The
+dashed vertical line at 20% marks the expected share when all five colors are
+equally common. Is the average share of each color close to 20%? Which colors
+are most consistent from pack to pack, and which show the greatest variation?
+
+```{r}
+#| fig-cap: "Distribution across Repeated Sampling"
+ggplot() +
+  geom_vline(
+    xintercept = 0.2,
+    linewidth = 0.75,
+    linetype = "dashed",
+    color = "grey70"
+  ) +
+  geom_histogram(
+    aes(x = share, fill = color, color = color),
+    data = skittles_long,
+    binwidth = 0.01,
+    alpha = 0.4
+  ) +
+  facet_wrap(~color) +
+  labs(
+    x = "Proportion of Skittles of this Color in a Pack",
+    y = "Number of Packs",
+    fill = NULL,
+    color = NULL
+  ) +
+  scale_color_manual(values = skittles_palette, guide = guide_none()) +
+  scale_fill_manual(values = skittles_palette, guide = guide_none()) +
+  theme_kyle(legend = "top", grid_minor = "v") +
+  kfbmisc::barchart_settings()
+```
+
+
+What is the average share of each color per pack?
+
+```{r}
+skittles_long |>
+  summarize(.by = color, mean_share = mean(share), sd_share = sd(share)) |>
+  setNames(c(
+    "Color",
+    "Average Proportion in Pack",
+    "Std. Dev. of Proportion across Packs"
+  )) |>
+  tt(caption = "Summary of Sample Distribution") |>
+  format_tt(j = c(2, 3), fn = scales::label_number(accuracy = 0.02))
+```

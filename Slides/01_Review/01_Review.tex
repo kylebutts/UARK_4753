@@ -13,20 +13,6 @@
 \date{Fall 2026}
 \author{Prof. Kyle Butts}
 
-% Pause in align fix
-% https://tex.stackexchange.com/a/75550/334034
-\makeatletter
-\let\save@measuring@true\measuring@true
-\def\measuring@true{%
-  \save@measuring@true
-  % might not be necessary and might have unwarranted side effects
-  \def\beamer@sortzero##1{\beamer@ifnextcharospec{\beamer@sortzeroread{##1}}{}}%
-  \def\beamer@sortzeroread##1<##2>{}%
-  \def\beamer@finalnospec{}%
-}
-\makeatother
-
-
 \begin{document}
 
 % ------------------------------------------------------------------------------
@@ -214,9 +200,9 @@
 \end{frame}
 
 \begin{frame}{Predictions}
-  The first thing we can do is plug in a specific income, say $\kelly{\$2500}$, and determine the housing expenditures:
+  The first thing we can do is plug in a specific income, say $\raspberry{\$2500}$, and determine the housing expenditures:
   $$
-    \text{Housing Expenditure} = 400 + 0.35 * \kelly{2500} = \$1275
+    \text{Housing Expenditure} = 400 + 0.35 * \raspberry{2500} = \$1275
   $$
 
   \begin{itemize}
@@ -646,6 +632,63 @@
   \end{enumerate}
 \end{frame}
 
+\subsection*{Continuous Random Variables}
+
+\subsubsection*{Distribution}
+
+\begin{frame}{Continuous Random Variables}
+  Now we turn to \alert{continuous random variables}, where random variables can take values on (parts of) the real number line (e.g. height).
+  \begin{itemize}
+    \item All our definitions and intuition still apply.
+
+    \item In continuous land, we move from sums $\sum$ to integrals $\int$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Probability Density Function}
+  For continuous random variables, The PDF no longer represents the probability that $X$ obtains the value $x$, since the probability of obtaining any particular value is 0
+  \begin{itemize}
+    \item Instead, the pdf gives a `relative likelihood' that you take a value ``near $x$''
+  \end{itemize}
+
+  \pause
+  \bigskip
+  The pdf can be used to find the probability of being in a range of values $[\ubar{x}, \bar{x}]$:
+  \[
+    \P{X \leq x} = \int_{\ubar{x}}^{\bar{x}} f_{X}(x) dx,
+  \]
+\end{frame}
+
+\begin{frame}{Cumulative Distribution Function}
+  The PDF can be used to find the cumulative distribution function (CDF):
+  \[
+    \P{X \leq x} = \int_{-\infty}^x f_{X}(x) dx,
+  \]
+\end{frame}
+
+
+\begin{frame}{Expectations for Continuous Random Variables}
+  For continuous random variables, the expectation takes the form:
+  \[
+    \E{X} = \int x * f_{X}(x) dx.
+  \]
+  \begin{itemize}
+    \item This is similar to the discrete case, but we use an integral to `average' the value times the density
+  \end{itemize}
+
+  \pause
+  \bigskip
+  All the properties of expectations listed above hold for continuous variables too (or mixtures of both).
+\end{frame}
+
+\begin{frame}{Variance for Continuous Random Variables}
+  Last, the variance is given by
+  $$
+    \var{X} = \int (x - \expec{X})^2 f_{X}(x) dx
+  $$
+\end{frame}
+
+
 \subsubsection*{Normal Distribution}
 \begin{frame}{Normal Distribution}
   The normal distribution is one of the most important distributions in statistics. When a variable is normally distributed, we write $X \sim \mathcal{N}(\mu, \sigma^2)$, where $\mu = \expec{X}$ and $\sigma^2 = \var{X}$.
@@ -705,61 +748,33 @@
   Arbitrary intervals like $[\ubar{x}, \bar{x}]$ can be calculated as $\prob{X \leq \bar{x}} - \prob{X \leq \ubar{x}}$.
 \end{frame}
 
+\begin{frame}{68-95-99.7 Rule}
+  There are three probabilities that everyone should know for the normal distribution.
 
-
-\subsection*{Continuous Random Variables}
-\subsubsection*{Distribution}
-
-\begin{frame}{Continuous Random Variables}
-  Now we turn to \alert{continuous random variables}, where random variables can take values on (parts of) the real number line (e.g. height).
-  \begin{itemize}
-    \item All our definitions and intuition still apply.
-
-    \item In continuous land, we move from sums $\sum$ to integrals $\int$.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Probability Density Function}
-  For continuous random variables, The PDF no longer represents the probability that $X$ obtains the value $x$, since the probability of obtaining any particular value is 0
-  \begin{itemize}
-    \item Instead, the pdf gives a `relative likelihood' that you take a value ``near $x$''
-  \end{itemize}
-
-  \pause
-  \bigskip
-  The pdf can be used to find the probability of being in a range of values $[\ubar{x}, \bar{x}]$:
-  \[
-    \P{X \leq x} = \int_{\ubar{x}}^{\bar{x}} f_{X}(x) dx,
-  \]
-\end{frame}
-
-\begin{frame}{Cumulative Distribution Function}
-  The PDF can be used to find the cumulative distribution function (CDF):
-  \[
-    \P{X \leq x} = \int_{-\infty}^x f_{X}(x) dx,
-  \]
-\end{frame}
-
-
-\begin{frame}{Expectations for Continuous Random Variables}
-  For continuous random variables, the expectation takes the form:
-  \[
-    \E{X} = \int x * f_{X}(x) dx.
-  \]
-  \begin{itemize}
-    \item This is similar to the discrete case, but we use an integral to `average' the value times the density
-  \end{itemize}
-
-  \pause
-  \bigskip
-  All the properties of expectations listed above hold for continuous variables too (or mixtures of both).
-\end{frame}
-
-\begin{frame}{Variance for Continuous Random Variables}
-  Last, the variance is given by
   $$
-    \var{X} = \int (x - \expec{X})^2 f_{X}(x) dx
+    \prob{-1 \leq Z \leq 1} = 0.68
   $$
+
+  $$
+    \prob{-1.96 \leq Z \leq 1.96} = 0.95
+  $$
+
+  $$
+    \prob{-3 \leq Z \leq 3} = 0.997
+  $$
+\end{frame}
+
+\begin{frame}{68-95-99.7 Rule}
+  $$
+    \prob{-1 \leq Z \leq 1} = 0.68 \ \ 
+    \prob{-1.96 \leq Z \leq 1.96} = 0.95 \ \ 
+    \prob{-3 \leq Z \leq 3} = 0.997
+  $$
+
+  \bigskip
+  \begin{center}
+    \includegraphics[width = \textwidth]{figures/68_95_99.pdf}
+  \end{center}
 \end{frame}
 
 \section{Multiple Random Variables}
@@ -974,7 +989,25 @@
   The sample distribution can be used to quantify how much our estimator varies across different samples of the same size, $n$
 \end{frame}
 
-\begin{frame}{Estimators}
+\begin{frame}{Repeated Sampling in Action: Skittles Lab!}
+  \begin{columns}[T]
+    \begin{column}{.4\textwidth}
+      \vspace*{-2\bigskipamount}
+      \begin{center}
+        \includegraphics[width = 0.8\textwidth]{figures/kyle_wonka.png}
+      \end{center}
+    \end{column}
+    \begin{column}{.6\textwidth}
+      \vspace*{-\bigskipamount}
+      Let's try out repeated sampling using skittles.
+
+      \bigskip
+      Each one of us will draw 1 sample from a pack of skittles (in this case of varying $n$) and record some information.
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Many Estimators}
   For any statistic, there are many different estimators. Therefore, we have various ways to discuss what makes a good estimator.
 \end{frame}
 
@@ -984,7 +1017,7 @@
     \expec{W} = \theta.
   $$
   \bigskip
-  This means that, on average, the estimator equals the population statistic when using repeated sampling.  
+  This means that, on average, the estimator equals the population statistic when using repeated sampling of the same sample size.  
   \begin{itemize}
     \item It does not imply that the estimate always equals the population statistic.
   \end{itemize}
@@ -1013,7 +1046,17 @@
   This indicates that $W_1$ has a smaller variance, making it a more precise estimator
 \end{frame}
 
-\subsection*{Confidence Intervals}
+\begin{frame}{Thinking about Efficiency}
+  $W_1$ is more efficient than $W_2$ if
+  $$
+    \var{W_1} < \var{W_2}
+  $$
+
+  \bigskip
+  If both $W_1$ and $W_2$ are unbiased (on average $= \theta$), then efficiency means $W_1$ stays closer to $\theta$ which is great!
+\end{frame}
+
+\subsection*{Sample Distributions are often Normally Distributed}
 
 \begin{frame}{Describing Uncertainty of an Estimator}
   Since the estimator does not always equal its population statistic in repeated sampling, we need to describe the uncertainty of an estimator.  
@@ -1022,21 +1065,37 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Normal Distribution and Confidence Intervals}
+\begin{frame}{Sample Distributions are often Normally Distributed}
   It turns out that the \emph{sample distribution} of many estimators is approximately normally distributed
+  
+  \bigskip
+  Think of the Galton Board: Estimators take a bunch of data points and combine them; each observation moves the estimate a little bit
   \begin{itemize}
-    \item Makes it easier to summarize uncertainty around the estimator
+    \item $\implies$ the estimate will be normally distributed
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Exmaple: Sample Mean Distribution}
+  Let $\{ Y_1, \dots, Y_n \}$ be a random sample. The sample mean is approximately distributed $\mathcal{N}(\mu, \sigma^2 / n)$ where $\mu = \expec{Y}$ and $\sigma^2 = \var{Y}$. 
+\end{frame}
+
+\subsection*{Confidence Intervals}
+
+\begin{frame}{Confidence Intervals}
+  The general idea is that point estimates are never exactly equal to the population statistic, $\hat{\theta} \neq \theta$
+  \begin{itemize}
+    \item Yet, we are more confident in some estimators than others (e.g. if one survey interviews 10x as many people)
   \end{itemize}
 
   \bigskip
-  \pause
   A \alert{confidence interval} is constructed to describe the level of certainty
   \begin{itemize}
     \item Centered on the estimate, with a width that describes a range of values the population statistic could be
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Sample Mean Distribution}
+
+\begin{frame}{Example: Sample Mean Distribution}
   Let $\{ Y_1, \dots, Y_n \}$ be a random sample. The sample mean is approximately distributed $\mathcal{N}(\mu, \sigma^2 / n)$ where $\mu = \expec{Y}$ and $\sigma^2 = \var{Y}$. 
 
   \pause
