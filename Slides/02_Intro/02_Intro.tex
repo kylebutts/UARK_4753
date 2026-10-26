@@ -8,6 +8,20 @@
 \definecolor{accent}{HTML}{9D2235}
 \definecolor{accent2}{HTML}{2B5269}
 
+% Scale a tinytable (which emits a `table` float) to a fraction of \textwidth.
+% `adjustbox` puts its contents in a box, and floats are not allowed in a box,
+% so locally turn `table` into a plain group.
+\newenvironment{scaledtable}[1]{%
+  \begingroup
+  \renewenvironment{table}{}{}%
+  \begin{center}%
+  \begin{adjustbox}{width=#1}%
+}{%
+  \end{adjustbox}%
+  \end{center}%
+  \endgroup
+}
+
 \title{Topic 2: Introduction to Forecasting}
 \subtitle{\it  ECON 4753 — University of Arkansas}
 \date{Fall 2026}
@@ -54,11 +68,39 @@
   \end{itemize}
 
   \bigskip
-  We can write the model in a general form as
+  We can write the true prediction model in a general form as
   $$
     Y = f(X) + \varepsilon,
   $$
   where $f$ is some unknown function of $X$ and $\varepsilon$ is the \alert{error term} which we assume is unrelated to $X$ and mean zero.
+\end{frame}
+
+\begin{frame}{Limits of prediction}
+  $$
+    Y = f(X) + \varepsilon,
+  $$
+
+  You should think of the function $f$ as being an `oracle' who is as good of a forecaster as possible given the information $X$. 
+  Even then, there remains $\varepsilon$ which is unpredictable given $X$
+  \begin{itemize}
+    \item E.g. predicting wages given gender and education levels. 
+    $f$ gives us our best guess at wages, but there remains much variation in wages that are not predictable.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Modelling strategies}
+  The goal of the class will be to teach you how to do good at \alert{modelling} the function $f$
+  \begin{itemize}
+    \item How do we best try to learn the true systematic relationship between $X$ and $y$
+  \end{itemize}
+
+  \bigskip
+  Two ways to get better at modelling (in order of importance):
+  \begin{enumerate}
+    \item Become a subject matter expert so that you have great intuition on the relationship between $y$ and $X$
+    
+    \item (this class) Fill your toolbox with a bunch of different modelling strategies that you know when to reach for
+  \end{enumerate}
 \end{frame}
 
 \imageframe{figures/f_examples_plot_raw.pdf}
@@ -67,7 +109,14 @@
 \imageframe{figures/f_examples_plot_pred_3.pdf}
 \imageframe{figures/f_examples_plot_pred_4.pdf}
 
-\begin{frame}{Advertising Example}
+\begin{frame}{Models with multiple variables: Advertising Example}
+  The previous slides showed examples of how to think about modelling the relationship between a single variable and the outcome
+  
+  \bigskip
+  Things get more complicated when we have many different variables we can use to predict $y$
+\end{frame}
+
+\begin{frame}{Advertisting Example}
   Let's given an example. Say you're a business and you want to use advertising to boost sales. You have a bunch of different markets (e.g. cities) and you have data on how you've spent your advertising budget in those markets and the sales in that market
 \end{frame}
 
@@ -277,40 +326,30 @@
 \section{Types of Data}
 
 \begin{frame}{Cross-sectional Data}
-  
-  \begin{columns}[T]
-    \begin{column}{.4\textwidth}
-      \alert{Cross-sectional data} consists of many different \emph{units} viewed at a point in time:
-    \end{column}
-    \begin{column}{.6\textwidth}
-      \vspace*{-\bigskipamount}
-      \input{tables/data_types_ex_cs.tex}
-    \end{column}
-  \end{columns}
+  \alert{Cross-sectional data} consists of many different \emph{units} viewed at a point in time:
+
+  \vspace*{-\bigskipamount}
+  \begin{scaledtable}{0.5\textwidth}
+    \input{tables/data_types_ex_cs.tex}
+  \end{scaledtable}
 \end{frame}
 
 \begin{frame}{Time-series Data}
-  \begin{columns}[T]
-    \begin{column}{.4\textwidth}
-      \alert{Time-series data} consists of a single observational unit viewed over multiple points in time:
-    \end{column}
-    \begin{column}{.6\textwidth}
-      \vspace*{-\bigskipamount}
-      \input{tables/data_types_ex_ts.tex}
-    \end{column}
-  \end{columns}
+  \alert{Time-series data} consists of a single unit viewed over multiple points in time:
+
+  \vspace*{-\bigskipamount}
+  \begin{scaledtable}{0.5\textwidth}
+    \input{tables/data_types_ex_ts.tex}
+  \end{scaledtable}
 \end{frame}
 
 \begin{frame}{Panel Data}
-  \begin{columns}[T]
-    \begin{column}{.4\textwidth}
-      \alert{Panel data} is like time-series data, but for many different observational units:
-    \end{column}
-    \begin{column}{.6\textwidth}
-      \vspace*{-\bigskipamount}
-      \input{tables/data_types_ex_panel.tex}
-    \end{column}
-  \end{columns}
+  \alert{Panel data} consists of many units observed over multiple points in time:
+
+  \vspace*{-\bigskipamount}
+  \begin{scaledtable}{0.5\textwidth}
+    \input{tables/data_types_ex_panel.tex}
+  \end{scaledtable}
 \end{frame}
 
 

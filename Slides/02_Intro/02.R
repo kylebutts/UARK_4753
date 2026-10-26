@@ -187,7 +187,7 @@ predictions$y_hat_bins_10 <- tmp_df |>
     aes(x, y),
     data = tmp_df, size = 1.5, shape = 1, alpha = 0.2
   ) +
-  labs(x = NULL, y = NULL, title = "Examples of $f$:") +
+  labs(x = NULL, y = NULL, title = "Models for $f$:") +
   kfbmisc::theme_kyle(base_size = 14) +
   theme(
     plot.title = element_text(face = "plain")
@@ -208,7 +208,7 @@ title_parts <- c(
     color = colors["red_pink"]
   ) +
   labs(
-    title = paste0("Examples of $f$: ", paste(title_parts[1], collapse = ", "))
+    title = paste0("Models for $f$: ", paste(title_parts[1], collapse = ", "))
   )
 )
 
@@ -224,7 +224,7 @@ title_parts <- c(
     color = "orange"
   ) +
   labs(
-    title = paste0("Examples of $f$: ", paste(title_parts[1:2], collapse = ", "))
+    title = paste0("Models for $f$: ", paste(title_parts[1:2], collapse = ", "))
   )
 )
 
@@ -235,7 +235,7 @@ title_parts <- c(
     color = colors["blue"]
   ) +
   labs(
-    title = paste0("Examples of $f$: ", paste(title_parts[1:3], collapse = ", "))
+    title = paste0("Models for $f$: ", paste(title_parts[1:3], collapse = ", "))
   )
 )
 
@@ -246,7 +246,7 @@ title_parts <- c(
     color = colors["green"]
   ) +
   labs(
-    title = paste0("Examples of $f$: ", paste(title_parts[1:4], collapse = ", "))
+    title = paste0("Models for $f$: ", paste(title_parts[1:4], collapse = ", "))
   )
 )
 
@@ -371,7 +371,7 @@ tab_mspe_example <- mse_ex |>
   format_tt(j = 3, fn = function(col) {
     sprintf("\\only<2>{%s}", col)
   }) |>
-  theme_tt("striped") |>
+  theme_striped() |>
   style_tt(tabularray_inner = "colsep = {1em}")
 
 tab_mspe_example |>
@@ -409,7 +409,7 @@ tab_nyc_sat <- nyc_sat |>
   # select(`School ID`, Borough, `Average Score (SAT Math)`, `Percent White`) |>
   _[3:8, ] |>
   tt() |>
-  theme_tt("striped") |>
+  theme_striped() |>
   format_tt(escape = TRUE) |>
   style_tt(tabularray_inner = "colsep = {1em}")
 
@@ -440,7 +440,7 @@ tab_bikeshare <- Bikeshare |>
   select(month, day, hour, bikers, temp) |>
   ht() |>
   tt() |>
-  theme_tt("striped") |>
+  theme_striped() |>
   format_tt(i = 4, fn = \(x) "$\\vdots$") |>
   style_tt(tabularray_inner = "colsep = {1em}")
 
@@ -468,7 +468,7 @@ Fund <- Fund |>
 tab_fund <- Fund |>
   ht() |>
   tt() |>
-  theme_tt("striped") |>
+  theme_striped() |>
   format_tt(
     j = "return", fn = scales::label_percent(scale = 1, suffix = "\\%")
   ) |>
