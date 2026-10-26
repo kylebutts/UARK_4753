@@ -1,37 +1,20 @@
-Name,Pack,First_Draw,Second_Draw,Third_Draw,Fourth_Draw,Red,Orange,Yellow,Green,Purple,Total
-1,Kyle Butts (1),Orange,Green,Red,Red,9,17,7,12,14,59
-2,Kyle Butts (2),,,,,,,,,,
-3,Matt Adcock,,,,,,,,,,
-4,Jason Day,,,,,,,,,,
-5,Donovan Faupel,,,,,,,,,,
-6,Quinn Fontenot,,,,,,,,,,
-7,Jake Forman,,,,,,,,,,
-8,Olivia Gibbons,,,,,,,,,,
-9,Adrian Gray,,,,,,,,,,
-10,Emily Gurrola-Aguilar,,,,,,,,,,
-11,Cory Henderson Jr,,,,,,,,,,
-12,Parker Kambarn,,,,,,,,,,
-13,Cannon Kelley,,,,,,,,,,
-14,Francisco Leon,,,,,,,,,,
-15,Miles Marlow,,,,,,,,,,
-16,Duc Pham,,,,,,,,,,
-17,Huston Porter,,,,,,,,,,
-18,Wyatt Rice,,,,,,,,,,
-19,Tanner Schupp,,,,,,,,,,
-20,Jacob Shewmake,,,,,,,,,,
-21,Jake Stites,,,,,,,,,,
-22,Lily Weis,,,,,,,,,,
-23,Flynn Wilhelm,,,,,,,,,,
-24,,,,,,,,,,,
-25,,,,,,,,,,,
-26,,,,,,,,,,,
-27,,,,,,,,,,,
-28,,,,,,,,,,,
-29,,,,,,,,,,,
-30,,,,,,,,,,,
-31,,,,,,,,,,,
-32,,,,,,,,,,,
-33,,,,,,,,,,,
-34,,,,,,,,,,,
-35,,,,,,,,,,,
-36,,,,,,,,,,,
+Pack,Name,First_Draw,Second_Draw,Third_Draw,Fourth_Draw,Red,Orange,Yellow,Green,Purple,Total
+1,Kyle Butts,Orange,Green,Red,Red,9,17,7,12,14,59
+2,Matt Adcock,Purple,Green,Purple,Orange,9,12,8,12,18,59
+3,Jason Day,Green,Purple,Yellow,Orange,9,12,13,16,9,59
+4,Donovan Faupel,Purple,Orange,Orange,Yellow,7,14,15,7,16,59
+5,Jake Forman,Orange,Red,Purple,Purple,8,15,8,10,16,57
+6,Olivia Gibbons,Yellow,Orange,Purple,Orange,9,18,9,10,10,56
+7,Adrian Gray,Purple,Purple,Orange,Green,9,10,21,7,12,59
+8,Emily Gurrola-Aguilar,Purple,Green,Yellow,Red,9,7,24,5,15,60
+9,Parker Kambarn,Purple,Orange,Yellow,Yellow,11,12,15,4,17,59
+10,Cannon Kelley,Red,Red,Red,Yellow,8,16,15,5,12,56
+11,Francisco Leon,Green,Green,Red,Purple,10,11,14,11,14,60
+12,Miles Marlow,Red,Yellow,Green,Yellow,11,12,14,7,16,60
+13,Duc Pham,Red,Green,Green,Green,7,10,12,13,14,56
+14,Huston Porter,Yellow,Green,Orange,Green,8,14,15,10,12,59
+15,Wyatt Rice,Orange,Red,Red,Purple,15,17,6,9,11,58
+16,Tanner Schupp,Purple,Orange,Yellow,Red,9,11,15,12,11,58
+17,Jake Stites,Yellow,Yellow,Red,Purple,10,13,12,9,15,59
+18,Lily Weis,Green,Purple,Orange,Yellow,5,10,14,13,15,57
+19,Flynn Wilhelm,Purple,Purple,Green,Green,13,11,14,7,14,59

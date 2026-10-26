@@ -38,7 +38,10 @@ skittles_palette <- c(
   "Purple" = "#441349"
 )
 
-skittles <- read.csv("data/skittles_data_reddit.csv")
+skittles <- bind_rows(
+  read.csv("data/skittles_data_F2026.csv"),
+  read.csv("data/skittles_data_reddit.csv")
+)
 skittles$Total <- skittles$Red +
   skittles$Orange +
   skittles$Yellow +
@@ -106,7 +109,7 @@ ggplot() +
 
 ## Number of Skittles per Pack {.unnumbered}
 
-The average number of Skittles per pack is `r sprintf("%0.2f", mean(skittles$Total))` with a standard deviation of `r sprintf("%0.2f", sd(skittles$Total))`. Is this
+The average number of Skittles per pack is `r sprintf("%0.2f", mean(skittles$Total, na.rm = TRUE))` with a standard deviation of `r sprintf("%0.2f", sd(skittles$Total, na.rm = TRUE))`. Is this
 variation small enough to describe the packs as consistent, or do pack totals
 differ substantially?
 The histogram shows how the total number of Skittles is distributed across the
