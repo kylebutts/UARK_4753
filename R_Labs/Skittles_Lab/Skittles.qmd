@@ -4,7 +4,7 @@ format:
   # html: default
   pdf:
     template: ../../template.tex
-    keep-tex: true
+    keep-tex: false
     pdf-engine: latexmk
 ---
 
