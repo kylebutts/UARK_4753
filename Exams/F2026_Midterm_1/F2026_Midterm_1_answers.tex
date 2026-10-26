@@ -1,0 +1,164 @@
+\documentclass[12pt]{article}
+\usepackage{../../../lecture_notes}
+\usepackage{../../../math}
+\usepackage{../../../uark_colors}
+
+\hypersetup{
+  colorlinks = true,
+  allcolors = ozark_mountains,
+  breaklinks = true,
+  bookmarksopen = true
+}
+\newcommand{\answer}[1]{{\color{blue_winged_teal}\textbf{Answer:} #1}}
+\newcommand{\pts}[1]{{\color{zinc500}[#1 points]}}
+
+\begin{document}
+\begin{center}
+  {\Huge\bf Midterm 1 - Fall 2026}
+  
+  \smallskip
+  {\large\it ECON 4753 — University of Arkansas}
+\end{center}
+
+\vspace{5mm}
+\begin{enumerate}
+  \item This question concerns our general discussion of modelling outcomes. 
+  Say we have an outcome variable $Y$ that we want to analyze and a set of variables $X$ we want to use in our model. 
+  In general, we write the `true model' as $Y_i = f(X_i) + e_i$.
+  With a sample, we will fit some model which we will call $\hat{f}$. 
+
+  Two models were fit using the same training sample.
+  Model A is a simple linear regression, while Model B allows a more complicated relationship between $X$ and $Y$.
+
+  \begin{center}
+    \begin{tabular}{lc}
+      Model & In-sample MSPE \\
+      \hline
+      A & 420 \\
+      B & 310 \\
+    \end{tabular}
+  \end{center}
+
+  \begin{enumerate}
+    \item \pts{10} Write the formula for in-sample mean-squared prediction error.
+    
+    \answer{$\sum_{i=1}^n (y_i - \hat{y}_i)^2$}
+    
+    \item \pts{10} A student argues, ``Model B has a lower in-sample MSPE, so it will predict outcomes more accurately for new observations.''
+    Do you agree with this conclusion? Explain.
+
+    \answer{I disagree with this conclusion. 
+    Using the in-sample MSPE to choose a model is problematic becuase of the potential for overfitting. 
+    While a lower MSPE can signal a model that better predicts $f(X_i)$, it could also signal that a model is overfit. 
+    In general it is better to use the out-of-sample mean squared prediction error.}
+  \end{enumerate}
+
+
+  \bigskip\bigskip
+  \item This question is based on our review of statistics.
+  A company advertises that its wireless earbuds last an average of 7 hours on a single charge.
+  You independently test a random sample of $n = 64$ pairs of this model under the same conditions.
+  Let $b_i$ denote battery life in hours.
+  Your sample has a mean of $\bar{b} = 6.6$ hours and a variance of $\var{b} = 4$ hours squared.
+  The sample distribution of the sample mean is therefore $\bar{b} \sim \mathcal{N}( \mu, 1 / 16 )$, where $\mu$ is the true average battery life.
+
+  \medskip
+  \begin{enumerate}[label=(\alph*)]
+    \item \pts{10} Form a 95\% confidence interval for the population mean battery life.
+    Interpret this interval in words.
+
+    \answer{
+      $$\left( 6.6 - 1.96 * \sqrt{\frac{1}{16}}, 6.6 + 1.96 * \sqrt{\frac{1}{16}} \right) = (6.11, 7.09)$$
+
+      With 95\% confidence, the true average battery life falls in the range 6.11 to 7.09 hours.
+    }
+
+    \item \pts{10} You suspect that the average battery life is less than the advertised 7 hours.
+    Test the null hypothesis that $H_0: \mu = 7$ at the 5\% significance level.
+
+    \answer{
+      Since the value 7 falls inside my 95\% confidence interval for the sample mean, I fail to reject the null at the 5\% significance level.
+    }
+  \end{enumerate}
+
+
+  %% Spotify questions
+  \newpage
+  \item The following questions will focus on a dataset from Spotify. 
+  A random sample of songs were drawn from 6 genres: `EDM', `latin', `r\&b', `pop', `rap', and `rock'.
+  Spotify produced a few variables we will use for the analysis: (1) \texttt{track\_popularity} measures track populartiy on a scale from 0 to 100 and (2) \texttt{danceability} measures how suitable a track is for dancing on a scale from 0 to 1.
+
+  I ran a regression of track popularity on the song's danceability measure. 
+
+  \begin{codeblock}[{}]
+OLS estimation, Dep. Var.: track_popularity
+Observations: 32,833
+             Estimate Std. Error t value  Pr(>|t|)    
+(Intercept)   35.1757   0.632777 55.5894 < 2.2e-16 ***
+danceability  11.1497   0.945354 11.7942 < 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  \end{codeblock}
+
+  \begin{enumerate}
+    \item \pts{10} Interpret the coefficient on a song's \texttt{danceability} measure
+    
+    \answer{For every 0.1 units a song is higher on the \texttt{danceability} measure, the track's popularity will improve by $11.1497 * 0.1 = 1.15$ points.}
+    
+    \item \pts{10} Form a 95\% confidence interval for the coefficient. 
+    
+    \answer{With 95\% confidence, the slope coefficient falls in this range:
+    $$
+      \left( 11.1497 - 1.96 * 0.945354 , 11.1497 + 1.96 * 0.945354 \right) = (9.30, 13)
+    $$}
+  \end{enumerate}
+  
+
+  \newpage
+
+  \vspace{5mm}
+  \item Continuing with the Spotify dataset, we want to see if different genre's have different popularities. We regress the track's popularity on indicators for each genre (excluding one)
+  \begin{codeblock}[{}]
+OLS estimation, Dep. Var.: track_popularity
+Observations: 32,833
+               Estimate Std. Error   t value  Pr(>|t|)    
+(Intercept)   47.744870   0.339019 140.83227 < 2.2e-16 ***
+genre::edm   -12.911344   0.451279 -28.61054 < 2.2e-16 ***
+genre::latin  -0.718294   0.490232  -1.46521   0.14287    
+genre::r&b    -6.521339   0.488259 -13.35632 < 2.2e-16 ***
+genre::rap    -4.529416   0.457639  -9.89736 < 2.2e-16 ***
+genre::rock   -6.016532   0.489295 -12.29632 < 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+  \end{codeblock}
+
+  \begin{enumerate}
+    \item \pts{10} What is the omitted group in this regression?
+    
+    \answer{The omitted group is pop.}
+
+    \item \pts{10} Interpret the coefficient on rock in words.
+    
+    \answer{On average, rock songs have an average track popularity 6 points lower compared to pop songs.}
+    
+    \item \pts{10} Which genre is more popular, r\&b or rap?
+    
+    \answer{
+      R\&b songs have average popularity $47.74 + (-6.52) = 41.22$.
+
+      Rap songs have average popularity $47.74 + (-4.53) = 43.21$.
+
+      Therefore, rap songs are more popular on average.
+    }
+
+    \item \pts{10} How would you modify this regression to test whether this difference is statistically significant?
+    
+    \answer{
+      To test whether this difference is statistically significant, I would rerun this regression and make rap the omitted group (or r\&b!).  
+    }
+  \end{enumerate}
+\end{enumerate}
+
+
+
+\end{document}
