@@ -22,187 +22,197 @@
 
 \section{Multiple Variable Regression}
 
-\begin{frame}{Multiple Regression}
-  The multiple variable linear regression model is written as
-  $$
-    y_i = \beta_0 + X_{1,i} \beta_1 + \dots + X_{K,i} \beta_K = u_i
-  $$
-  
-  \bigskip
-  There are $K$ covariates that we want to \emph{jointly} estimate their associations with $y$
+\begin{frame}{Regressions compare people}
+  A bivariate regression compares people with different values of $X$ to describe how their $Y$ differs.
   \begin{itemize}
-    \item Note these don't have to be `distinct' variables, but could be polynomials, binned data, interactions between variables, etc. 
-  \end{itemize} 
+    \item For example, a regression of wages on years of education compares people with more education to people with less education.
+  \end{itemize}
+
+  \pause
+  \bigskip
+  But people with different values of $X$ can differ in many other ways!
+  \begin{itemize}
+    \item People with more education may also have different family backgrounds, work experience, and skills.
+    \item These other differences can help explain the wage differences we see.
+  \end{itemize}
 \end{frame}
 
-\begin{frame}{Why Multiple Variable Regression?}{Advertising Example}
-  Let's given an example. Say you're a business and you want to use advertising to boost sales. You have a bunch of different markets (e.g. cities) and you have data on how you've spent your advertising budget in those markets and the sales in that market
+\begin{frame}{Other differences in the comparison}{Wine and health}
+  \begin{columns}[T]
+    \begin{column}{.5\textwidth}\vspace*{-\bigskipamount}
+      \begin{center}
+        \includegraphics[width = 0.75\textwidth]{figures/wine_and_health.png}
+      \end{center}
+    \end{column}
+    \begin{column}{.5\textwidth}
+      \vspace*{-\bigskipamount}
+      Suppose we compare wine drinkers to people who do not drink wine and find that wine drinkers are healthier.
+
+      \pause
+      \bigskip
+      What else might differ between these groups?
+      \begin{itemize}
+        \item Income, education, diet, and access to health care.
+        
+        \item These things affect health too!
+      \end{itemize}
+    \end{column}
+  \end{columns}
 \end{frame}
 
-\begin{frame}{Advertising Example}{Single-variable predictors}
+\begin{frame}{Omitted variables}
+  An \alert{omitted variable} is a variable left out of our regression.
+
+  \bigskip
+  An omitted variable can help explain the relationship between $X$ and $Y$ when it:
+  \begin{enumerate}
+    \item Is correlated with $X$.
+    \item Affects $Y$ beyond the relationship with $X$.
+  \end{enumerate}
+
+  \pause
+  \bigskip
+  For wine and health, income could satisfy both conditions.
+  \begin{itemize}
+    \item If wine drinkers have higher incomes, our comparison also compares people with different incomes.
+    \item Income can affect health through diet, housing, and access to health care.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Examples of Omitted Variables}
+  \small
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth} >{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \textbf{$X$ and $Y$} & \textbf{What else might explain the comparison?} \\
+    \midrule
+    Education and wages
+      & Family resources can help people stay in school and find higher-paying jobs. \\
+    Tutoring and test scores
+      & Students who struggle may seek more tutoring, and prior preparation affects test scores. \\
+    Hospital care and health
+      & Sicker people are more likely to seek hospital care, and illness severity affects health outcomes. \\
+    \bottomrule
+  \end{tabularx}
+\end{frame}
+
+\begin{frame}{Examples of Omitted Variables}
+  \small
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth} >{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \textbf{Compare $X$ and $Y$} & \textbf{What else might explain the comparison?} \\
+    \midrule
+    House size and price
+      & Larger houses may be in different neighborhoods, and location affects price. \\
+    Arts spending and test scores
+      & Wealthier districts may spend more on arts and provide other resources that improve test scores. \\
+    \bottomrule
+  \end{tabularx}
+\end{frame}
+
+\begin{frame}{Control variables}
+  Multiple regression lets us include these other variables as \alert{control variables}.
+  \begin{itemize}
+    \item We will call the variable of interest $X$ and the control variables $W$.
+    \item $W$ can contain one control or several controls, $W_1, \dots, W_J$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Comparing people with the same $W$}
+  When using control variables, the way we interpret the regression is going to change:
+
+  \begin{quote}
+    Compare two people with the same values of the control variables, $W$, but different values of $X$.
+    How do their predicted values of $Y$ differ?
+  \end{quote}
+
+  \pause
+  \bigskip
+  We describe the relationship between $X$ and $Y$ while \emph{holding the control variables $W$ fixed}.
+\end{frame}
+
+\begin{frame}{Comparing people with the same $W$}
+  \bigskip
+  For example, compare two people with the same family income and years of work experience, whose education differs by one year.
+  \begin{itemize}
+    \item $Y$ is wages, $X$ is years of education, and $W$ contains family income and work experience.
+    \item We call this the relationship between education and wages \emph{controlling for} family income and work experience.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Multiple regression}
+  With one control variable $W_i$, our model is
+  $$
+    y_i = \beta_0 + \beta_1 X_i + \gamma W_i + u_i.
+  $$
+
+  \bigskip
+  Compare two people with the same $W$ whose $X$ differs by one unit.
+  Their predicted outcomes differ by $\hat{\beta}_1$:
+  $$
+    \hat{y}_j - \hat{y}_i
+    = \hat{\beta}_1 \underbrace{(X_j - X_i)}_{1}
+    + \hat{\gamma} \underbrace{(W_j - W_i)}_{0}
+    = \hat{\beta}_1.
+  $$
+
+  % \pause
+  % \bigskip
+  % Regression uses a fitted model to make this comparison, so we do not need to find an exact match for every person in the data.
+\end{frame}
+
+\begin{frame}{Multiple regression}{Several controls}
+  With $J$ control variables, we write:
+  $$
+    y_i = \beta_0 + \beta_1 X_{1,i} + \dots + \beta_K X_{K,i} + u_i.
+  $$
+
+  \bigskip
+  $\beta_1$ describes the relationship between $X_1$ and $Y$, holding \emph{all the other included controls} fixed.
+\end{frame}
+
+\begin{frame}{Advertising example}
+  Suppose we have data on sales and spending on TV, radio, and newspaper ads across different markets.
+
+  \bigskip
+  We want to describe the relationship between radio advertising and sales.
+  \begin{itemize}
+    \item $Y$ is sales and $X$ is spending on radio ads.
+    \item Our controls $W$ are spending on TV and newspaper ads.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Advertising example}{Single-variable predictors}
   \includegraphics[width=\textwidth]{figures/sales_bivariate.pdf}
 \end{frame}
 
-\begin{frame}{Advertising Example}
-  We see that sales are higher in markets that have spending on TV, Radio, and Newspaper ads separately. 
-  
-  \pause
-  \bigskip 
-  These single scatter plots with line of best-fits are a somewhat poor model:
-  \begin{itemize}
-    \item Are there synergies between different advertising strategies (are they substitutes or complements to one another)?
-    \item Do places with more TV ads also have more radio ads? Then how can we tell if it is TV ads that are helping or if it is really radio ads?
-  \end{itemize}
-
-  \pause\bigskip
-  \alert{Key takeaway:} Forecasting models get better the more carefully you think about the context you are in
-\end{frame}
-
-\begin{frame}{Intuition of multiple linear regression}
-  \begin{quote}
-    Do places with more TV ads also have more radio ads? Then how can we tell if it is TV ads that are helping or if it is really radio ads ?
-  \end{quote}
-
-  \bigskip
-  Multiple regression will help with this. To estimate the relationship between sales and radio ads, what we really want to do is compare places with \emph{the same TV ads} but different amounts of radio ads and see how their sales differ
-
-  \pause
-  \begin{itemize}
-    \item The language typically used by economists is `controlling for TV ads, what is the relationship between radio ads and sales?'
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Correlation between $X$}
-  More generally, we want to use multiple regression when multiple $X$ variables are correlated with one another. Say $X_{k,i}$ and $X_{\ell,i}$ are correlated with each other.
-  \begin{itemize}
-    \item In the data, when we view someone with higher $X_{k,i}$, they also have higher $X_{\ell,i}$ (or lower in the case of negative correlation)
-  \end{itemize}
+\begin{frame}{Advertising example}{What else differs between markets?}
+  Each plot compares markets with different spending on one type of advertising.
 
   \pause
   \bigskip
-  Multiple regression will let us understand the relationship between $X_{k,i}$ and $Y$ while ``keeping $X_{\ell,i}$ constant''
+  Markets with more radio ads might also spend more on TV and newspaper ads.
+  \begin{itemize}
+    \item The bivariate regression compares markets that can differ in all of these ways.
+    \item Its radio coefficient can reflect differences in other advertising spending too.
+  \end{itemize}
 \end{frame}
 
-\begin{frame}{Marginal Effects with Multiple Variables}
-  Say we have two variables in our linear model $\hat{y} = \beta_0 + \beta_1 X_1 + \beta_2 + X_2$.
+\begin{frame}{Advertising example}{Holding $W$ fixed}
+  Compare two markets with the same spending on TV and newspaper ads, but different spending on radio ads.
 
-  Our predictions differ by
-  $$
-    \hat{y}_j - \hat{y}_i = \beta_1 (X_{1,j} - X_{1,i}) + \beta_2 (X_{2,j} - X_{2,i})
-  $$
-\end{frame}
-  
-\begin{frame}{Marginal Effects with Multiple Variables}
-  \vspace*{-\bigskipamount}
-  $$
-    \hat{y}_j - \hat{y}_i = \beta_1 (X_{1,j} - X_{1,i}) + \beta_2 (X_{2,j} - X_{2,i})
-  $$
-  
   \bigskip
-  Let's think about a simple version. 
-  Take two individuals with the same $X_2$ and $X_1$ differing by 1 unit (say $X_{1,j} - X_{1,i} = 1$)
+  Our multiple regression is
+  $$
+    \text{Sales}_i = \beta_0 + \beta_1 \text{Radio}_i
+    + \gamma_1 \text{TV}_i + \gamma_2 \text{Newspaper}_i + u_i.
+  $$
 
   \pause
   \bigskip
-  Then, our estimated change is 
-  $$
-    \Delta \hat{y} = \beta_1
-  $$
-  \begin{itemize}
-    \item We refer to the $\beta_k$ as ``marginal effects'', i.e. the predicted change in $y$ from a 1 unit increase in $X$, holding \emph{fixed} all the other variables
-  \end{itemize}
+  $\hat{\beta}_1$ is the predicted difference in sales for one more unit of radio spending, \emph{holding TV and newspaper spending fixed}.
 \end{frame}
-
-\begin{frame}{Least Squares problem}
-  How do we estimate the least-squares coefficients? Our goal, just like before is to minimize the mean-squared prediction error:
-  $$
-    \text{MSPE}(\bm{b}) = \frac{1}{n} \sum_{i=1}^n (y_i - \beta_0 - \beta_1 X_{1,i} - \dots - \beta_K X_{K,i})^2
-  $$
-
-  \begin{itemize}
-    \item Searching over $b = (b_0, b_1, \dots, b_K)'$
-  \end{itemize}
-\end{frame}
-
-% \begin{frame}{Multiple Linear Regression}
-%   Given a set of observations, the data looks like this
-%   {\small 
-%     \begin{align*}
-%       \mathbf{Y} = \begin{pmatrix}
-%           y_1 \\
-%           \vdots \\
-%           y_n
-%       \end{pmatrix}, \quad
-%       \mathbf{X} = \begin{pmatrix}
-%           1 & x_{1,1} & \dots & x_{1,K} \\
-%           1 & x_{2,1} & \dots & x_{2,K} \\
-%           \vdots & \vdots & \ddots & \vdots \\
-%           1 & x_{n,1} & \dots & x_{n,K}
-%       \end{pmatrix}, \quad
-%       \boldsymbol{\beta} = \begin{pmatrix}
-%           \beta_0 \\
-%           \beta_1 \\
-%           \vdots \\
-%           \beta_J
-%       \end{pmatrix},
-%     \end{align*}
-%   }
-% 
-%   \medskip
-%   and our regression equation can be written as
-%   $$
-%     \mathbf{Y} = \mathbf{X} \beta + \mathbf{u}
-%   $$
-% \end{frame}
-
-\begin{frame}{First-order conditions}
-  Denote $\hat{u}_i$ to be the difference between $y_i$ and $b_0 + b_1 X_{1,i} + \dots + b_K X_{K,i}$
-
-  Our first-order conditions become:
-  \begin{enumerate}
-    \item $b_0 = \bar{y} - \bar{X}_1 b_1 + \dots \bar{X}_K b_K$
-    
-    \item $0 = \sum_{i=1}^n X_{k,i} \hat{u}_{i}$ for $k = 1,\dots, K$
-  \end{enumerate}
-
-  \bigskip
-  In words, 1. the intercept makes the mean values fall on the regression line and 2. each $X$ variable is uncorrelated with the residual
-\end{frame}
-
-
-\begin{frame}{Solving multiple regression estimates}
-  These $K + 1$ equations can be solved, but less simply than before. Instead we end up with the following solution:
-  \only<1>{
-    $$
-      (\var{\bm{X}_i})^{-1} \cov(\bm{X}_i, Y_i)
-    $$
-  }
-  \only<2>{
-    $$
-      \underbrace{(\var{\bm{X}_i})^{-1}}_{\text{analog of } \frac{1}{\var{X_i}}} 
-      \quad
-      \underbrace{\cov(\bm{X}_i, Y_i)}_{\text{analog of } \cov{X_i, Y_i}},
-    $$
-  }
-  where:
-  \begin{enumerate}
-    \item $\cov(\bm{X}_i, Y_i)$ is the $K + 1$ vector of covariances between each $X_{k,i}$ including the intercept, and 
-    \item $\var{\bm{X}_i}$ is the $K+1 \times K+1$ matrix with typical element $\cov(X_{k,i}, X_{\ell, i})$
-  \end{enumerate}
-\end{frame}
-
-\begin{frame}{What is happening}
-  \vspace*{-\bigskipamount}
-  $$
-    (\var{\bm{X}_i})^{-1} \cov(\bm{X}_i, Y_i)
-  $$
-  Admittedly, this equation is a bit intimidating. But the intuition is that:
-  \begin{enumerate}
-    \item $\var{\bm{X}_i}$ notices that some variables are correlated with each-other (the two variables co-move)
-    \item So by inverting this matrix, we are essentially removing this co-movement, aka holding ``all else equal''
-  \end{enumerate} 
-\end{frame}
-
 
 \begin{frame}{}{}
   \bigskip
@@ -229,15 +239,36 @@
 \end{frame}
 
 \begin{frame}{Interpreting regression results}
-  Notice on the last table, in the bivariate regression, higher newspaper ads spending is associated with higher sales
+  In the bivariate regression, higher newspaper advertising spending is associated with higher sales.
 
   \bigskip
-  \emph{But}, after controlling for TV and Radio ads, there is no relationship between Newspaper ads and sales
+  After controlling for TV and radio spending, the estimated newspaper coefficient is close to zero.
   \begin{itemize}
-    \item It seems like the bivaraite relationship is being driven by newspaper ads being correlated with TV and Radio sales. 
-    Holding them fixed removed the relationship between Newspaper ads and sales
+    \item Comparing markets with the same TV and radio spending gives a different relationship than the bivariate comparison.
+    \item The results suggest that differences in TV and radio spending help explain the bivariate relationship between newspaper ads and sales.
   \end{itemize}
 \end{frame}
+
+\begin{frame}{Controls and causal interpretation}
+  Suppose we regress wages on college attendance, controlling for family income and SAT scores.
+
+  \bigskip
+  We compare people with the same values of these controls who differ in college attendance.
+  \begin{itemize}
+    \item They may still differ in motivation, professional connections, or other determinants of wages.
+    \item If these omitted variables are correlated with college attendance and affect wages, they can still help explain the comparison.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Controls and causal interpretation}
+  Multiple regression holds the \emph{included controls $W$} fixed.
+
+  \bigskip
+  A causal interpretation requires that no remaining differences related to $X$ also affect $Y$.
+  Adding controls does not automatically establish this.
+\end{frame}
+
+\subsection{Inference on Regression Coefficients}
 
 \begin{frame}{Inference on regression coefficients}
   Conducting inference on regression coefficients is the same as before
@@ -267,43 +298,20 @@
   $\implies$ the standard errors on each will be very large
 \end{frame}
 
-% TODO: 
-\begin{frame}{``All Else Equal''}
-  The latin word you'll sometimes see is \emph{ceteris parabus} meaning ``other things being equal''.
-  
-  \bigskip
-  For example, think about when we learned about the demand curve
-  \begin{itemize}
-    \item The realtionship between price and quantity demanded \emph{at a point in time}
-    
-    \item You are changing the price of the good but not changing the state of the economy
-  \end{itemize}
-
-  \pause
-  \bigskip
-  In our data, when we see prices change, this is usually driven by changes in the economy (e.g. inflation or supply-chain shocks)
-  \begin{itemize}
-    \item Not ceterus parabus!
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Causal Effects and Multiple Regression}
-  Once again, we face the issue of interpreting regressions causally.
-  Say you want to estimate the causal effect of college attendance on wages. You control for a bunch of other determinants of earnings that might correlate with college attendance (e.g. family income and SAT scores)
-
-  \bigskip
-  \pause
-  You may be tempted to say that you have isolated the ``causal effect'' of gender on wages, i.e. the effect of sexism on wages
-  \begin{itemize}
-    \item However, it could be the case that other \emph{unobservable} variables are correlated with college attendance that you did not control for in your regression (e.g. work-ethic and parental investment)
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Causal Effects and Multiple Regression}
-  The upshot: causal effects require \emph{all else equal}, not just the things you control for
-\end{frame}
-
-
+% \begin{frame}{``All else equal''}
+%   The Latin phrase \emph{ceteris paribus} means ``other things being equal.''
+% 
+%   \bigskip
+%   Think about a demand curve: how does quantity demanded change with price, holding income, tastes, and other prices fixed?
+%   \begin{itemize}
+%     \item In the data, prices and these other variables can change together.
+%     \item Control variables let our regression compare observations with the same values of the included $W$.
+%   \end{itemize}
+% 
+%   \pause
+%   \bigskip
+%   Holding $W$ fixed does not mean that every other difference between people or markets disappears.
+% \end{frame}
 
 
 \section{Polynomials}
@@ -481,37 +489,33 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Continuous-Continuous interactions}
-  Now consider two continuous variables being interacted:
-  $$
-    y_i = \beta_0 + X_{1,i} \beta_1 + X_{2,i} \beta_2 + X_{1,i} X_{2,i} \beta_3 + u_i
-  $$
-  
-  \bigskip
-  This is common when you think there are complementarities between variables 
-  \begin{itemize}
-    \item E.g. $y$ is crop-yield, $X_1$ is the amount of fertilizer applied, and $X_2$ is the amount of water given. Does it help to do more of both (complements)
-    
-    \item $y$ is a measure of job performance, $X_1$ is a measure of experience, and $X_2$ is a measure of training
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Continuous-Continuous interactions}
-  $$
-    \frac{\partial \hat{y}_i}{\partial X_{1,i}} = \hat{\beta}_1 + X_{2,i} \hat{\beta}_3 
-    \ \text{ and }\ 
-    \frac{\partial \hat{y}_i}{\partial X_{2,i}} = \hat{\beta}_2 + X_{1,i} \hat{\beta}_3
-  $$
-
-  \bigskip
-  Can interpret it in two ways:
-  \begin{enumerate}
-    \item The marginal effect of $X_{1}$ grows/shrinks with the value of $X_{2}$ (depending on the sign of $\hat{\beta}_3$)
-  \end{enumerate}
-\end{frame}
-
-
-
-
+% \begin{frame}{Continuous-Continuous interactions}
+%   Now consider two continuous variables being interacted:
+%   $$
+%     y_i = \beta_0 + X_{1,i} \beta_1 + X_{2,i} \beta_2 + X_{1,i} X_{2,i} \beta_3 + u_i
+%   $$
+%   
+%   \bigskip
+%   This is common when you think there are complementarities between variables 
+%   \begin{itemize}
+%     \item E.g. $y$ is crop-yield, $X_1$ is the amount of fertilizer applied, and $X_2$ is the amount of water given. Does it help to do more of both (complements)
+%     
+%     \item $y$ is a measure of job performance, $X_1$ is a measure of experience, and $X_2$ is a measure of training
+%   \end{itemize}
+% \end{frame}
+% 
+% \begin{frame}{Continuous-Continuous interactions}
+%   $$
+%     \frac{\partial \hat{y}_i}{\partial X_{1,i}} = \hat{\beta}_1 + X_{2,i} \hat{\beta}_3 
+%     \ \text{ and }\ 
+%     \frac{\partial \hat{y}_i}{\partial X_{2,i}} = \hat{\beta}_2 + X_{1,i} \hat{\beta}_3
+%   $$
+% 
+%   \bigskip
+%   Can interpret it in two ways:
+%   \begin{enumerate}
+%     \item The marginal effect of $X_{1}$ grows/shrinks with the value of $X_{2}$ (depending on the sign of $\hat{\beta}_3$)
+%   \end{enumerate}
+% \end{frame}
 
 \end{document}
